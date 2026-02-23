@@ -17,14 +17,14 @@ recognition.onresult = async function(event) {
     const transcript = event.results[0][0].transcript;
     transcriptBox.innerText = transcript;
     statusText.innerText = "Status: Processing request...";
-    recordButton.innerText = "🎤 Start Recording";
+    recordButton.innerText = "Start Recording";
 
     await sendDataToBackend(transcript);
 };
 
 recognition.onerror = function(event) {
     statusText.innerText = "Status: Error listening. Try again.";
-    recordButton.innerText = "🎤 Start Recording";
+    recordButton.innerText = "Start Recording";
 };
 
 // Start listening when button is clicked
@@ -71,3 +71,18 @@ function speakResponse(text) {
     const utterance = new SpeechSynthesisUtterance(text);
     window.speechSynthesis.speak(utterance);
 }
+// --- New UI Reset Logic ---
+const clearButton = document.getElementById('clearButton');
+
+clearButton.addEventListener('click', () => {
+    // 1. Reset the text boxes
+    transcriptBox.innerText = "Your words will appear here...";
+    responseBox.innerText = "Gemini's answer will appear here...";
+    statusText.innerText = "Status: Waiting...";
+    
+    // 2. Stop the Text-to-Speech immediately if it is currently talking
+    window.speechSynthesis.cancel();
+    
+    // 3. Reset the record button in case it got stuck
+    recordButton.innerText = "Start Recording";
+});

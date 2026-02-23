@@ -40,10 +40,14 @@ async def analyze_data(
         df = pd.read_csv(file.file)
         csv_text = df.to_csv(index=False) 
         
-        # 2. Strict Prompt Engineering (Version A: Basic factual data response)
+        # 2. Strict Voice-Optimized Prompt Engineering
         prompt = (
-            "You are a strict data assistant. You must answer the user's question purely "
-            "based on the factual data provided in the CSV below. Do not hallucinate or add outside information.\n\n"
+            "You are a highly efficient voice assistant. Your output will be read directly to the user via Text-to-Speech. "
+            "Answer the user's question purely based on the factual data provided in the CSV below. "
+            "CRITICAL RULES: "
+            "1. Do NOT use introductory filler phrases like 'Based on the CSV', 'According to the data', or 'Here is the answer'. "
+            "2. Do NOT use markdown, bolding, or bullet points. "
+            "3. Speak naturally, directly, and concisely. Provide ONLY the factual answer.\n\n"
             f"User Voice Command: {transcript}\n\n"
             f"CSV Data:\n{csv_text}"
         )
