@@ -51,4 +51,8 @@ FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
 app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
 
 if __name__ == "__main__":
-    uvicorn.run("app:app", host="127.0.0.1", port=8000, reload=True)
+    # Cloud providers assign a dynamic PORT environment variable. 
+    # We default to 8000 for local testing if the cloud variable isn't found.
+    port = int(os.environ.get("PORT", 8000))
+    # Host "0.0.0.0" tells the server to listen on all available public IP addresses
+    uvicorn.run("app:app", host="0.0.0.0", port=port)
