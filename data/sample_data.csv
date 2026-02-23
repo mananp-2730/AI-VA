@@ -1,0 +1,8 @@
+Interaction_ID,User_Intent,Voice_Command,Device_Type,Match_Confidence,Action_Result,Estimated_Value_USD
+101,Product_Search,"find ergonomic desk chairs",Smart_Speaker,0.95,Showed_Results,0.00
+102,Add_To_Cart,"add the blue one to my cart",Mobile_App,0.88,Cart_Updated,249.99
+103,Support,"how do I return a monitor",Smart_Speaker,0.92,Opened_Ticket,0.00
+104,Checkout,"buy everything in my cart",Smart_Display,0.99,Order_Placed,249.99
+105,Recommendation,"what is the best book for product managers",Mobile_App,0.85,List_Provided,0.00
+106,Product_Search,"compare logitech mx master and apple magic mouse",Desktop_Web,0.91,Showed_Comparison,0.00
+107,Add_To_Cart,"buy the logitech mouse",Smart_Speaker,0.96,Cart_Updated,99.99

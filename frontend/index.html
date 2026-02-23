@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-VA | CSV Voice Assistant</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>AI-VA 🎙️</h1>
+        <p>Your Local AI Assistant for CSV Analysis</p>
+
+        <div class="upload-section">
+            <label for="csvFileInput">1. Upload your CSV data:</label>
+            <input type="file" id="csvFileInput" accept=".csv">
+        </div>
+
+        <div class="voice-section">
+            <p>2. Ask a question about your data:</p>
+            <button id="recordButton">🎤 Start Recording</button>
+            <p id="statusText">Status: Waiting...</p>
+        </div>
+
+        <div class="output-section">
+            <h3>Transcript:</h3>
+            <div id="transcriptBox" class="box">Your words will appear here...</div>
+            
+            <h3>AI Response:</h3>
+            <div id="responseBox" class="box">Gemini's answer will appear here...</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
