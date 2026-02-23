@@ -1,4 +1,4 @@
-# AI-VA 🎙️ | Local AI Voice Assistant for Data Analysis
+# AI-VA | Local AI Voice Assistant for Data Analysis
 
 AI-VA is a localized web application that bridges the gap between raw CSV data and actionable insights using voice commands. It allows users to input speech, transcribes it, queries the dataset using the Google Gemini API, and returns a spoken, factual response.
 
