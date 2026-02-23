@@ -33,6 +33,13 @@ recordButton.addEventListener('click', () => {
         alert("Please upload a CSV file first!");
         return;
     }
+    
+    // --- NEW FIX: Prime the mobile audio engine ---
+    // Speak a silent utterance immediately on user tap to unlock mobile audio
+    const primeUtterance = new SpeechSynthesisUtterance('');
+    window.speechSynthesis.speak(primeUtterance);
+    // ----------------------------------------------
+
     recognition.start();
 });
 
