@@ -39,7 +39,7 @@ async def analyze_data(transcript: str = Form(...), file: UploadFile = File(...)
             f"User Voice Command: {transcript}\n\n"
             f"CSV Data:\n{csv_text}"
         )
-        response = client.models.generate_content(model='gemini-1.5-flash', contents=prompt)
+        response = client.models.generate_content(model='gemini-2.5-flash', contents=prompt)
         return {"status": "success", "response": response.text}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
