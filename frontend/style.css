@@ -10,11 +10,11 @@ body {
 
 .container {
     background: #ffffff;
-    padding: 30px;
+    padding: 45px; /* Increased from 30px for more inner space */
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.08);
     width: 100%;
-    max-width: 500px;
+    max-width: 650px; /* Increased from 500px so text doesn't stack as heavily */
 }
 
 header {
@@ -39,8 +39,8 @@ header p {
 .control-panel {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    margin-bottom: 25px;
+    gap: 25px; /* Increased from 15px */
+    margin-bottom: 35px; /* Increased from 25px */
 }
 
 /* File Upload Styling */
@@ -110,7 +110,9 @@ button {
 .btn-danger:hover {
     background-color: #c5221f;
 }
-
+.voice-section {
+    margin-bottom: 35px; /* Adds space before the chat text starts */
+}
 /* Status Animations */
 #statusText {
     text-align: center;
@@ -139,10 +141,11 @@ button {
     gap: 15px;
 }
 .chat-bubble {
-    padding: 15px;
+    padding: 20px; /* Increased from 15px */
     border-radius: 12px;
-    font-size: 14px;
-    line-height: 1.5;
+    font-size: 15px; /* Bumped up slightly */
+    line-height: 1.7; /* Adds spacious breathing room between lines of text */
+    margin-bottom: 15px;
 }
 .user-bubble {
     background-color: #f1f3f4;
