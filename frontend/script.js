@@ -7,20 +7,46 @@ const analysisMode = document.getElementById('analysisMode');
 // Initialize Web Speech API for Speech-to-Text
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
+const fileDisplay = document.getElementById('file-display');
+
+// Listen for file uploads and validate
+csvFileInput.addEventListener('change', function() {
+    const file = this.files[0];
+    if (file) {
+        // Strict CSV validation
+        if (file.name.endsWith('.csv') || file.type === 'text/csv') {
+            fileDisplay.innerText = "Loaded: " + file.name;
+            fileDisplay.style.color = "#34a853"; // Green
+        } else {
+            fileDisplay.innerText = "Error: Please upload a valid .csv file";
+            fileDisplay.style.color = "#ea4335"; // Red
+            this.value = ""; // Clear the invalid file
+        }
+    } else {
+        fileDisplay.innerText = "No file selected";
+        fileDisplay.style.color = "#5f6368";
+    }
+});
 
 recognition.onstart = function() {
-    statusText.innerText = "Status: Listening... Speak now!";
+    statusText.innerText = "Listening... Speak now";
+    statusText.className = "status-listening";
     recordButton.innerText = "Listening...";
 };
 
 recognition.onresult = async function(event) {
     const transcript = event.results[0][0].transcript;
     transcriptBox.innerText = transcript;
-    statusText.innerText = "Status: Processing request...";
-    recordButton.innerText = "Start Recording";
+    statusText.innerText = "Processing request...";
+    statusText.className = "status-processing";
+    recordButton.innerText = "🎤 Tap to Speak";
 
     await sendDataToBackend(transcript);
 };
+
+// Also update the success status in sendDataToBackend:
+// statusText.innerText = "Done!";
+// statusText.className = "status-done";
 
 recognition.onerror = function(event) {
     statusText.innerText = "Status: Error listening. Try again.";
@@ -64,7 +90,7 @@ async function sendDataToBackend(transcript) {
         if (data.status === "success") {
             responseBox.innerText = data.response;
             speakResponse(data.response); // Trigger Text-to-Speech
-            statusText.innerText = "Status: Done!";
+            statusText.innerText = "Done!";
         } else {
             responseBox.innerText = "Error from server: " + data.detail;
             statusText.innerText = "Status: Error!";

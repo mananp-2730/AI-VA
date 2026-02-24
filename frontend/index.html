@@ -8,37 +8,48 @@
 </head>
 <body>
     <div class="container">
-        <h1>AI-VA </h1>
-        <p>Your Local AI Assistant for CSV Analysis</p>
+        <header>
+            <h1>AI-VA</h1>
+            <p>Strategic Voice Assistant for Data Analysis</p>
+        </header>
 
-        <div class="upload-section">
-            <label for="csvFileInput">1. Upload your CSV data:</label>
-            <input type="file" id="csvFileInput" accept=".csv">
+        <div class="control-panel">
+            <div class="upload-section">
+                <label for="csvFileInput" class="custom-file-upload">
+                    📂 Upload CSV Dataset
+                </label>
+                <input type="file" id="csvFileInput" accept=".csv">
+                <div id="file-display">No file selected</div>
+            </div>
+
+            <div class="mode-section">
+                <select id="analysisMode" class="dropdown">
+                    <option value="version_a">Version A: Factual Retrieval</option>
+                    <option value="version_b">Version B: Strategic Insights</option>
+                </select>
+            </div>
         </div>
 
         <div class="voice-section">
-            <p>2. Choose your analysis mode:</p>
-            <select id="analysisMode" style="margin-bottom: 15px; padding: 5px; font-size: 16px;">
-                <option value="version_a">Version A: Strict Factual Data</option>
-                <option value="version_b">Version B: Strategic & Analytical Insights</option>
-            </select>
-            
-            <br>
-            <p>3. Ask a question about your data:</p>
-            <button id="recordButton">Start Recording</button>
-            <button id="clearButton" style="background-color: #dc3545; margin-left: 10px;">Clear Chat</button>
-            <p id="statusText">Status: Waiting...</p>
+            <div class="mic-container">
+                <button id="recordButton" class="btn-primary">Tap to Speak</button>
+                <button id="clearButton" class="btn-danger">Clear</button>
+            </div>
+            <p id="statusText" class="status-waiting">Status: Ready</p>
         </div>
 
-        <div class="output-section">
-            <h3>Transcript:</h3>
-            <div id="transcriptBox" class="box">Your words will appear here...</div>
-            
-            <h3>AI Response:</h3>
-            <div id="responseBox" class="box">Gemini's answer will appear here...</div>
+        <div class="chat-section">
+            <div class="chat-bubble user-bubble">
+                <strong>You:</strong>
+                <div id="transcriptBox">Your words will appear here...</div>
+            </div>
+            <div class="chat-bubble ai-bubble">
+                <strong>AI-VA:</strong>
+                <div id="responseBox">Insights will appear here...</div>
+            </div>
         </div>
     </div>
-
+    
     <script src="script.js"></script>
 </body>
 </html>
