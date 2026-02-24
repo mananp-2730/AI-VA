@@ -3,7 +3,7 @@ const statusText = document.getElementById('statusText');
 const transcriptBox = document.getElementById('transcriptBox');
 const responseBox = document.getElementById('responseBox');
 const csvFileInput = document.getElementById('csvFileInput');
-
+const analysisMode = document.getElementById('analysisMode');
 // Initialize Web Speech API for Speech-to-Text
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
@@ -46,10 +46,12 @@ recordButton.addEventListener('click', () => {
 // Send data to the FastAPI Backend
 async function sendDataToBackend(transcript) {
     const file = csvFileInput.files[0];
-    const formData = new FormData();
+    const mode = analysisMode.value; // Capture the selected mode
     
+    const formData = new FormData();
     formData.append("transcript", transcript);
     formData.append("file", file);
+    formData.append("mode", mode); // Send the mode to Python
 
     try {
         const response = await fetch("/api/analyze", {

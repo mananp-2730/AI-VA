@@ -17,9 +17,16 @@
         </div>
 
         <div class="voice-section">
-            <p>2. Ask a question about your data:</p>
+            <p>2. Choose your analysis mode:</p>
+            <select id="analysisMode" style="margin-bottom: 15px; padding: 5px; font-size: 16px;">
+                <option value="version_a">Version A: Strict Factual Data</option>
+                <option value="version_b">Version B: Strategic & Analytical Insights</option>
+            </select>
+            
+            <br>
+            <p>3. Ask a question about your data:</p>
             <button id="recordButton">Start Recording</button>
-            <button id="clearButton" style="background-color: #dc3545; margin-left: 10px;">Clear Chat</button>
+            <button id="clearButton" style="background-color: #dc3545; margin-left: 10px;">🗑️ Clear Chat</button>
             <p id="statusText">Status: Waiting...</p>
         </div>
 
