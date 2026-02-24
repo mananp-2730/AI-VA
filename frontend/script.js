@@ -39,7 +39,7 @@ recognition.onresult = async function(event) {
     transcriptBox.innerText = transcript;
     statusText.innerText = "Processing request...";
     statusText.className = "status-processing";
-    recordButton.innerText = "🎤 Tap to Speak";
+    recordButton.innerText = "Tap to Speak";
 
     await sendDataToBackend(transcript);
 };
