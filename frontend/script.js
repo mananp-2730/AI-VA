@@ -8,23 +8,41 @@ const analysisMode = document.getElementById('analysisMode');
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
 const fileDisplay = document.getElementById('file-display');
+const visualCanvas = document.getElementById('visualCanvas');
+const placeholderContent = document.querySelector('.placeholder-content');
 
-// Listen for file uploads and validate
+// Listen for file uploads and validate/display
 csvFileInput.addEventListener('change', function() {
     const file = this.files[0];
     if (file) {
-        // Strict CSV validation
-        if (file.name.endsWith('.csv') || file.type === 'text/csv') {
+        const isImage = file.type.startsWith('image/');
+        const isCsv = file.name.endsWith('.csv') || file.type === 'text/csv';
+
+        if (isImage || isCsv) {
             fileDisplay.innerText = "Loaded: " + file.name;
             fileDisplay.style.color = "#34a853"; // Green
+            
+            // Render the Visual Canvas
+            if (isImage) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    visualCanvas.innerHTML = `<img src="${e.target.result}" style="max-width: 100%; max-height: 80vh; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">`;
+                    visualCanvas.style.display = 'block';
+                    placeholderContent.style.display = 'none';
+                }
+                reader.readAsDataURL(file);
+            } else { // It's a CSV
+                visualCanvas.innerHTML = `<div style="text-align: center; color: #1a73e8;"><h1 style="font-size: 80px; margin: 0;"></h1><h2>Raw Data Loaded</h2><p>Ready for voice queries.</p></div>`;
+                visualCanvas.style.display = 'flex';
+                visualCanvas.style.flexDirection = 'column';
+                visualCanvas.style.justifyContent = 'center';
+                placeholderContent.style.display = 'none';
+            }
         } else {
-            fileDisplay.innerText = "Error: Please upload a valid .csv file";
+            fileDisplay.innerText = "Error: Please upload a valid CSV, PNG, or JPG";
             fileDisplay.style.color = "#ea4335"; // Red
             this.value = ""; // Clear the invalid file
         }
-    } else {
-        fileDisplay.innerText = "No file selected";
-        fileDisplay.style.color = "#5f6368";
     }
 });
 
