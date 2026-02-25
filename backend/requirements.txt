@@ -4,4 +4,4 @@ python-multipart
 pandas
 google-genai
 python-dotenv
-Pillow-12.1.1
+Pillow
