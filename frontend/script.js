@@ -26,8 +26,13 @@ csvFileInput.addEventListener('change', function() {
             if (isImage) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    visualCanvas.innerHTML = `<img src="${e.target.result}" style="max-width: 100%; max-height: 80vh; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">`;
-                    visualCanvas.style.display = 'block';
+                    // We wrapped the image in a relative div so our highlight box knows where to stick!
+                    visualCanvas.innerHTML = `
+                        <div id="imageContainer" style="position: relative; display: inline-block;">
+                            <img src="${e.target.result}" id="uploadedImage" style="max-width: 100%; max-height: 80vh; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: block;">
+                        </div>`;
+                    visualCanvas.style.display = 'flex';
+                    visualCanvas.style.justifyContent = 'center';
                     placeholderContent.style.display = 'none';
                 }
                 reader.readAsDataURL(file);
@@ -107,8 +112,46 @@ async function sendDataToBackend(transcript) {
         
         if (data.status === "success") {
             responseBox.innerText = data.response;
-            speakResponse(data.response); // Trigger Text-to-Speech
-            statusText.innerText = "Done!";
+            speakResponse(data.response); 
+            statusText.innerText = "Status: Done!";
+            statusText.className = "status-done";
+
+            // --- NEW: SPATIAL HIGHLIGHTING LOGIC ---
+            // 1. Remove the old highlight box if it exists
+            const oldHighlight = document.getElementById('highlight-box');
+            if (oldHighlight) oldHighlight.remove();
+
+            // 2. Check if the AI returned coordinates
+            if (data.box && data.box.length === 4) {
+                const [ymin, xmin, ymax, xmax] = data.box;
+                
+                // Convert Gemini's 0-1000 scale to standard CSS percentages (0% to 100%)
+                const top = ymin / 10;
+                const left = xmin / 10;
+                const height = (ymax - ymin) / 10;
+                const width = (xmax - xmin) / 10;
+
+                // 3. Create the glowing CSS box
+                const imageContainer = document.getElementById('imageContainer');
+                if (imageContainer) {
+                    const highlight = document.createElement('div');
+                    highlight.id = 'highlight-box';
+                    highlight.style.position = 'absolute';
+                    highlight.style.top = `${top}%`;
+                    highlight.style.left = `${left}%`;
+                    highlight.style.width = `${width}%`;
+                    highlight.style.height = `${height}%`;
+                    highlight.style.border = '4px solid #ea4335'; // Google Red
+                    highlight.style.backgroundColor = 'rgba(234, 67, 53, 0.2)'; // Transparent Red
+                    highlight.style.boxShadow = '0 0 20px rgba(234, 67, 53, 0.6)';
+                    highlight.style.borderRadius = '8px';
+                    highlight.style.transition = 'all 0.4s ease-in-out';
+                    highlight.style.pointerEvents = 'none'; // Ensure clicks pass through it
+                    
+                    // Attach it to the image container
+                    imageContainer.appendChild(highlight);
+                }
+            }
         } else {
             responseBox.innerText = "Error from server: " + data.detail;
             statusText.innerText = "Status: Error!";

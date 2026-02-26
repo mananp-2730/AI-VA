@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 from google import genai
 import io
 from PIL import Image
+import json
 
 load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
@@ -53,28 +54,27 @@ async def analyze_data(
             image_bytes = await file.read()
             image = Image.open(io.BytesIO(image_bytes))
             
-            if mode == "version_a":
-                prompt = (
-                    "You are a spatial voice assistant. Read this output directly to the user. "
-                    "Answer the user's question purely based on the visual data in the provided dashboard image. "
-                    "Keep it concise and direct. Do NOT use markdown, asterisks, or bullet points.\n\n"
-                    f"User Voice Command: {transcript}"
-                )
-            else:
-                prompt = (
-                    "You are a business strategist. Read this output directly to the user. "
-                    "Analyze the provided dashboard image. Go beyond simple numbers and identify trends or strategic takeaways. "
-                    "Keep it conversational but highly insightful. Do NOT use markdown, asterisks, or bullet points.\n\n"
-                    f"User Voice Command: {transcript}"
-                )
+            prompt = (
+                "You are a spatial business strategist. Analyze the provided dashboard image and answer the user's question. "
+                "CRITICAL INSTRUCTION: You must return your response as a valid JSON object with EXACTLY two keys: "
+                "1. 'response': Your conversational answer to the user (no markdown). "
+                "2. 'box': An array of four numbers [ymin, xmin, ymax, xmax] representing the bounding box of the specific chart, graph, or data point you are talking about. Scale the numbers from 0 to 1000. If the question is about the whole dashboard, return an empty array [].\n\n"
+                f"User Voice Command: {transcript}"
+            )
             
-            # We pass BOTH the image and the text prompt to Gemini
-            response = client.models.generate_content(model='gemini-2.5-flash', contents=[image, prompt])
+            # We force the model to output strict JSON
+            gemini_response = client.models.generate_content(
+                model='gemini-2.5-flash', 
+                contents=[image, prompt],
+                config={"response_mime_type": "application/json"}
+            )
             
-        else:
-            raise HTTPException(status_code=400, detail="Unsupported file format. Please upload a CSV, PNG, or JPG.")
-
-        return {"status": "success", "response": response.text}
+            # Parse the AI's JSON output
+            parsed_data = json.loads(gemini_response.text)
+            final_text = parsed_data.get("response", "I could not analyze the image.")
+            box_coords = parsed_data.get("box", [])
+            
+            return {"status": "success", "response": final_text, "box": box_coords}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
