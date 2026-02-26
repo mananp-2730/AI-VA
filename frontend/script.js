@@ -7,9 +7,14 @@ const analysisMode = document.getElementById('analysisMode');
 // Initialize Web Speech API for Speech-to-Text
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
+recognition.continuous = true; // Keep listening until we tell it to stop
+recognition.interimResults = false;
 const fileDisplay = document.getElementById('file-display');
 const visualCanvas = document.getElementById('visualCanvas');
 const placeholderContent = document.querySelector('.placeholder-content');
+const pauseButton = document.getElementById('pauseButton');
+let isSessionActive = false; // Tracks if the continuous loop is running
+let isMicPaused = false;     // Tracks if the VP manually paused it
 
 // Listen for file uploads and validate/display
 csvFileInput.addEventListener('change', function() {
@@ -51,46 +56,83 @@ csvFileInput.addEventListener('change', function() {
     }
 });
 
+// --- BUTTON CONTROLS ---
+
+// Start/Stop the entire session
+recordButton.addEventListener('click', () => {
+    if (!isSessionActive) {
+        // Start Session
+        isSessionActive = true;
+        isMicPaused = false;
+        recognition.start();
+        recordButton.innerText = "End Session";
+        recordButton.className = "btn-danger";
+        pauseButton.style.display = "block";
+        pauseButton.innerText = "Pause Mic";
+    } else {
+        // End Session
+        isSessionActive = false;
+        recognition.stop();
+        recordButton.innerText = "Start Session";
+        recordButton.className = "btn-primary";
+        pauseButton.style.display = "none";
+        statusText.innerText = "Status: Session Ended";
+        statusText.className = "status-waiting";
+    }
+});
+
+// Manual Pause by the VP
+pauseButton.addEventListener('click', () => {
+    if (isMicPaused) {
+        // Resume Listening
+        isMicPaused = false;
+        pauseButton.innerText = "Pause Mic";
+        recognition.start();
+    } else {
+        // Pause Listening
+        isMicPaused = true;
+        pauseButton.innerText = "Resume Mic";
+        recognition.stop();
+        statusText.innerText = "Status: Mic Paused (Thinking...)";
+        statusText.className = "status-waiting";
+    }
+});
+
+// --- RECOGNITION EVENTS ---
+
 recognition.onstart = function() {
-    statusText.innerText = "Listening... Speak now";
-    statusText.className = "status-listening";
-    recordButton.innerText = "Listening...";
+    if (!isMicPaused) {
+        statusText.innerText = "Listening... Speak now";
+        statusText.className = "status-listening";
+    }
+};
+
+// If the browser forces the mic to stop, restart it automatically if the session is still active
+recognition.onend = function() {
+    if (isSessionActive && !isMicPaused && !window.speechSynthesis.speaking) {
+        recognition.start(); 
+    }
 };
 
 recognition.onresult = async function(event) {
-    const transcript = event.results[0][0].transcript;
+    // Only process speech if the mic isn't paused
+    if (isMicPaused) return; 
+
+    // Get the most recent speech transcript
+    const currentResultIndex = event.results.length - 1;
+    const transcript = event.results[currentResultIndex][0].transcript.trim();
+    
+    // Ignore empty transcripts or background noise blips
+    if (!transcript) return;
+
     transcriptBox.innerText = transcript;
     statusText.innerText = "Processing request...";
     statusText.className = "status-processing";
-    recordButton.innerText = "Tap to Speak";
-
+    
+    // Stop listening temporarily while we fetch data so we don't pick up garbage
+    recognition.stop(); 
     await sendDataToBackend(transcript);
 };
-
-// Also update the success status in sendDataToBackend:
-// statusText.innerText = "Done!";
-// statusText.className = "status-done";
-
-recognition.onerror = function(event) {
-    statusText.innerText = "Status: Error listening. Try again.";
-    recordButton.innerText = "Start Recording";
-};
-
-// Start listening when button is clicked
-recordButton.addEventListener('click', () => {
-    if (!csvFileInput.files[0]) {
-        alert("Please upload a CSV file first!");
-        return;
-    }
-    
-    // --- NEW FIX: Prime the mobile audio engine ---
-    // Speak a silent utterance immediately on user tap to unlock mobile audio
-    const primeUtterance = new SpeechSynthesisUtterance('');
-    window.speechSynthesis.speak(primeUtterance);
-    // ----------------------------------------------
-
-    recognition.start();
-});
 
 // Send data to the FastAPI Backend
 async function sendDataToBackend(transcript) {
@@ -163,8 +205,20 @@ async function sendDataToBackend(transcript) {
 }
 
 // Initialize Web Speech API for Text-to-Speech
+// Text-to-Speech Function
 function speakResponse(text) {
     const utterance = new SpeechSynthesisUtterance(text);
+    
+    // Ensure the mic stays OFF while the AI is talking
+    recognition.stop(); 
+
+    // When the AI finishes talking, wake the mic back up automatically
+    utterance.onend = function() {
+        if (isSessionActive && !isMicPaused) {
+            recognition.start();
+        }
+    };
+    
     window.speechSynthesis.speak(utterance);
 }
 // --- New UI Reset Logic ---
