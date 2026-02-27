@@ -45,7 +45,7 @@ AI-VA is a cloud-hosted, multimodal web application that solves the enterprise d
    Start the FastAPI server:
    ```bash
    python app.py
-  Open a modern web browser (Chrome/Edge recommended) and navigate to http://127.0.0.1:8000. Upload a screenshot of a dashboard, click "Start Session", and speak to your data!
+  Open a modern web browser (Chrome/Edge recommended) and navigate to server (eg. http://127.0.0.1:8000). Upload a screenshot of a dashboard, click "Start Session", and speak to your data!
 
 ## Future Roadmap (Epic 5 & Beyond)
 * **Enterprise Integrations:** Connect directly to live SQL databases or Tableau/PowerBI APIs to bypass static image uploads.
