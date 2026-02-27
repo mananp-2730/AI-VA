@@ -1,3 +1,4 @@
+let currentChart = null; // Keeps track of the active Chart.js instance
 const recordButton = document.getElementById('recordButton');
 const statusText = document.getElementById('statusText');
 const transcriptBox = document.getElementById('transcriptBox');
@@ -16,6 +17,30 @@ const pauseButton = document.getElementById('pauseButton');
 let isSessionActive = false; // Tracks if the continuous loop is running
 let isMicPaused = false;     // Tracks if the VP manually paused it
 
+// Function to render a Chart.js graph from JSON config
+function renderChart(chartConfig) {
+    const visualCanvas = document.getElementById('visualCanvas');
+    const placeholderContent = document.querySelector('.placeholder-content');
+    
+    // Hide placeholder and show canvas area
+    placeholderContent.style.display = 'none';
+    visualCanvas.style.display = 'flex';
+    visualCanvas.style.justifyContent = 'center';
+    visualCanvas.style.alignItems = 'center';
+    
+    // Clear out any old images or old canvases
+    visualCanvas.innerHTML = '<canvas id="myChart" style="max-width: 100%; max-height: 80vh;"></canvas>';
+    
+    const ctx = document.getElementById('myChart').getContext('2d');
+    
+    // Destroy the old chart if it exists so they don't overlap
+    if (currentChart) {
+        currentChart.destroy();
+    }
+    
+    // Draw the new chart
+    currentChart = new Chart(ctx, chartConfig);
+}
 // Listen for file uploads and validate/display
 csvFileInput.addEventListener('change', function() {
     const file = this.files[0];
@@ -158,22 +183,17 @@ async function sendDataToBackend(transcript) {
             statusText.innerText = "Status: Done!";
             statusText.className = "status-done";
 
-            // --- NEW: SPATIAL HIGHLIGHTING LOGIC ---
-            // 1. Remove the old highlight box if it exists
+            // --- TRACK A: SPATIAL HIGHLIGHTING LOGIC (Images) ---
             const oldHighlight = document.getElementById('highlight-box');
             if (oldHighlight) oldHighlight.remove();
 
-            // 2. Check if the AI returned coordinates
             if (data.box && data.box.length === 4) {
                 const [ymin, xmin, ymax, xmax] = data.box;
-                
-                // Convert Gemini's 0-1000 scale to standard CSS percentages (0% to 100%)
                 const top = ymin / 10;
                 const left = xmin / 10;
                 const height = (ymax - ymin) / 10;
                 const width = (xmax - xmin) / 10;
 
-                // 3. Create the glowing CSS box
                 const imageContainer = document.getElementById('imageContainer');
                 if (imageContainer) {
                     const highlight = document.createElement('div');
@@ -183,16 +203,20 @@ async function sendDataToBackend(transcript) {
                     highlight.style.left = `${left}%`;
                     highlight.style.width = `${width}%`;
                     highlight.style.height = `${height}%`;
-                    highlight.style.border = '4px solid #ea4335'; // Google Red
-                    highlight.style.backgroundColor = 'rgba(234, 67, 53, 0.2)'; // Transparent Red
+                    highlight.style.border = '4px solid #ea4335'; 
+                    highlight.style.backgroundColor = 'rgba(234, 67, 53, 0.2)'; 
                     highlight.style.boxShadow = '0 0 20px rgba(234, 67, 53, 0.6)';
                     highlight.style.borderRadius = '8px';
                     highlight.style.transition = 'all 0.4s ease-in-out';
-                    highlight.style.pointerEvents = 'none'; // Ensure clicks pass through it
+                    highlight.style.pointerEvents = 'none'; 
                     
-                    // Attach it to the image container
                     imageContainer.appendChild(highlight);
                 }
+            }
+
+            // --- TRACK B: ZERO TO DASHBOARD LOGIC (CSV) ---
+            if (data.chart_config) {
+                renderChart(data.chart_config);
             }
         } else {
             responseBox.innerText = "Error from server: " + data.detail;

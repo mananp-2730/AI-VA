@@ -36,18 +36,35 @@ async def analyze_data(
     try:
         file_ext = file.filename.split('.')[-1].lower()
 
-        # --- TRACK B: CSV RAW DATA ---
+        # --- TRACK B: RAW CSV TO DASHBOARD ---
         if file_ext == 'csv':
             df = pd.read_csv(file.file)
-            csv_text = df.to_csv(index=False) 
+            # Take just the first 50 rows to keep the context window fast and cheap
+            csv_text = df.head(50).to_csv(index=False) 
             
-            if mode == "version_a":
-                prompt = "You are a spatial voice assistant. Read this output directly to the user. Answer purely based on the CSV data. Keep it concise. No markdown.\n\n"
-            else:
-                prompt = "You are a business strategist. Read this output directly. Analyze the CSV data for trends. Keep it conversational. No markdown.\n\n"
-                
-            prompt += f"User Voice Command: {transcript}\n\nCSV Data:\n{csv_text}"
-            response = client.models.generate_content(model='gemini-2.5-flash', contents=prompt)
+            prompt = (
+                "You are an expert Data Analyst and Frontend Developer. Analyze the provided CSV data and the User Voice Command. "
+                "CRITICAL INSTRUCTION: You must return your response as a valid JSON object with EXACTLY two keys:\n"
+                "1. 'response': Your spoken answer to the user's query (keep it conversational, no markdown).\n"
+                "2. 'chart_config': A complete, valid JSON configuration object for Chart.js (version 3+) that visualizes the data relevant to the user's query. "
+                "Choose the appropriate chart type ('bar', 'line', 'pie', 'doughnut'). Include 'type', 'data' (with 'labels' and 'datasets'), and 'options'. "
+                "Make the chart visually appealing using modern hex colors. If the user query does not require a chart, return null for 'chart_config'.\n\n"
+                f"User Voice Command: {transcript}\n\nCSV Data Sample:\n{csv_text}"
+            )
+            
+            # Force the model to output strict JSON
+            gemini_response = client.models.generate_content(
+                model='gemini-2.5-flash', 
+                contents=prompt,
+                config={"response_mime_type": "application/json"}
+            )
+            
+            # Parse the AI's JSON output
+            parsed_data = json.loads(gemini_response.text)
+            final_text = parsed_data.get("response", "I have analyzed the data.")
+            chart_config = parsed_data.get("chart_config", None)
+            
+            return {"status": "success", "response": final_text, "chart_config": chart_config}
 
         # --- TRACK A: DASHBOARD IMAGE VISION ---
         elif file_ext in ['png', 'jpg', 'jpeg']:
