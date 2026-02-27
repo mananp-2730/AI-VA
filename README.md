@@ -2,7 +2,7 @@
 
 AI-VA is a cloud-hosted, multimodal web application that solves the enterprise data literacy gap. By bridging state-of-the-art vision models with spatial UI engineering and dynamic frontend generation, AI-VA allows users to upload complex business dashboards—or raw datasets—and have a seamless, continuous voice conversation with their data. 
 
-**Live Demo:** [AI-VA on Render](https://ai-va-assistant.onrender.com) *(Note: May take 50 seconds to spin up on the free tier)*
+**Live Demo:** [AI-VA on Render](https://ai-va-7zyw.onrender.com) *(Note: May take 50 seconds to spin up on the free tier)*
 
 ## The Product Vision (The Problem & Solution)
 **The Problem:** A VP is handed a comprehensive BI dashboard (or a massive CSV file) by their data team. The data is accurate, but the VP lacks the time or technical context to decipher the complex visual charts or build their own. 
@@ -48,8 +48,8 @@ AI-VA is a cloud-hosted, multimodal web application that solves the enterprise d
   Open a modern web browser (Chrome/Edge recommended) and navigate to http://127.0.0.1:8000. Upload a screenshot of a dashboard, click "Start Session", and speak to your data!
 
 ## Future Roadmap (Epic 5 & Beyond)
-* **
 * **Enterprise Integrations:** Connect directly to live SQL databases or Tableau/PowerBI APIs to bypass static image uploads.
+* **Predictive Analytics:** Upgrade the backend logic to not just display current data, but forecast future trends (e.g., ARIMA models).
 * **User Authentication:** Multi-tenant architecture with saved conversational histories and personalized strategic prompt profiles.
 
 ___
