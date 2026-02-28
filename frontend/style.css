@@ -144,3 +144,75 @@ button {
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
+
+/* --- DEVELOPER FOOTER STYLING --- */
+.developer-footer {
+    margin-top: auto; /* Keeps it locked to the bottom of the sidebar */
+    padding-top: 25px;
+    text-align: center;
+}
+
+.developer-footer p {
+    font-size: 13px;
+    color: #5f6368; /* Subtle gray */
+    margin: 4px 0;
+    font-weight: 500;
+}
+
+/* Link Styling with Hover Effect */
+.developer-footer a {
+    color: #1a73e8; /* Professional Blue */
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.developer-footer a:hover {
+    text-decoration: underline;
+    color: #1557b0;
+}
+
+/* Smaller 'Powered By' Subtext */
+.developer-footer .powered-by {
+    font-size: 11px;
+    color: #9aa0a6;
+    font-weight: normal;
+}
+
+
+/* --- MOBILE RESPONSIVENESS (Fixes the Phone UI) --- */
+@media (max-width: 768px) {
+    body {
+        overflow-y: auto; /* Allow the whole page to scroll on mobile */
+        height: auto;
+    }
+    
+    .workspace {
+        flex-direction: column; /* Stack the canvas and sidebar vertically! */
+        height: auto;
+    }
+
+    .visual-pane {
+        width: 100%;
+        min-height: 50vh; /* Give the charts/images enough room to render */
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .assistant-pane {
+        width: 100%;
+        height: auto;
+        min-height: 50vh;
+        box-shadow: 0 -5px 25px rgba(0,0,0,0.05); /* Move shadow to the top */
+        padding: 20px;
+        box-sizing: border-box;
+        overflow-y: visible; /* Let it flow naturally */
+    }
+
+    .placeholder-content {
+        padding: 20px;
+    }
+
+    .placeholder-content h2 {
+        font-size: 20px;
+    }
+}
