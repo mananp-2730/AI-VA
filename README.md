@@ -12,15 +12,16 @@ AI-VA is a cloud-hosted, multimodal web application that solves the enterprise d
 * **Generative BI Dashboards (Zero-to-Dashboard):** Upload a raw `.csv` file and ask a question. AI-VA acts as a data analyst and frontend developer, dynamically writing and rendering interactive `Chart.js` graphs directly in the browser.
 * **Spatial Highlighting Engine:** Upload a static dashboard (`.png`, `.jpg`). AI-VA utilizes Gemini's spatial prompting to return strict bounding-box coordinates `[ymin, xmin, ymax, xmax]`, drawing glowing, real-time CSS highlights over the exact data points being discussed.
 * **Continuous Conversational Loop:** Engineered with a custom Web Speech API integration that auto-mutes the microphone during AI TTS playback and automatically resumes listening, creating a frictionless, hands-free experience.
+* **Mobile-Responsive Workspace:** Engineered with CSS Flexbox media queries to seamlessly transition from a split-pane desktop workspace to a vertically stacked, touch-friendly mobile interface.
 * **Dual-Layer Analytics Toggle:** Empowers the user to switch between "Version A" (strict factual data retrieval) and "Version B" (strategic business insights and trend analysis).
 
 ## System Architecture & Tech Stack
-* **Frontend:** HTML5, CSS3 Flexbox (Split-Pane Workspace), Vanilla JavaScript, **Chart.js** (for dynamic rendering).
+* **Frontend:** HTML5, CSS3 Flexbox, Vanilla JavaScript, **Chart.js** (for dynamic rendering).
 * **Voice Integration:** Native Browser **Web Speech API** (Speech-to-Text & Text-to-Speech) with continuous state management.
 * **Backend:** **Python 3.12** & **FastAPI** for high-performance API routing and cloud environment management.
 * **Vision & AI Processing:** **Pillow** for image byte-stream handling, integrated with the **Google Gemini 2.5 Flash** model via the `google-genai` SDK.
 * **Deployment:** CI/CD pipeline integrated directly with **Render**.
-
+  
 ## Quick Start Guide (Local Development)
 
 1. Clone the Repository
