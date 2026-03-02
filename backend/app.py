@@ -60,7 +60,19 @@ async def analyze_data(
             )
             
             # Parse the AI's JSON output
-            parsed_data = json.loads(gemini_response.text)
+            # --- Bulletproof JSON Parsing ---
+            raw_text = gemini_response.text.strip()
+            # If Gemini accidentally wraps the output in markdown, strip it off!
+            if raw_text.startswith("```json"):
+                raw_text = raw_text.replace("```json", "", 1)
+            if raw_text.endswith("```"):
+                raw_text = raw_text.rsplit("```", 1)[0]
+            
+            try:
+                parsed_data = json.loads(raw_text.strip())
+            except json.JSONDecodeError:
+                # Fallback if Gemini completely hallucinates the formatting
+                parsed_data = {"response": "I processed the data, but encountered an formatting error.", "chart_config": None, "box": []}
             final_text = parsed_data.get("response", "I have analyzed the data.")
             chart_config = parsed_data.get("chart_config", None)
             
@@ -87,7 +99,19 @@ async def analyze_data(
             )
             
             # Parse the AI's JSON output
-            parsed_data = json.loads(gemini_response.text)
+            # --- Bulletproof JSON Parsing ---
+            raw_text = gemini_response.text.strip()
+            # If Gemini accidentally wraps the output in markdown, strip it off!
+            if raw_text.startswith("```json"):
+                raw_text = raw_text.replace("```json", "", 1)
+            if raw_text.endswith("```"):
+                raw_text = raw_text.rsplit("```", 1)[0]
+            
+            try:
+                parsed_data = json.loads(raw_text.strip())
+            except json.JSONDecodeError:
+                # Fallback if Gemini completely hallucinates the formatting
+                parsed_data = {"response": "I processed the data, but encountered an formatting error.", "chart_config": None, "box": []}
             final_text = parsed_data.get("response", "I could not analyze the image.")
             box_coords = parsed_data.get("box", [])
             
