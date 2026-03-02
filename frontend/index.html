@@ -32,9 +32,12 @@
 
             <div class="control-panel">
                 <div class="mode-section">
-                    <select id="analysisMode" class="dropdown">
-                        <option value="version_a">Version A: Factual Retrieval</option>
-                        <option value="version_b">Version B: Strategic Insights</option>
+                    <select class="version-select" style="margin-bottom: 10px;">
+                        <option value="A">Version A: Factual Retrieval</option>
+                        <option value="B">Version B: Strategic Insights</option>
+                    </select>
+                    <select id="voiceSelect" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-family: inherit; font-size: 14px; margin-bottom: 20px; background-color: #f8f9fa;">
+                        <option value="">Loading available voices...</option>
                     </select>
                 </div>
             </div>
