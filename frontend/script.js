@@ -17,6 +17,33 @@ const pauseButton = document.getElementById('pauseButton');
 let isSessionActive = false; // Tracks if the continuous loop is running
 let isMicPaused = false;     // Tracks if the VP manually paused it
 
+// --- VOICE SELECTOR LOGIC ---
+const voiceSelect = document.getElementById('voiceSelect');
+let availableVoices = [];
+
+function populateVoiceList() {
+    // Get all the voices from the device
+    availableVoices = window.speechSynthesis.getVoices();
+    
+    // Clear the "Loading..." placeholder
+    voiceSelect.innerHTML = ''; 
+    
+    // Create an option in the dropdown for every voice found
+    availableVoices.forEach((voice) => {
+        const option = document.createElement('option');
+        // Show the name and the language (e.g., "Google US English (en-US)")
+        option.textContent = `${voice.name} (${voice.lang})`;
+        option.value = voice.name;
+        voiceSelect.appendChild(option);
+    });
+}
+
+// Browsers load voices asynchronously, so we have to wait for them to change/load
+window.speechSynthesis.onvoiceschanged = populateVoiceList;
+
+// Run it once just in case the browser loaded them instantly
+populateVoiceList();
+
 // Function to render a Chart.js graph from JSON config
 function renderChart(chartConfig) {
     const visualCanvas = document.getElementById('visualCanvas');
