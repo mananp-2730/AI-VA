@@ -260,6 +260,13 @@ async function sendDataToBackend(transcript) {
 function speakResponse(text) {
     const utterance = new SpeechSynthesisUtterance(text);
     
+    // --- NEW: Apply the selected voice ---
+    const selectedVoiceName = document.getElementById('voiceSelect').value;
+    const selectedVoice = availableVoices.find(voice => voice.name === selectedVoiceName);
+    if (selectedVoice) {
+        utterance.voice = selectedVoice;
+    }
+    // -------------------------------------
     // Ensure the mic stays OFF while the AI is talking
     recognition.stop(); 
 
