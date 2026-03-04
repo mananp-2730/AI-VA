@@ -14,6 +14,7 @@ AI-VA is a cloud-hosted, multimodal web application that solves the enterprise d
 * **Continuous Conversational Loop:** Engineered with a custom Web Speech API integration that auto-mutes the microphone during AI TTS playback and automatically resumes listening, creating a frictionless, hands-free experience.
 * **Mobile-Responsive Workspace:** Engineered with CSS Flexbox media queries to seamlessly transition from a split-pane desktop workspace to a vertically stacked, touch-friendly mobile interface.
 * **Dual-Layer Analytics Toggle:** Empowers the user to switch between "Version A" (strict factual data retrieval) and "Version B" (strategic business insights and trend analysis).
+* **Dynamic Voice Control:** Hardware-agnostic Text-to-Speech (TTS) voice selector, allowing users to seamlessly toggle between native device voices for an optimal, customized acoustic experience.
 
 ## System Architecture & Tech Stack
 * **Frontend:** HTML5, CSS3 Flexbox, Vanilla JavaScript, **Chart.js** (for dynamic rendering).
