@@ -1,3 +1,4 @@
+let globalUtterance = null; // iOS Safari Garbage Collection Fix
 let currentChart = null; // Keeps track of the active Chart.js instance
 const recordButton = document.getElementById('recordButton');
 const statusText = document.getElementById('statusText');
@@ -117,10 +118,10 @@ recordButton.addEventListener('click', () => {
         isSessionActive = true;
         isMicPaused = false;
         // --- NEW: THE iOS AUDIO UNLOCK TRICK (UPGRADED) ---
-        // Apple sometimes ignores empty strings (''). We use a single space (' ') 
-        // and set the volume to 0 so it speaks a silent syllable to permanently unlock the engine.
-        const unlockAudio = new SpeechSynthesisUtterance(' ');
-        unlockAudio.volume = 0;
+        // Apple ignores empty strings. We make it say "Listening" but at volume 0.
+        window.speechSynthesis.cancel();
+        const unlockAudio = new SpeechSynthesisUtterance('Listening');
+        unlockAudio.volume = 0; 
         window.speechSynthesis.speak(unlockAudio);
         // ----------------------------------------
         recognition.start();
@@ -264,16 +265,26 @@ async function sendDataToBackend(transcript) {
 
 // Initialize Web Speech API for Text-to-Speech
 // Text-to-Speech Function
+// Text-to-Speech Function (with iOS Safari Overrides)
 function speakResponse(text) {
+    // 1. APPLE BUG FIX: Clear the stuck speech queue before talking
+    window.speechSynthesis.cancel(); 
+
     const utterance = new SpeechSynthesisUtterance(text);
     
-    // --- NEW: Apply the selected voice ---
+    // 2. APPLE BUG FIX: Lock the utterance into global memory so iOS doesn't delete it
+    globalUtterance = utterance;
+
+    // Apply the selected voice
     const selectedVoiceName = document.getElementById('voiceSelect').value;
     const selectedVoice = availableVoices.find(voice => voice.name === selectedVoiceName);
+    
     if (selectedVoice) {
         utterance.voice = selectedVoice;
+        // 3. APPLE BUG FIX: Force the language to match the voice, or iOS ignores it
+        utterance.lang = selectedVoice.lang; 
     }
-    // -------------------------------------
+
     // Ensure the mic stays OFF while the AI is talking
     recognition.stop(); 
 
@@ -283,11 +294,13 @@ function speakResponse(text) {
             recognition.start();
         }
     };
-    // --- NEW: THE iOS ASYNC WAKE-UP ---
-    // Because the Python backend took a few seconds to reply, iOS put the speech 
-    // engine to sleep. We must forcefully wake it back up before speaking!
-    window.speechSynthesis.resume();
-    // ----------------------------------
+
+    // Debugging tool: If iOS blocks it, it will tell us why in the console
+    utterance.onerror = function(event) {
+        console.error("Apple blocked the speech. Reason: ", event.error);
+    };
+    
+    // Force the browser to speak
     window.speechSynthesis.speak(utterance);
 }
 // --- New UI Reset Logic ---
