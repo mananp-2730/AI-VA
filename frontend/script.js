@@ -116,6 +116,12 @@ recordButton.addEventListener('click', () => {
         // Start Session
         isSessionActive = true;
         isMicPaused = false;
+        // --- NEW: THE iOS AUDIO UNLOCK TRICK ---
+        // Apple blocks audio that plays after a backend delay. 
+        // We speak an empty string immediately on click to permanently unlock the speakers for this session!
+        const unlockAudio = new SpeechSynthesisUtterance('');
+        window.speechSynthesis.speak(unlockAudio);
+        // ----------------------------------------
         recognition.start();
         recordButton.innerText = "End Session";
         recordButton.className = "btn-danger";
