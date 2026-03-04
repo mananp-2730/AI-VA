@@ -283,7 +283,11 @@ function speakResponse(text) {
             recognition.start();
         }
     };
-    
+    // --- NEW: THE iOS ASYNC WAKE-UP ---
+    // Because the Python backend took a few seconds to reply, iOS put the speech 
+    // engine to sleep. We must forcefully wake it back up before speaking!
+    window.speechSynthesis.resume();
+    // ----------------------------------
     window.speechSynthesis.speak(utterance);
 }
 // --- New UI Reset Logic ---
