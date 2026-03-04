@@ -116,10 +116,11 @@ recordButton.addEventListener('click', () => {
         // Start Session
         isSessionActive = true;
         isMicPaused = false;
-        // --- NEW: THE iOS AUDIO UNLOCK TRICK ---
-        // Apple blocks audio that plays after a backend delay. 
-        // We speak an empty string immediately on click to permanently unlock the speakers for this session!
-        const unlockAudio = new SpeechSynthesisUtterance('');
+        // --- NEW: THE iOS AUDIO UNLOCK TRICK (UPGRADED) ---
+        // Apple sometimes ignores empty strings (''). We use a single space (' ') 
+        // and set the volume to 0 so it speaks a silent syllable to permanently unlock the engine.
+        const unlockAudio = new SpeechSynthesisUtterance(' ');
+        unlockAudio.volume = 0;
         window.speechSynthesis.speak(unlockAudio);
         // ----------------------------------------
         recognition.start();
