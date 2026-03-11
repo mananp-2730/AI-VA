@@ -15,6 +15,7 @@ AI-VA is a cloud-hosted, multimodal web application that solves the enterprise d
 * **Mobile-Responsive Workspace:** Engineered with CSS Flexbox media queries to seamlessly transition from a split-pane desktop workspace to a vertically stacked, touch-friendly mobile interface.
 * **Dual-Layer Analytics Toggle:** Empowers the user to switch between "Version A" (strict factual data retrieval) and "Version B" (strategic business insights and trend analysis).
 * **Dynamic Voice Control:** Hardware-agnostic Text-to-Speech (TTS) voice selector, allowing users to seamlessly toggle between native device voices for an optimal, customized acoustic experience.
+* **Persistent Dark Mode UI:** Accessible, aesthetic dark theme toggle engineered with local browser storage to remember user preferences across active sessions.
 
 ## System Architecture & Tech Stack
 * **Frontend:** HTML5, CSS3 Flexbox, Vanilla JavaScript, **Chart.js** (for dynamic rendering).
