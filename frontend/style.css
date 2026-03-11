@@ -216,3 +216,79 @@ button {
         font-size: 20px;
     }
 }
+/* --- THEME TOGGLE BUTTON --- */
+.theme-toggle-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    border: 1px solid #444;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: inherit;
+    font-weight: 500;
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.theme-toggle-btn:hover {
+    background-color: #333;
+    transform: translateY(-2px);
+}
+
+/* --- DARK MODE OVERRIDES --- */
+body.dark-theme {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+body.dark-theme .assistant-pane {
+    background-color: #1e1e1e;
+    box-shadow: -5px 0 25px rgba(0,0,0,0.5);
+}
+
+body.dark-theme .visual-pane {
+    background-color: #121212;
+}
+
+body.dark-theme select {
+    background-color: #2d2d2d !important;
+    color: #ffffff !important;
+    border-color: #444 !important;
+}
+
+body.dark-theme .placeholder-content h1,
+body.dark-theme .placeholder-content h2 {
+    color: #66b2ff !important; /* Lighter blue for dark background */
+}
+
+body.dark-theme .placeholder-content p {
+    color: #9aa0a6;
+}
+
+body.dark-theme .chat-section {
+    background-color: #1e1e1e;
+}
+
+/* Dark Mode Chat Bubbles */
+body.dark-theme .chat-section > div:nth-child(1) { /* User Box */
+    background-color: #2d2d2d;
+    border: 1px solid #444;
+}
+
+body.dark-theme .chat-section > div:nth-child(2) { /* AI Box */
+    background-color: rgba(26, 115, 232, 0.15); /* Deep translucent blue */
+    border: 1px solid rgba(26, 115, 232, 0.3);
+}
+
+/* Dark Mode Developer Footer */
+body.dark-theme .developer-footer p {
+    color: #888;
+}
+body.dark-theme .developer-footer a {
+    color: #66b2ff;
+}
