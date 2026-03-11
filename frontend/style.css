@@ -245,6 +245,21 @@ body.dark-theme {
     background-color: #121212;
     color: #e0e0e0;
 }
+/* --- WHITE UPLOAD CARD OVERRIDES (Dark Mode Fix) --- */
+.upload-card {
+    background-color: #ffffff !important; /* Forces the card to stay white */
+    border-radius: 16px;
+}
+
+/* Force the H2 back to solid blue on the white card */
+body.dark-theme .upload-card h2.visual-header {
+    color: #1a73e8 !important; 
+}
+
+/* Force the subtext back to dark grey on the white card */
+body.dark-theme .upload-card p.visual-subtext {
+    color: #5f6368 !important; 
+}
 
 body.dark-theme .assistant-pane {
     background-color: #1e1e1e;
