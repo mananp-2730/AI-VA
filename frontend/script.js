@@ -45,6 +45,37 @@ window.speechSynthesis.onvoiceschanged = populateVoiceList;
 // Run it once just in case the browser loaded them instantly
 populateVoiceList();
 
+// --- DARK MODE LOGIC ---
+const darkModeToggle = document.getElementById('darkModeToggle');
+const body = document.body;
+
+// 1. Check if the VP already chose Dark Mode in a previous session
+if (localStorage.getItem('ai-va-theme') === 'dark') {
+    body.classList.add('dark-theme');
+    darkModeToggle.innerText = '☀️ Light Mode';
+    darkModeToggle.style.backgroundColor = '#ffffff';
+    darkModeToggle.style.color = '#202124';
+}
+
+// 2. Listen for the toggle click
+darkModeToggle.addEventListener('click', () => {
+    body.classList.toggle('dark-theme');
+    
+    if (body.classList.contains('dark-theme')) {
+        // Switch to Dark Mode
+        localStorage.setItem('ai-va-theme', 'dark');
+        darkModeToggle.innerText = '☀️ Light Mode';
+        darkModeToggle.style.backgroundColor = '#ffffff';
+        darkModeToggle.style.color = '#202124';
+    } else {
+        // Switch back to Light Mode
+        localStorage.setItem('ai-va-theme', 'light');
+        darkModeToggle.innerText = '🌙 Dark Mode';
+        darkModeToggle.style.backgroundColor = '#1e1e1e';
+        darkModeToggle.style.color = '#ffffff';
+    }
+});
+
 // Function to render a Chart.js graph from JSON config
 function renderChart(chartConfig) {
     const visualCanvas = document.getElementById('visualCanvas');
