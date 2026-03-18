@@ -56,4 +56,4 @@ AI-VA is a cloud-hosted, multimodal web application that solves the enterprise d
 * **User Authentication:** Multi-tenant architecture with saved conversational histories and personalized strategic prompt profiles.
 
 ___
-Architected and engineered by Manan.
+Built by Manan.
