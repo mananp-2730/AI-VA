@@ -239,7 +239,106 @@ button {
     background-color: #333;
     transform: translateY(-2px);
 }
+/* --- AUTHENTICATION OVERLAY --- */
+.auth-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px); /* Premium glass effect */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000; /* Stays on top of everything */
+    transition: opacity 0.3s ease;
+}
 
+.auth-card {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.auth-card h2 {
+    color: #1a73e8;
+    margin-bottom: 8px;
+}
+
+.auth-card p {
+    color: #5f6368;
+    margin-bottom: 24px;
+    font-size: 14px;
+}
+
+.input-group {
+    text-align: left;
+    margin-bottom: 16px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #3c4043;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+    border-color: #1a73e8;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+}
+
+.auth-submit {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.auth-switch {
+    margin-top: 20px;
+}
+
+.auth-switch a {
+    color: #1a73e8;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-switch a:hover {
+    text-decoration: underline;
+}
+
+/* Auth Dark Mode Support */
+body.dark-theme .auth-card {
+    background-color: #1e1e1e;
+}
+body.dark-theme .input-group label {
+    color: #e0e0e0;
+}
+body.dark-theme .input-group input {
+    background-color: #2d2d2d;
+    color: #ffffff;
+    border-color: #444;
+}
 /* --- DARK MODE OVERRIDES --- */
 body.dark-theme {
     background-color: #121212;
