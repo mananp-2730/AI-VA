@@ -8,6 +8,29 @@
 </head>
 <body>
     <button id="darkModeToggle" class="theme-toggle-btn">🌙 Dark Mode</button>
+    <div id="authOverlay" class="auth-overlay">
+        <div class="auth-card">
+            <h2 id="authTitle">Welcome to AI-VA</h2>
+            <p id="authSubtitle">Log in to access your spatial dashboard.</p>
+            
+            <form id="authForm">
+                <div class="input-group">
+                    <label for="emailInput">Work Email</label>
+                    <input type="email" id="emailInput" placeholder="vp@company.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="passwordInput">Password</label>
+                    <input type="password" id="passwordInput" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-primary auth-submit">Log In</button>
+            </form>
+            
+            <p class="auth-switch">
+                <span id="authSwitchText">Don't have an account?</span> 
+                <a href="#" id="authSwitchLink">Sign up here</a>
+            </p>
+        </div>
+    </div>
     <div class="workspace">
         <div class="visual-pane">
             <div class="placeholder-content upload-card">
