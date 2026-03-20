@@ -18,6 +18,53 @@ const pauseButton = document.getElementById('pauseButton');
 let isSessionActive = false; // Tracks if the continuous loop is running
 let isMicPaused = false;     // Tracks if the VP manually paused it
 
+// --- AUTHENTICATION UI MOCK LOGIC ---
+const authOverlay = document.getElementById('authOverlay');
+const authForm = document.getElementById('authForm');
+const authSwitchLink = document.getElementById('authSwitchLink');
+const authTitle = document.getElementById('authTitle');
+const authSubtitle = document.getElementById('authSubtitle');
+const authSubmitBtn = document.querySelector('.auth-submit');
+const authSwitchText = document.getElementById('authSwitchText');
+
+let isLoginMode = true;
+
+// Toggle between Login and Sign Up UI
+authSwitchLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    isLoginMode = !isLoginMode;
+    
+    if (isLoginMode) {
+        authTitle.innerText = "Welcome to AI-VA";
+        authSubtitle.innerText = "Log in to access your spatial dashboard.";
+        authSubmitBtn.innerText = "Log In";
+        authSwitchText.innerText = "Don't have an account?";
+        authSwitchLink.innerText = "Sign up here";
+    } else {
+        authTitle.innerText = "Create an Account";
+        authSubtitle.innerText = "Join AI-VA to save your insights.";
+        authSubmitBtn.innerText = "Sign Up";
+        authSwitchText.innerText = "Already have an account?";
+        authSwitchLink.innerText = "Log in here";
+    }
+});
+
+// Mock Login/Signup Submission (Temporary until Phase 2)
+authForm.addEventListener('submit', (e) => {
+    e.preventDefault(); // Prevent page reload
+    
+    // Simulate a brief loading state
+    const originalText = authSubmitBtn.innerText;
+    authSubmitBtn.innerText = "Authenticating...";
+    
+    setTimeout(() => {
+        // Hide the overlay to reveal the app
+        authOverlay.style.opacity = '0';
+        setTimeout(() => {
+            authOverlay.style.display = 'none';
+        }, 300);
+    }, 800);
+});
 // --- VOICE SELECTOR LOGIC ---
 const voiceSelect = document.getElementById('voiceSelect');
 let availableVoices = [];
