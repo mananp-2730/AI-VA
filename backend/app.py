@@ -1,6 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles # NEW IMPORT
+from pydantic import BaseModel
 import uvicorn
 import pandas as pd
 import os
