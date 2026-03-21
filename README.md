@@ -54,7 +54,7 @@ AI-VA is a cloud-hosted, multimodal web application that solves the enterprise d
 ## Future Roadmap (Epic 6 & Beyond)
 * **Enterprise Integrations:** Connect directly to live SQL databases or Tableau/PowerBI APIs to bypass static image uploads.
 * **Predictive Analytics:** Upgrade the backend logic to not just display current data, but forecast future trends (e.g., ARIMA models).
-* **User Authentication:** Multi-tenant architecture with saved conversational histories and personalized strategic prompt profiles.
+* **Persistent User Database (Auth Phase 3):** Migrate the backend authentication pipeline to a live SQLite/PostgreSQL database to save user chat histories and personalized dashboard galleries.
 
 ___
 Built by Manan.
