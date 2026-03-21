@@ -49,21 +49,61 @@ authSwitchLink.addEventListener('click', (e) => {
     }
 });
 
-// Mock Login/Signup Submission (Temporary until Phase 2)
-authForm.addEventListener('submit', (e) => {
+// --- SECURE LOGIN WIRE-UP (PHASE 2) ---
+authForm.addEventListener('submit', async (e) => {
     e.preventDefault(); // Prevent page reload
     
-    // Simulate a brief loading state
+    const email = document.getElementById('emailInput').value;
+    const password = document.getElementById('passwordInput').value;
     const originalText = authSubmitBtn.innerText;
-    authSubmitBtn.innerText = "Authenticating...";
     
-    setTimeout(() => {
-        // Hide the overlay to reveal the app
-        authOverlay.style.opacity = '0';
-        setTimeout(() => {
-            authOverlay.style.display = 'none';
-        }, 300);
-    }, 800);
+    // UI Feedback: Show loading state
+    authSubmitBtn.innerText = "Authenticating...";
+    authSubmitBtn.disabled = true; // Prevent double-clicking
+    
+    try {
+        // Send the data securely to our new FastAPI route
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email: email, password: password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.status === "success") {
+            // SUCCESS! Drop the glass-morphic gate
+            authSubmitBtn.innerText = "Success! Entering workspace...";
+            authSubmitBtn.style.backgroundColor = "#34a853"; // Turn button green
+            
+            setTimeout(() => {
+                authOverlay.style.opacity = '0';
+                setTimeout(() => {
+                    authOverlay.style.display = 'none';
+                }, 300);
+            }, 500);
+            
+        } else {
+            // FAILURE! Shake the button and show error
+            authSubmitBtn.innerText = "Access Denied: Try Again";
+            authSubmitBtn.style.backgroundColor = "#ea4335"; // Turn button red
+            authSubmitBtn.disabled = false;
+            
+            // Reset button after 2 seconds
+            setTimeout(() => {
+                authSubmitBtn.innerText = originalText;
+                authSubmitBtn.style.backgroundColor = ""; 
+            }, 2000);
+        }
+        
+    } catch (error) {
+        console.error("Backend connection failed:", error);
+        authSubmitBtn.innerText = "Server Error. Is Python running?";
+        authSubmitBtn.style.backgroundColor = "#ea4335";
+        authSubmitBtn.disabled = false;
+    }
 });
 // --- VOICE SELECTOR LOGIC ---
 const voiceSelect = document.getElementById('voiceSelect');
