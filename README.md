@@ -16,6 +16,7 @@ AI-VA is a cloud-hosted, multimodal web application that solves the enterprise d
 * **Dual-Layer Analytics Toggle:** Empowers the user to switch between "Version A" (strict factual data retrieval) and "Version B" (strategic business insights and trend analysis).
 * **Dynamic Voice Control:** Hardware-agnostic Text-to-Speech (TTS) voice selector, allowing users to seamlessly toggle between native device voices for an optimal, customized acoustic experience.
 * **Persistent Dark Mode UI:** Accessible, aesthetic dark theme toggle engineered with local browser storage to remember user preferences across active sessions.
+* **Secure Authentication Pipeline:** A full-stack security gatekeeper featuring a premium glass-morphic frontend UI wired to a FastAPI backend endpoint, utilizing Pydantic for secure credential validation.
 
 ## System Architecture & Tech Stack
 * **Frontend:** HTML5, CSS3 Flexbox, Vanilla JavaScript, **Chart.js** (for dynamic rendering).
