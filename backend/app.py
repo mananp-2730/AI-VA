@@ -25,6 +25,28 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# --- AUTHENTICATION SYSTEM (PHASE 2) ---
+
+# Define what a login request should look like
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+@app.post("/api/login")
+async def login_user(request: LoginRequest):
+    # Hardcoded VIP Admin Credentials (For Phase 2 Testing)
+    ADMIN_EMAIL = "admin@ai-va.com"
+    ADMIN_PASSWORD = "password123"
+
+    print(f"Login attempt for: {request.email}") # Prints to your terminal for debugging
+
+    # The Gatekeeper Logic
+    if request.email == ADMIN_EMAIL and request.password == ADMIN_PASSWORD:
+        return {"status": "success", "message": "Authentication successful. Welcome VP."}
+    else:
+        # If it fails, we throw a strict HTTP 401 Unauthorized error
+        raise HTTPException(status_code=401, detail="Invalid email or password. Access denied.")
+    
 # Your existing API route
 @app.post("/api/analyze")
 async def analyze_data(
