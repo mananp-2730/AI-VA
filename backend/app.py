@@ -31,6 +31,39 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# --- DATABASE ARCHITECTURE (PHASE 3) ---
+SQLALCHEMY_DATABASE_URL = "sqlite:///./aiva_database.db"
+
+# 1. Create the SQLite Engine
+engine = create_engine(
+    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
+)
+
+# 2. Create a Session Local class (this is how we talk to the DB)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+# 3. Create a Base class for our models
+Base = declarative_base()
+
+# 4. Define the User Table schema
+class User(Base):
+    __tablename__ = "users"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, unique=True, index=True)
+    password_hash = Column(String) # Never store plain text passwords!
+
+# 5. Tell SQLAlchemy to physically create the database and tables
+Base.metadata.create_all(bind=engine)
+
+# Dependency function to get the database session
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
 # --- AUTHENTICATION SYSTEM (PHASE 2) ---
 
 # Define what a login request should look like
