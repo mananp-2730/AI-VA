@@ -11,6 +11,12 @@ import io
 from PIL import Image
 import json
 
+# NEW: Database & Security Imports
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.orm import declarative_base, sessionmaker, Session
+import bcrypt
+
+
 load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
 client = genai.Client(api_key=api_key) if api_key else None
