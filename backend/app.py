@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Depends
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Depends 
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles # NEW IMPORT
 from pydantic import BaseModel
@@ -64,6 +64,12 @@ def get_db():
     finally:
         db.close()
 
+# --- DATA MODELS ---
+# This tells FastAPI exactly what a login/signup request should look like
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+    
 # --- THE REGISTRATION PIPELINE (PHASE 3) ---
 
 @app.post("/api/signup")
