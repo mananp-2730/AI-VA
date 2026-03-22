@@ -49,53 +49,51 @@ authSwitchLink.addEventListener('click', (e) => {
     }
 });
 
-// --- SECURE LOGIN WIRE-UP (PHASE 2) ---
+// --- SECURE LOGIN/SIGNUP WIRE-UP (PHASE 3) ---
 authForm.addEventListener('submit', async (e) => {
-    e.preventDefault(); // Prevent page reload
+    e.preventDefault(); 
     
     const email = document.getElementById('emailInput').value;
     const password = document.getElementById('passwordInput').value;
     const originalText = authSubmitBtn.innerText;
     
-    // UI Feedback: Show loading state
-    authSubmitBtn.innerText = "Authenticating...";
-    authSubmitBtn.disabled = true; // Prevent double-clicking
+    authSubmitBtn.innerText = isLoginMode ? "Authenticating..." : "Creating Account...";
+    authSubmitBtn.disabled = true; 
+    
+    // CRITICAL FIX: Dynamically change the endpoint based on the UI!
+    const endpoint = isLoginMode ? '/api/login' : '/api/signup';
     
     try {
-        // Send the data securely to our new FastAPI route
-        const response = await fetch('/api/login', {
+        const response = await fetch(endpoint, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: email, password: password })
         });
 
         const data = await response.json();
 
         if (response.ok && data.status === "success") {
-            // SUCCESS! Drop the glass-morphic gate
-            authSubmitBtn.innerText = "Success! Entering workspace...";
-            authSubmitBtn.style.backgroundColor = "#34a853"; // Turn button green
+            // SUCCESS! 
+            authSubmitBtn.innerText = isLoginMode ? "Success! Entering workspace..." : "Account Created! Entering...";
+            authSubmitBtn.style.backgroundColor = "#34a853"; 
             
             setTimeout(() => {
                 authOverlay.style.opacity = '0';
                 setTimeout(() => {
                     authOverlay.style.display = 'none';
                 }, 300);
-            }, 500);
+            }, 800);
             
         } else {
-            // FAILURE! Shake the button and show error
-            authSubmitBtn.innerText = "Access Denied: Try Again";
-            authSubmitBtn.style.backgroundColor = "#ea4335"; // Turn button red
+            // FAILURE! We dynamically print the exact error the Python backend sends us
+            authSubmitBtn.innerText = data.detail || "Access Denied: Try Again";
+            authSubmitBtn.style.backgroundColor = "#ea4335"; 
             authSubmitBtn.disabled = false;
             
-            // Reset button after 2 seconds
             setTimeout(() => {
                 authSubmitBtn.innerText = originalText;
                 authSubmitBtn.style.backgroundColor = ""; 
-            }, 2000);
+            }, 2500);
         }
         
     } catch (error) {
@@ -105,6 +103,7 @@ authForm.addEventListener('submit', async (e) => {
         authSubmitBtn.disabled = false;
     }
 });
+
 // --- VOICE SELECTOR LOGIC ---
 const voiceSelect = document.getElementById('voiceSelect');
 let availableVoices = [];
