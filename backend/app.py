@@ -64,29 +64,50 @@ def get_db():
     finally:
         db.close()
 
-# --- AUTHENTICATION SYSTEM (PHASE 2) ---
+# --- THE REGISTRATION PIPELINE (PHASE 3) ---
 
-# Define what a login request should look like
-class LoginRequest(BaseModel):
-    email: str
-    password: str
+@app.post("/api/signup")
+def signup_user(request: LoginRequest, db: Session = Depends(get_db)):
+    print(f"Signup attempt for: {request.email}")
+    
+    # 1. Check if the email already exists
+    db_user = db.query(User).filter(User.email == request.email).first()
+    if db_user:
+        raise HTTPException(status_code=400, detail="Email is already registered.")
+
+    # 2. Hash the password securely (NEVER save plain text!)
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(request.password.encode('utf-8'), salt)
+
+    # 3. Save the new user to the SQLite database
+    new_user = User(email=request.email, password_hash=hashed_password.decode('utf-8'))
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    return {"status": "success", "message": "Account created successfully!"}
 
 @app.post("/api/login")
-async def login_user(request: LoginRequest):
-    # Hardcoded VIP Admin Credentials (For Phase 2 Testing)
-    ADMIN_EMAIL = "admin@ai-va.com"
-    ADMIN_PASSWORD = "password123"
-
-    print(f"Login attempt for: {request.email}") # Prints to your terminal for debugging
-
-    # The Gatekeeper Logic
-    if request.email == ADMIN_EMAIL and request.password == ADMIN_PASSWORD:
-        return {"status": "success", "message": "Authentication successful. Welcome VP."}
-    else:
-        # If it fails, we throw a strict HTTP 401 Unauthorized error
-        raise HTTPException(status_code=401, detail="Invalid email or password. Access denied.")
+def login_user(request: LoginRequest, db: Session = Depends(get_db)):
+    print(f"Login attempt for: {request.email}")
     
-# Your existing API route
+    # 1. Find the user in the database
+    db_user = db.query(User).filter(User.email == request.email).first()
+    if not db_user:
+        raise HTTPException(status_code=401, detail="Invalid email or password.")
+
+    # 2. Verify the hashed password
+    is_password_correct = bcrypt.checkpw(
+        request.password.encode('utf-8'), 
+        db_user.password_hash.encode('utf-8')
+    )
+    
+    if not is_password_correct:
+        raise HTTPException(status_code=401, detail="Invalid email or password.")
+
+    return {"status": "success", "message": "Authentication successful."}
+    
+# Existing API route
 @app.post("/api/analyze")
 async def analyze_data(
     transcript: str = Form(...), 
