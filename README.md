@@ -56,5 +56,5 @@ AI-VA is a cloud-hosted, multimodal web application that solves the enterprise d
 * **Predictive Analytics:** Upgrade the backend logic to not just display current data, but forecast future trends (e.g., ARIMA models).
 * **Persistent User Database (Auth Phase 3):** Migrate the backend authentication pipeline to a live SQLite/PostgreSQL database to save user chat histories and personalized dashboard galleries.
 
-___
+____
 Built by Manan.
