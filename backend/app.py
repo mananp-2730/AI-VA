@@ -89,6 +89,15 @@ class LoginRequest(BaseModel):
     email: str
     password: str
     
+class SaveSessionRequest(BaseModel):
+    email: str
+    query_text: str
+    ai_response: str
+    chart_config: Optional[str] = None
+
+class GetSessionsRequest(BaseModel):
+    email: str
+    
 # --- THE REGISTRATION PIPELINE (PHASE 3) ---
 
 @app.post("/api/signup")
