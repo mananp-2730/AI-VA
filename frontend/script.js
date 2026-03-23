@@ -18,6 +18,13 @@ const pauseButton = document.getElementById('pauseButton');
 let isSessionActive = false; // Tracks if the continuous loop is running
 let isMicPaused = false;     // Tracks if the VP manually paused it
 
+// Memory Trackers
+let currentQueryText = "";
+let currentAiResponse = "";
+let currentChartConfig = null;
+const saveInsightBtn = document.getElementById('saveInsightBtn');
+const galleryContent = document.getElementById('galleryContent');
+
 // --- AUTHENTICATION UI MOCK LOGIC ---
 const authOverlay = document.getElementById('authOverlay');
 const authForm = document.getElementById('authForm');
