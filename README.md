@@ -55,7 +55,7 @@ AI-VA is a cloud-hosted, multimodal web application that solves the enterprise d
 ## Future Roadmap (Epic 5 & Beyond)
 * **State Restoration (Phase 5):** Wiring up the 'My Insights' gallery so users can click a historical session and dynamically reload the exact Chart.js configuration and conversation state back onto the main canvas.
 * **Enterprise Integrations:** Connect directly to live SQL databases or Tableau/PowerBI APIs to bypass static image uploads.
-* **Predictive Analytics:** Upgrade the backend logic to not just display current data, but forecast future trends (e.g., ARIMA models).
+* **Predictive Analytics:** Upgrade the backend logic to not just display current data, but forecast future trends.
 * **Persistent User Database (Auth Phase 3):** Migrate the backend authentication pipeline to a live SQLite/PostgreSQL database to save user chat histories and personalized dashboard galleries.
 
 
