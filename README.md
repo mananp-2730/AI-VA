@@ -60,4 +60,4 @@ AI-VA is a cloud-hosted, multimodal web application that solves the enterprise d
 
 
 
-Built by Manan.
+~ Manan
