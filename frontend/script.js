@@ -317,12 +317,12 @@ recognition.onresult = async function(event) {
 // Send data to the FastAPI Backend
 async function sendDataToBackend(transcript) {
     const file = csvFileInput.files[0];
-    const mode = analysisMode.value; // Capture the selected mode
+    const mode = analysisMode.value; 
     
     const formData = new FormData();
     formData.append("transcript", transcript);
     formData.append("file", file);
-    formData.append("mode", mode); // Send the mode to Python
+    formData.append("mode", mode); 
 
     try {
         const response = await fetch("/api/analyze", {
@@ -373,6 +373,18 @@ async function sendDataToBackend(transcript) {
             if (data.chart_config) {
                 renderChart(data.chart_config);
             }
+
+            // --- THE FIX: MEMORY & SAVE BUTTON REVEAL ---
+            // Now this is safely inside the block where 'data' exists!
+            currentQueryText = transcript; 
+            currentAiResponse = data.response;
+            currentChartConfig = data.chart_config ? JSON.stringify(data.chart_config) : null;
+            
+            saveInsightBtn.style.display = 'inline-block';
+            saveInsightBtn.innerText = '💾 Save to My Insights';
+            saveInsightBtn.disabled = false;
+            // ---------------------------------------------
+
         } else {
             responseBox.innerText = "Error from server: " + data.detail;
             statusText.innerText = "Status: Error!";
@@ -381,14 +393,6 @@ async function sendDataToBackend(transcript) {
         responseBox.innerText = "Failed to connect to backend.";
         statusText.innerText = "Status: Connection Error!";
     }
-    // Update the memory trackers with the current session data
-    currentQueryText = transcript; // Or whatever variable holds the user's spoken text
-    currentAiResponse = data.response;
-    currentChartConfig = data.chart_config ? JSON.stringify(data.chart_config) : null;
-            
-    // Reveal the Save button
-    saveInsightBtn.style.display = 'inline-block';
-    saveInsightBtn.innerText = 'Save to My Insights';
 }
 
 // Initialize Web Speech API for Text-to-Speech
