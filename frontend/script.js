@@ -437,3 +437,16 @@ clearButton.addEventListener('click', () => {
     // 3. Reset the record button in case it got stuck
     recordButton.innerText = "Start Recording";
 });
+
+// --- GALLERY UI LOGIC (PHASE 4) ---
+const galleryToggleBtn = document.getElementById('galleryToggleBtn');
+const gallerySidebar = document.getElementById('gallerySidebar');
+const closeGalleryBtn = document.getElementById('closeGalleryBtn');
+
+galleryToggleBtn.addEventListener('click', () => {
+    gallerySidebar.classList.add('open');
+});
+
+closeGalleryBtn.addEventListener('click', () => {
+    gallerySidebar.classList.remove('open');
+});
