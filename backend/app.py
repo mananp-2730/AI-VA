@@ -10,6 +10,7 @@ from google import genai
 import io
 from PIL import Image
 import json
+from typing import Optional
 
 # NEW: Database & Security Imports
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Text, DateTime
