@@ -499,3 +499,35 @@ body.dark-theme .close-btn {
     right: auto !important;
     margin: 0 !important;
 }
+
+/* --- FLOATING THEME TOGGLE (BOTTOM LEFT) --- */
+.theme-fab {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    border: 1px solid #dadce0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 1000;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.theme-fab:hover {
+    transform: scale(1.1); /* Slight pop effect on hover */
+    box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+
+/* Dark Mode Support for the FAB */
+body.dark-theme .theme-fab {
+    background-color: #1e1e1e;
+    border-color: #444;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
