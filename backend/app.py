@@ -88,7 +88,7 @@ def get_db():
 class LoginRequest(BaseModel):
     email: str
     password: str
-    
+
 class SaveSessionRequest(BaseModel):
     email: str
     query_text: str
@@ -140,6 +140,52 @@ def login_user(request: LoginRequest, db: Session = Depends(get_db)):
         raise HTTPException(status_code=401, detail="Invalid email or password.")
 
     return {"status": "success", "message": "Authentication successful."}
+
+# --- THE MEMORY PIPELINE (PHASE 4) ---
+
+@app.post("/api/save_session")
+def save_session(request: SaveSessionRequest, db: Session = Depends(get_db)):
+    # 1. Verify the user exists
+    user = db.query(User).filter(User.email == request.email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found.")
+    
+    # 2. Create the memory record
+    new_session = SavedSession(
+        user_id=user.id,
+        query_text=request.query_text,
+        ai_response=request.ai_response,
+        chart_config=request.chart_config
+    )
+    
+    # 3. Write to the database
+    db.add(new_session)
+    db.commit()
+    
+    return {"status": "success", "message": "Insight securely saved to gallery."}
+
+@app.post("/api/my_sessions")
+def get_my_sessions(request: GetSessionsRequest, db: Session = Depends(get_db)):
+    # 1. Verify the user exists
+    user = db.query(User).filter(User.email == request.email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found.")
+    
+    # 2. Fetch all sessions for this specific user, newest first
+    sessions = db.query(SavedSession).filter(SavedSession.user_id == user.id).order_by(SavedSession.created_at.desc()).all()
+    
+    # 3. Package the data to send back to the frontend
+    session_list = []
+    for s in sessions:
+        session_list.append({
+            "id": s.id,
+            "query_text": s.query_text,
+            "ai_response": s.ai_response,
+            "chart_config": s.chart_config,
+            "created_at": s.created_at.isoformat()
+        })
+        
+    return {"status": "success", "sessions": session_list}
     
 # Existing API route
 @app.post("/api/analyze")
