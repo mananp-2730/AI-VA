@@ -381,6 +381,14 @@ async function sendDataToBackend(transcript) {
         responseBox.innerText = "Failed to connect to backend.";
         statusText.innerText = "Status: Connection Error!";
     }
+    // Update the memory trackers with the current session data
+    currentQueryText = transcript; // Or whatever variable holds the user's spoken text
+    currentAiResponse = data.response;
+    currentChartConfig = data.chart_config ? JSON.stringify(data.chart_config) : null;
+            
+    // Reveal the Save button
+    saveInsightBtn.style.display = 'inline-block';
+    saveInsightBtn.innerText = 'Save to My Insights';
 }
 
 // Initialize Web Speech API for Text-to-Speech
