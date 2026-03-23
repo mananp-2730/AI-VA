@@ -459,3 +459,92 @@ galleryToggleBtn.addEventListener('click', () => {
 closeGalleryBtn.addEventListener('click', () => {
     gallerySidebar.classList.remove('open');
 });
+
+// --- DATABASE API CALLS (PHASE 4) ---
+
+// 1. Save the current insight to SQLite
+saveInsightBtn.addEventListener('click', async () => {
+    const userEmail = localStorage.getItem('aiva_user_email');
+    if (!userEmail) {
+        alert("Authentication error. Please log in again.");
+        return;
+    }
+
+    saveInsightBtn.innerText = 'Saving...';
+    saveInsightBtn.disabled = true;
+
+    try {
+        const response = await fetch('/api/save_session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email: userEmail,
+                query_text: currentQueryText,
+                ai_response: currentAiResponse,
+                chart_config: currentChartConfig
+            })
+        });
+
+        const result = await response.json();
+        
+        if (response.ok) {
+            saveInsightBtn.innerText = '✅ Saved!';
+            loadGallery(); // Refresh the sidebar instantly
+        } else {
+            saveInsightBtn.innerText = '❌ Error Saving';
+        }
+    } catch (error) {
+        console.error("Save failed:", error);
+        saveInsightBtn.innerText = '❌ Network Error';
+    }
+    
+    setTimeout(() => { saveInsightBtn.disabled = false; }, 2000);
+});
+
+// 2. Fetch and render the user's history
+async function loadGallery() {
+    const userEmail = localStorage.getItem('aiva_user_email');
+    if (!userEmail) return;
+
+    try {
+        const response = await fetch('/api/my_sessions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: userEmail })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.sessions.length > 0) {
+            galleryContent.innerHTML = ''; // Clear the "No insights" message
+            
+            data.sessions.forEach(session => {
+                const dateObj = new Date(session.created_at);
+                const dateString = dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                
+                // Build the UI card for the sidebar
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'gallery-item';
+                itemDiv.innerHTML = `
+                    <div class="gallery-date">${dateString}</div>
+                    <div class="gallery-query">" ${session.query_text} "</div>
+                    <div class="gallery-response">${session.ai_response}</div>
+                `;
+                
+                // Optional: Make it clickable to reload the chart later!
+                itemDiv.addEventListener('click', () => {
+                    alert("Insight loaded! (Chart reloading logic coming in Phase 5)");
+                });
+
+                galleryContent.appendChild(itemDiv);
+            });
+        }
+    } catch (error) {
+        console.error("Failed to load gallery:", error);
+    }
+}
+
+// 3. Auto-load the gallery when the sidebar opens
+galleryToggleBtn.addEventListener('click', () => {
+    loadGallery();
+});
