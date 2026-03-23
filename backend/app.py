@@ -52,7 +52,24 @@ class User(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True, index=True)
-    password_hash = Column(String) # Never store plain text passwords!
+    password_hash = Column(String) 
+    
+    # NEW: Establish a one-to-many relationship with the sessions table
+    sessions = relationship("SavedSession", back_populates="owner")
+
+# NEW: 4.5. Define the Saved Sessions Table (The Memory)
+class SavedSession(Base):
+    __tablename__ = "saved_sessions"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id")) # This links the session to a specific user
+    query_text = Column(Text) # What the user asked
+    ai_response = Column(Text) # What the AI said
+    chart_config = Column(Text, nullable=True) # The JSON string of the chart (if one was generated)
+    created_at = Column(DateTime(timezone=True), server_default=func.now()) # Automatic timestamp
+    
+    # Establish the reverse relationship back to the User
+    owner = relationship("User", back_populates="sessions")
 
 # 5. Tell SQLAlchemy to physically create the database and tables
 Base.metadata.create_all(bind=engine)
