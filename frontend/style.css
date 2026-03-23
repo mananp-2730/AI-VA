@@ -531,3 +531,51 @@ body.dark-theme .theme-fab {
     border-color: #444;
     box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 }
+
+/* --- GALLERY ITEMS (PHASE 4) --- */
+.gallery-item {
+    background-color: #ffffff;
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+}
+
+.gallery-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.gallery-date {
+    font-size: 11px;
+    color: #80868b;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.gallery-query {
+    font-size: 14px;
+    font-weight: bold;
+    color: #202124;
+    margin-bottom: 8px;
+}
+
+.gallery-response {
+    font-size: 13px;
+    color: #5f6368;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Limits to 3 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Dark Mode Support */
+body.dark-theme .gallery-item {
+    background-color: #2d2d2d;
+    border-color: #444;
+}
+body.dark-theme .gallery-query { color: #e8eaed; }
+body.dark-theme .gallery-response { color: #9aa0a6; }
