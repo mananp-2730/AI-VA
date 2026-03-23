@@ -74,6 +74,8 @@ authForm.addEventListener('submit', async (e) => {
 
         if (response.ok && data.status === "success") {
             // SUCCESS! 
+            // CRITICAL NEW LINE: Save the email to the browser's memory!
+            localStorage.setItem('aiva_user_email', email);
             authSubmitBtn.innerText = isLoginMode ? "Success! Entering workspace..." : "Account Created! Entering...";
             authSubmitBtn.style.backgroundColor = "#34a853"; 
             
