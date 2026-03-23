@@ -406,3 +406,78 @@ body.dark-theme .developer-footer p {
 body.dark-theme .developer-footer a {
     color: #66b2ff;
 }
+
+/* --- GALLERY SIDEBAR (PHASE 4) --- */
+.gallery-sidebar {
+    position: fixed;
+    top: 0;
+    right: -400px; /* Hidden off-screen by default */
+    width: 350px;
+    height: 100vh;
+    background-color: #ffffff;
+    box-shadow: -5px 0 20px rgba(0,0,0,0.15);
+    transition: right 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    z-index: 1500;
+    display: flex;
+    flex-direction: column;
+}
+
+.gallery-sidebar.open {
+    right: 0; /* Slides in */
+}
+
+.gallery-header {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dadce0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gallery-header h2 {
+    font-size: 18px;
+    color: #1a73e8;
+    margin: 0;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #5f6368;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-btn:hover {
+    color: #ea4335;
+}
+
+.gallery-content {
+    padding: 20px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.empty-state {
+    text-align: center;
+    color: #80868b;
+    font-size: 14px;
+    margin-top: 40px;
+}
+
+/* Sidebar Dark Mode Support */
+body.dark-theme .gallery-sidebar {
+    background-color: #1e1e1e;
+}
+body.dark-theme .gallery-header {
+    background-color: #2d2d2d;
+    border-bottom-color: #444;
+}
+body.dark-theme .gallery-header h2 {
+    color: #8ab4f8;
+}
+body.dark-theme .close-btn {
+    color: #e0e0e0;
+}
