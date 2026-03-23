@@ -142,7 +142,6 @@ def login_user(request: LoginRequest, db: Session = Depends(get_db)):
     return {"status": "success", "message": "Authentication successful."}
 
 # --- THE MEMORY PIPELINE (PHASE 4) ---
-
 @app.post("/api/save_session")
 def save_session(request: SaveSessionRequest, db: Session = Depends(get_db)):
     # 1. Verify the user exists
