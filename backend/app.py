@@ -12,8 +12,9 @@ from PIL import Image
 import json
 
 # NEW: Database & Security Imports
-from sqlalchemy import create_engine, Column, Integer, String
-from sqlalchemy.orm import declarative_base, sessionmaker, Session
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Text, DateTime
+from sqlalchemy.orm import declarative_base, sessionmaker, Session, relationship
+from sqlalchemy.sql import func
 import bcrypt
 
 
