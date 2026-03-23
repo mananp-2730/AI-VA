@@ -381,7 +381,7 @@ async function sendDataToBackend(transcript) {
             currentChartConfig = data.chart_config ? JSON.stringify(data.chart_config) : null;
             
             saveInsightBtn.style.display = 'inline-block';
-            saveInsightBtn.innerText = '💾 Save to My Insights';
+            saveInsightBtn.innerText = 'Save to My Insights';
             saveInsightBtn.disabled = false;
             // ---------------------------------------------
 
