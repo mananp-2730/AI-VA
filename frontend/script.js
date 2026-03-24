@@ -529,15 +529,65 @@ async function loadGallery() {
                 // Build the UI card for the sidebar
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'gallery-item';
+                itemDiv.style.cursor = 'pointer'; // Make it look clickable!
                 itemDiv.innerHTML = `
                     <div class="gallery-date">${dateString}</div>
                     <div class="gallery-query">" ${session.query_text} "</div>
                     <div class="gallery-response">${session.ai_response}</div>
                 `;
                 
-                // Optional: Make it clickable to reload the chart later!
-                itemDiv.addEventListener('click', () => {
-                    alert("Insight loaded! (Chart reloading logic coming in Phase 5)");
+                // --- PHASE 5: THE TIME MACHINE LOGIC ---
+                itemDiv.addEventListener('click', async () => {
+                    // 1. Give the user visual feedback that it is loading
+                    const originalHTML = itemDiv.innerHTML;
+                    itemDiv.innerHTML = `<div style="text-align: center; color: #1a73e8; font-weight: bold;">Loading insight... ⏳</div>`;
+                    
+                    try {
+                        // 2. Fetch the specific memory from the new backend route
+                        const singleRes = await fetch('/api/get_session', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ 
+                                email: userEmail,
+                                session_id: session.id 
+                            })
+                        });
+                        
+                        const singleData = await singleRes.json();
+                        
+                        if (singleRes.ok) {
+                            // 3. Restore the Chat UI
+                            transcriptBox.innerText = singleData.query_text;
+                            responseBox.innerText = singleData.ai_response;
+                            statusText.innerText = "Status: Insight Restored from Memory";
+                            statusText.className = "status-done";
+                            
+                            // 4. Restore the Chart (if one exists)
+                            if (singleData.chart_config) {
+                                // The database saves it as a string, so we turn it back into a JSON object
+                                const parsedConfig = JSON.parse(singleData.chart_config);
+                                renderChart(parsedConfig);
+                            } else {
+                                // If it was just a text answer without a chart, clear the canvas
+                                const visualCanvas = document.getElementById('visualCanvas');
+                                const placeholderContent = document.querySelector('.placeholder-content');
+                                if (currentChart) currentChart.destroy();
+                                visualCanvas.style.display = 'none';
+                                placeholderContent.style.display = 'flex';
+                            }
+                            
+                            // 5. Automatically close the sidebar so the VP can see the dashboard!
+                            document.getElementById('gallerySidebar').classList.remove('open');
+                        } else {
+                            alert("Failed to load session: " + singleData.detail);
+                        }
+                    } catch (err) {
+                        console.error("Time machine failed:", err);
+                        alert("Network error while loading insight.");
+                    } finally {
+                        // Restore the card's original look in the sidebar
+                        itemDiv.innerHTML = originalHTML;
+                    }
                 });
 
                 galleryContent.appendChild(itemDiv);
