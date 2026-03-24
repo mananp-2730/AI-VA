@@ -105,7 +105,7 @@ class GetSingleSessionRequest(BaseModel):
 class DeleteSessionRequest(BaseModel):
     email: str
     session_id: int
-    
+
 # --- THE REGISTRATION PIPELINE (PHASE 3) ---
 
 @app.post("/api/signup")
@@ -313,6 +313,28 @@ async def analyze_data(
             return {"status": "success", "response": final_text, "box": box_coords}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/delete_session")
+def delete_single_session(request: DeleteSessionRequest, db: Session = Depends(get_db)):
+    # 1. Verify the user
+    user = db.query(User).filter(User.email == request.email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found.")
+    
+    # 2. Find the exact session (and ensure they actually own it!)
+    session = db.query(SavedSession).filter(
+        SavedSession.id == request.session_id,
+        SavedSession.user_id == user.id
+    ).first()
+    
+    if not session:
+        raise HTTPException(status_code=404, detail="Session not found.")
+        
+    # 3. Securely delete it from the SQLite database
+    db.delete(session)
+    db.commit()
+    
+    return {"status": "success", "message": "Insight permanently deleted."}
 
 # --- NEW CONSOLIDATION CODE ---
 # This tells FastAPI to host your HTML/CSS/JS files directly
