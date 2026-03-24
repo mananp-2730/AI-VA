@@ -579,3 +579,25 @@ body.dark-theme .gallery-item {
 }
 body.dark-theme .gallery-query { color: #e8eaed; }
 body.dark-theme .gallery-response { color: #9aa0a6; }
+
+/* --- DELETE BUTTON (PHASE 5.1) --- */
+.delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #9aa0a6;
+    transition: all 0.2s ease;
+    padding: 5px;
+    border-radius: 50%;
+    z-index: 10;
+}
+
+.delete-btn:hover {
+    color: #ea4335; /* Red */
+    background-color: rgba(234, 67, 53, 0.1);
+    transform: scale(1.1);
+}
