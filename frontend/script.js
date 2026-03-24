@@ -540,6 +540,49 @@ async function loadGallery() {
                     <div class="gallery-response">${session.ai_response}</div>
                 `;
                 
+                // --- PHASE 5.1: THE DELETE LOGIC ---
+                const deleteBtn = itemDiv.querySelector('.delete-btn');
+                
+                deleteBtn.addEventListener('click', async (e) => {
+                    // CRITICAL: Stop the click from bubbling up to the card!
+                    // This prevents the Time Machine from loading a deleted chart.
+                    e.stopPropagation(); 
+                    
+                    // Add a safety check so users don't accidentally click it
+                    if (!confirm("Are you sure you want to permanently delete this insight?")) return;
+                    
+                    deleteBtn.innerText = '⏳';
+                    
+                    try {
+                        const delRes = await fetch('/api/delete_session', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email: userEmail, session_id: session.id })
+                        });
+                        
+                        if (delRes.ok) {
+                            // Smoothly fade the card out before removing it
+                            itemDiv.style.opacity = '0';
+                            itemDiv.style.transform = 'scale(0.9)';
+                            itemDiv.style.transition = 'all 0.3s ease';
+                            
+                            setTimeout(() => {
+                                itemDiv.remove();
+                                // If the gallery is empty, reload to show the empty state message
+                                if (galleryContent.children.length === 0) {
+                                    loadGallery();
+                                }
+                            }, 300);
+                        } else {
+                            alert("Failed to delete from database.");
+                            deleteBtn.innerText = '🗑️';
+                        }
+                    } catch (err) {
+                        console.error("Delete failed:", err);
+                        deleteBtn.innerText = '🗑️';
+                    }
+                });
+                
                 // --- PHASE 5: THE TIME MACHINE LOGIC ---
                 itemDiv.addEventListener('click', async () => {
                     // 1. Give the user visual feedback that it is loading
