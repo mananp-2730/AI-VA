@@ -529,8 +529,12 @@ async function loadGallery() {
                 // Build the UI card for the sidebar
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'gallery-item';
-                itemDiv.style.cursor = 'pointer'; // Make it look clickable!
+                itemDiv.style.cursor = 'pointer'; 
+                // Add position relative here just in case!
+                itemDiv.style.position = 'relative'; 
+                
                 itemDiv.innerHTML = `
+                    <button class="delete-btn" title="Delete Insight">🗑️</button>
                     <div class="gallery-date">${dateString}</div>
                     <div class="gallery-query">" ${session.query_text} "</div>
                     <div class="gallery-response">${session.ai_response}</div>
