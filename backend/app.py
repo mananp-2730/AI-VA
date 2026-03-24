@@ -101,7 +101,7 @@ class GetSessionsRequest(BaseModel):
 class GetSingleSessionRequest(BaseModel):
     email: str
     session_id: int
-    
+
 # --- THE REGISTRATION PIPELINE (PHASE 3) ---
 
 @app.post("/api/signup")
@@ -189,7 +189,32 @@ def get_my_sessions(request: GetSessionsRequest, db: Session = Depends(get_db)):
         })
         
     return {"status": "success", "sessions": session_list}
+
+@app.post("/api/get_session")
+def get_single_session(request: GetSingleSessionRequest, db: Session = Depends(get_db)):
+    # 1. Verify the user exists
+    user = db.query(User).filter(User.email == request.email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found.")
     
+    # 2. Fetch the specific session from the database, ensuring it belongs to this exact user
+    session = db.query(SavedSession).filter(
+        SavedSession.id == request.session_id,
+        SavedSession.user_id == user.id
+    ).first()
+    
+    if not session:
+        raise HTTPException(status_code=404, detail="Session not found or access denied.")
+        
+    # 3. Package the exact memory to send back to the frontend
+    return {
+        "status": "success",
+        "query_text": session.query_text,
+        "ai_response": session.ai_response,
+        "chart_config": session.chart_config,
+        "created_at": session.created_at.isoformat()
+    }
+
 # Existing API route
 @app.post("/api/analyze")
 async def analyze_data(
