@@ -97,6 +97,10 @@ class SaveSessionRequest(BaseModel):
 
 class GetSessionsRequest(BaseModel):
     email: str
+
+class GetSingleSessionRequest(BaseModel):
+    email: str
+    session_id: int
     
 # --- THE REGISTRATION PIPELINE (PHASE 3) ---
 
