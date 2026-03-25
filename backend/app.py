@@ -265,7 +265,7 @@ async def analyze_data(
         
     # 3. Determine the file type based on the path
     is_image = current_file_path.lower().endswith(('.png', '.jpg', '.jpeg'))
-    
+
     if not client:
         raise HTTPException(status_code=500, detail="Gemini API key not configured")
     try:
@@ -350,7 +350,7 @@ async def analyze_data(
             final_text = parsed_data.get("response", "I could not analyze the image.")
             box_coords = parsed_data.get("box", [])
             
-            return {"status": "success", "response": final_text, "box": box_coords}
+            return {"status": "success", "response": final_text, "box": box_coords, "file_path": current_file_path}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
