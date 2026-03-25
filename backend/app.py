@@ -11,6 +11,11 @@ import io
 from PIL import Image
 import json
 from typing import Optional
+import shutil
+import uuid
+
+# --- PHASE 5.2: CREATE UPLOADS FOLDER ---
+os.makedirs("uploads", exist_ok=True)
 
 # NEW: Database & Security Imports
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Text, DateTime
