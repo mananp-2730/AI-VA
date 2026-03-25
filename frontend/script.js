@@ -463,6 +463,7 @@ clearButton.addEventListener('click', () => {
     responseBox.innerText = "Insights will appear here...";
     statusText.innerText = "Status: Ready";
     statusText.className = "status-waiting";
+    currentFilePath = null;
     
     // 2. Stop the Text-to-Speech immediately if it is currently talking
     window.speechSynthesis.cancel();
@@ -688,7 +689,7 @@ async function loadGallery() {
                             
                             // NEW: 4.5 Remember the file so we can ask follow-ups!
                             currentFilePath = singleData.file_path;
-                            
+
                             // 5. Automatically close the sidebar so the VP can see the dashboard!
                             document.getElementById('gallerySidebar').classList.remove('open');
                         } else {
