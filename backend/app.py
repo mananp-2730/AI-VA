@@ -104,6 +104,7 @@ class SaveSessionRequest(BaseModel):
     query_text: str
     ai_response: str
     chart_config: Optional[str] = None
+    file_path: Optional[str] = None # NEW: The frontend will tell us where the file is saved!
 
 class GetSessionsRequest(BaseModel):
     email: str
