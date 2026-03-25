@@ -324,16 +324,28 @@ async function sendDataToBackend(transcript) {
     formData.append("transcript", transcript);
     formData.append("mode", mode); 
 
-    // --- NEW: THE SMART FILE ROUTER ---
+    // --- UPGRADED SMART FILE ROUTER ---
+    console.log("PREPARING TO SEND TO BACKEND...");
+    console.log("1. Is there a new file upload?", file ? "YES" : "NO");
+    console.log("2. Is there a Time Machine file path?", currentFilePath ? currentFilePath : "NO (null)");
+
     if (file) {
-        formData.append("file", file); // It is a brand new upload
+        console.log("-> Routing as a BRAND NEW upload.");
+        formData.append("file", file);
     } else if (currentFilePath) {
-        formData.append("saved_file_path", currentFilePath); // It is a Time Machine follow-up!
+        console.log("-> Routing as a TIME MACHINE follow-up.");
+        formData.append("saved_file_path", currentFilePath);
     } else {
-        // No file uploaded and no past session loaded!
+        console.log("❌ ERROR: Both file slots are empty. Aborting!");
         statusText.innerText = "Error: Please upload a file first.";
         statusText.className = "status-waiting";
-        return; 
+        
+        // UN-FREEZE THE UI: Turn the mic back on so it doesn't stay stuck!
+        if (isSessionActive) {
+            isMicPaused = false;
+            try { recognition.start(); } catch(e){}
+        }
+        return; // Stop the request
     }
     // ----------------------------------
 
@@ -359,7 +371,7 @@ async function sendDataToBackend(transcript) {
             }
             return; // Stop the function so it doesn't freeze!
         }
-        
+
         if (data.status === "success") {
             responseBox.innerText = data.response;
             speakResponse(data.response); 
