@@ -345,6 +345,21 @@ async function sendDataToBackend(transcript) {
 
         const data = await response.json();
         
+        // --- ADD THIS SAFETY NET RIGHT HERE ---
+        if (!response.ok) {
+            responseBox.innerText = "System Error: " + (data.detail || "Unknown server crash.");
+            statusText.innerText = "Status: Error handling file.";
+            statusText.className = "status-waiting";
+            console.error("Backend Error:", data);
+            
+            // Turn the mic back on so it doesn't stay stuck!
+            if (isSessionActive) {
+                isMicPaused = false;
+                try { recognition.start(); } catch(e){}
+            }
+            return; // Stop the function so it doesn't freeze!
+        }
+        
         if (data.status === "success") {
             responseBox.innerText = data.response;
             speakResponse(data.response); 
