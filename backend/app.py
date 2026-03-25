@@ -63,11 +63,16 @@ class SavedSession(Base):
     __tablename__ = "saved_sessions"
     
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id")) # This links the session to a specific user
-    query_text = Column(Text) # What the user asked
-    ai_response = Column(Text) # What the AI said
-    chart_config = Column(Text, nullable=True) # The JSON string of the chart (if one was generated)
-    created_at = Column(DateTime(timezone=True), server_default=func.now()) # Automatic timestamp
+    user_id = Column(Integer, ForeignKey("users.id"))
+    query_text = Column(Text)
+    ai_response = Column(Text)
+    chart_config = Column(Text, nullable=True)
+    
+    # --- PHASE 5.2 UPGRADE: FILE STORAGE ---
+    file_path = Column(String, nullable=True) # Remembers where the CSV/Image is saved
+    # ---------------------------------------
+    
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
     
     # Establish the reverse relationship back to the User
     owner = relationship("User", back_populates="sessions")
