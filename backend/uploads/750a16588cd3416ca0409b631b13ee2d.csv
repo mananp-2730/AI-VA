@@ -1,0 +1,13 @@
+Month,Revenue,Marketing_Spend,New_Customers,Top_Region
+January,45000,12000,320,North
+February,52000,14000,410,North
+March,61000,15000,480,South
+April,58000,13500,430,South
+May,73000,18000,560,East
+June,85000,21000,650,East
+July,91000,23000,720,West
+August,88000,20000,680,West
+September,95000,24000,750,North
+October,102000,26000,810,North
+November,115000,30000,920,South
+December,130000,35000,1050,South

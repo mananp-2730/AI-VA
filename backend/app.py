@@ -273,7 +273,7 @@ async def analyze_data(
 
         # --- TRACK B: RAW CSV TO DASHBOARD ---
         if file_ext == 'csv':
-            df = pd.read_csv(file.file)
+            df = pd.read_csv(current_file_path)
             # Take just the first 50 rows to keep the context window fast and cheap
             csv_text = df.head(50).to_csv(index=False) 
             
@@ -316,7 +316,7 @@ async def analyze_data(
         # --- TRACK A: DASHBOARD IMAGE VISION ---
         elif file_ext in ['png', 'jpg', 'jpeg']:
             image_bytes = await file.read()
-            image = Image.open(io.BytesIO(image_bytes))
+            image = Image.open(current_file_path)
             
             prompt = (
                 "You are a spatial business strategist. Analyze the provided dashboard image and answer the user's question. "
