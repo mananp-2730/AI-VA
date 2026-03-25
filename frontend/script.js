@@ -322,8 +322,20 @@ async function sendDataToBackend(transcript) {
     
     const formData = new FormData();
     formData.append("transcript", transcript);
-    formData.append("file", file);
     formData.append("mode", mode); 
+
+    // --- NEW: THE SMART FILE ROUTER ---
+    if (file) {
+        formData.append("file", file); // It is a brand new upload
+    } else if (currentFilePath) {
+        formData.append("saved_file_path", currentFilePath); // It is a Time Machine follow-up!
+    } else {
+        // No file uploaded and no past session loaded!
+        statusText.innerText = "Error: Please upload a file first.";
+        statusText.className = "status-waiting";
+        return; 
+    }
+    // ----------------------------------
 
     try {
         const response = await fetch("/api/analyze", {
