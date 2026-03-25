@@ -228,6 +228,7 @@ def get_single_session(request: GetSingleSessionRequest, db: Session = Depends(g
         "query_text": session.query_text,
         "ai_response": session.ai_response,
         "chart_config": session.chart_config,
+        "file_path": session.file_path, # NEW: Hand it back to the UI!
         "created_at": session.created_at.isoformat()
     }
 
