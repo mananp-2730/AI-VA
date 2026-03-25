@@ -686,6 +686,9 @@ async function loadGallery() {
                                 placeholderContent.style.display = 'flex';
                             }
                             
+                            // NEW: 4.5 Remember the file so we can ask follow-ups!
+                            currentFilePath = singleData.file_path;
+                            
                             // 5. Automatically close the sidebar so the VP can see the dashboard!
                             document.getElementById('gallerySidebar').classList.remove('open');
                         } else {
