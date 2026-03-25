@@ -269,9 +269,10 @@ async def analyze_data(
     if not client:
         raise HTTPException(status_code=500, detail="Gemini API key not configured")
     try:
-        file_ext = file.filename.split('.')[-1].lower()
+        # FIX 1: Look at the hard drive path for the extension, NOT the temporary file!
+        file_ext = current_file_path.split('.')[-1].lower()
 
-        # --- TRACK B: RAW CSV TO DASHBOARD ---
+        # --- TRACK A: RAW CSV TO DASHBOARD ---
         if file_ext == 'csv':
             df = pd.read_csv(current_file_path)
             # Take just the first 50 rows to keep the context window fast and cheap
@@ -287,17 +288,13 @@ async def analyze_data(
                 f"User Voice Command: {transcript}\n\nCSV Data Sample:\n{csv_text}"
             )
             
-            # Force the model to output strict JSON
             gemini_response = client.models.generate_content(
                 model='gemini-2.5-flash', 
                 contents=prompt,
                 config={"response_mime_type": "application/json"}
             )
             
-            # Parse the AI's JSON output
-            # --- Bulletproof JSON Parsing ---
             raw_text = gemini_response.text.strip()
-            # If Gemini accidentally wraps the output in markdown, strip it off!
             if raw_text.startswith("```json"):
                 raw_text = raw_text.replace("```json", "", 1)
             if raw_text.endswith("```"):
@@ -306,16 +303,22 @@ async def analyze_data(
             try:
                 parsed_data = json.loads(raw_text.strip())
             except json.JSONDecodeError:
-                # Fallback if Gemini completely hallucinates the formatting
-                parsed_data = {"response": "I processed the data, but encountered an formatting error.", "chart_config": None, "box": []}
+                parsed_data = {"response": "I processed the data, but encountered a formatting error.", "chart_config": None}
+            
             final_text = parsed_data.get("response", "I have analyzed the data.")
             chart_config = parsed_data.get("chart_config", None)
             
-            return {"status": "success", "response": final_text, "chart_config": chart_config}
+            # FIX 2: Added file_path so the frontend remembers it!
+            return {
+                "status": "success", 
+                "response": final_text, 
+                "chart_config": chart_config,
+                "file_path": current_file_path 
+            }
 
-        # --- TRACK A: DASHBOARD IMAGE VISION ---
+        # --- TRACK B: DASHBOARD IMAGE VISION ---
         elif file_ext in ['png', 'jpg', 'jpeg']:
-            image_bytes = await file.read()
+            # FIX 3: Removed the 'await file.read()' line that was crashing the Time Machine
             image = Image.open(current_file_path)
             
             prompt = (
@@ -326,17 +329,13 @@ async def analyze_data(
                 f"User Voice Command: {transcript}"
             )
             
-            # We force the model to output strict JSON
             gemini_response = client.models.generate_content(
                 model='gemini-2.5-flash', 
                 contents=[image, prompt],
                 config={"response_mime_type": "application/json"}
             )
             
-            # Parse the AI's JSON output
-            # --- Bulletproof JSON Parsing ---
             raw_text = gemini_response.text.strip()
-            # If Gemini accidentally wraps the output in markdown, strip it off!
             if raw_text.startswith("```json"):
                 raw_text = raw_text.replace("```json", "", 1)
             if raw_text.endswith("```"):
@@ -345,12 +344,18 @@ async def analyze_data(
             try:
                 parsed_data = json.loads(raw_text.strip())
             except json.JSONDecodeError:
-                # Fallback if Gemini completely hallucinates the formatting
-                parsed_data = {"response": "I processed the data, but encountered an formatting error.", "chart_config": None, "box": []}
+                parsed_data = {"response": "I processed the data, but encountered a formatting error.", "box": []}
+                
             final_text = parsed_data.get("response", "I could not analyze the image.")
             box_coords = parsed_data.get("box", [])
             
-            return {"status": "success", "response": final_text, "box": box_coords, "file_path": current_file_path}
+            return {
+                "status": "success", 
+                "response": final_text, 
+                "box": box_coords, 
+                "file_path": current_file_path
+            }
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
