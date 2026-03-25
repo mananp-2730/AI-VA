@@ -235,10 +235,37 @@ def get_single_session(request: GetSingleSessionRequest, db: Session = Depends(g
 # Existing API route
 @app.post("/api/analyze")
 async def analyze_data(
-    transcript: str = Form(...), 
-    file: UploadFile = File(...),
-    mode: str = Form(...)
+    transcript: str = Form(...),
+    mode: str = Form(...),
+    file: Optional[UploadFile] = File(None),
+    saved_file_path: Optional[str] = Form(None) # NEW: For Time Machine follow-ups!
 ):
+    # --- SMART FILE ROUTING ---
+    current_file_path = None
+    
+    if file and file.filename:
+        # 1A. It's a brand new upload! Save it to the hard drive.
+        file_extension = file.filename.split(".")[-1]
+        unique_filename = f"{uuid.uuid4().hex}.{file_extension}"
+        current_file_path = os.path.join("uploads", unique_filename)
+        
+        # Save it physically to the server
+        with open(current_file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+            
+    elif saved_file_path and os.path.exists(saved_file_path):
+        # 1B. It's a follow-up question! Use the old file from the server's hard drive.
+        current_file_path = saved_file_path
+    else:
+        raise HTTPException(status_code=400, detail="No data file found. Please upload a dashboard or CSV.")
+        
+    # 2. Read the file into memory for Gemini to analyze
+    with open(current_file_path, "rb") as f:
+        file_bytes = f.read() # USE THIS variable for your Gemini prompt!
+        
+    # 3. Determine the file type based on the path
+    is_image = current_file_path.lower().endswith(('.png', '.jpg', '.jpeg'))
+    
     if not client:
         raise HTTPException(status_code=500, detail="Gemini API key not configured")
     try:
