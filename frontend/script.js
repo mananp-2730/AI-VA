@@ -22,6 +22,7 @@ let isMicPaused = false;     // Tracks if the VP manually paused it
 let currentQueryText = "";
 let currentAiResponse = "";
 let currentChartConfig = null;
+let currentFilePath = null; // NEW: Tracks where the file is on the server!
 const saveInsightBtn = document.getElementById('saveInsightBtn');
 const galleryContent = document.getElementById('galleryContent');
 
