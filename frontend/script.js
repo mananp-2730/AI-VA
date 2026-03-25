@@ -477,7 +477,9 @@ clearButton.addEventListener('click', () => {
     
     visualCanvas.style.display = 'none';
     visualCanvas.innerHTML = ''; // Wipe out old images or raw data text
-    placeholderContent.style.display = 'flex'; // Bring back the upload box
+    
+    // FIX: Remove the inline style entirely so your style.css takes over!
+    placeholderContent.style.display = '';
     
     // 7. Clear the actual file input so the browser knows it is completely empty
     csvFileInput.value = '';
