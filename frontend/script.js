@@ -436,19 +436,61 @@ function speakResponse(text) {
     window.speechSynthesis.speak(utterance);
 }
 // --- New UI Reset Logic ---
+// --- UPGRADED UI RESET LOGIC (The "New Workspace" Button) ---
 const clearButton = document.getElementById('clearButton');
 
 clearButton.addEventListener('click', () => {
-    // 1. Reset the text boxes
+    // 1. Reset the text and status boxes
     transcriptBox.innerText = "Your words will appear here...";
-    responseBox.innerText = "Gemini's answer will appear here...";
-    statusText.innerText = "Status: Waiting...";
+    responseBox.innerText = "Insights will appear here...";
+    statusText.innerText = "Status: Ready";
+    statusText.className = "status-waiting";
     
     // 2. Stop the Text-to-Speech immediately if it is currently talking
     window.speechSynthesis.cancel();
     
-    // 3. Reset the record button in case it got stuck
-    recordButton.innerText = "Start Recording";
+    // 3. Reset the microphone and buttons in case they got stuck
+    if (isSessionActive) {
+        recognition.stop();
+        isSessionActive = false;
+        isMicPaused = false;
+    }
+    recordButton.innerText = "Start Session";
+    recordButton.className = "btn-primary";
+    pauseButton.style.display = "none";
+    
+    // --- NEW: PHASE 5.2 WORKSPACE RESET ---
+    
+    // 4. Destroy the active Chart.js graph so it doesn't ghost over new data
+    if (currentChart) {
+        currentChart.destroy();
+        currentChart = null;
+    }
+    
+    // 5. Remove any spatial bounding boxes on images
+    const oldHighlight = document.getElementById('highlight-box');
+    if (oldHighlight) oldHighlight.remove();
+
+    // 6. Flip the UI back to the "Upload" state
+    const visualCanvas = document.getElementById('visualCanvas');
+    const placeholderContent = document.querySelector('.placeholder-content');
+    
+    visualCanvas.style.display = 'none';
+    visualCanvas.innerHTML = ''; // Wipe out old images or raw data text
+    placeholderContent.style.display = 'flex'; // Bring back the upload box
+    
+    // 7. Clear the actual file input so the browser knows it is completely empty
+    csvFileInput.value = '';
+    const fileDisplay = document.getElementById('file-display');
+    fileDisplay.innerText = "No file selected";
+    fileDisplay.style.color = ""; // Reset the text color
+    
+    // 8. Wipe the memory trackers and hide the "Save" button
+    currentQueryText = "";
+    currentAiResponse = "";
+    currentChartConfig = null;
+    const saveInsightBtn = document.getElementById('saveInsightBtn');
+    saveInsightBtn.style.display = 'none';
 });
 
 // --- GALLERY UI LOGIC (PHASE 4) ---
