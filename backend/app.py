@@ -173,7 +173,8 @@ def save_session(request: SaveSessionRequest, db: Session = Depends(get_db)):
         user_id=user.id,
         query_text=request.query_text,
         ai_response=request.ai_response,
-        chart_config=request.chart_config
+        chart_config=request.chart_config,
+        file_path=request.file_path # NEW: Save it to SQLite!
     )
     
     # 3. Write to the database
