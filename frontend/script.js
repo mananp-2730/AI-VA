@@ -397,7 +397,7 @@ async function sendDataToBackend(transcript) {
             if (data.file_path) {
                 currentFilePath = data.file_path;
             }
-            
+
             saveInsightBtn.style.display = 'inline-block';
             saveInsightBtn.innerText = 'Save to My Insights';
             saveInsightBtn.disabled = false;
@@ -547,7 +547,8 @@ saveInsightBtn.addEventListener('click', async () => {
                 email: userEmail,
                 query_text: currentQueryText,
                 ai_response: currentAiResponse,
-                chart_config: currentChartConfig
+                chart_config: currentChartConfig,
+                file_path: currentFilePath // NEW: Save this permanently to SQLite!
             })
         });
 
