@@ -393,6 +393,11 @@ async function sendDataToBackend(transcript) {
             currentAiResponse = data.response;
             currentChartConfig = data.chart_config ? JSON.stringify(data.chart_config) : null;
             
+            // NEW: Remember the file path the server just gave us!
+            if (data.file_path) {
+                currentFilePath = data.file_path;
+            }
+            
             saveInsightBtn.style.display = 'inline-block';
             saveInsightBtn.innerText = 'Save to My Insights';
             saveInsightBtn.disabled = false;
