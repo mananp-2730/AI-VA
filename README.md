@@ -58,7 +58,7 @@ AI-VA is a cloud-hosted, stateful, multimodal web application that bridges the e
 Open a modern web browser and navigate to http://127.0.0.1:8000. Select "Enterprise SQL Database" from the dropdown, click the mic, and ask: "What were our total sales revenues by region? Please plot it on a pie chart."
 
 ## Future Roadmap (Epic 5 & Beyond)
-* **State Restoration (Phase 5):** Wiring up the 'My Insights' gallery so users can click a historical session and dynamically reload the exact Chart.js configuration and conversation state back onto the main canvas.
+* **Cloud Storage Migration:** Transition local file system memory to an AWS S3 bucket to ensure permanent file retention across ephemeral cloud hosting instances.
 * **Enterprise Integrations:** Connect directly to live SQL databases or Tableau/PowerBI APIs to bypass static image uploads.
 * **Predictive Analytics:** Upgrade the backend logic to not just display current data, but forecast future trends.
 * **Persistent User Database (Auth Phase 3):** Migrate the backend authentication pipeline to a live SQLite/PostgreSQL database to save user chat histories and personalized dashboard galleries.
