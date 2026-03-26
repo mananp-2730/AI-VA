@@ -5,7 +5,7 @@ AI-VA is a cloud-hosted, stateful, multimodal web application that bridges the e
 **Live Demo:** [AI-VA on Render](https://ai-va-7zyw.onrender.com) *(Note: May take 50 seconds to spin up on the free tier)*
 
 ## The Product Vision (The Problem & Solution)
-* **The Problem:** A VP is handed a comprehensive BI dashboard (or a massive CSV file) by their data team. The data is accurate, but the VP lacks the time or technical context to decipher the complex visual charts or build their own.
+* **The Problem:** Enterprise data is locked behind complex SQL queries, static CSVs, or dense visual dashboards. Executives and non-technical stakeholders lack the time to write queries or decipher complex charts to extract actionable insights.
 * **The Solution:** AI-VA acts as an interactive, generative data translator. The user uploads the dashboard image or raw data, starts a continuous voice session, and asks questions naturally. AI-VA not only speaks the strategic insights aloud but can dynamically highlight exact charts on an image, or generate an interactive dashboard from scratch if given raw data.
 
 ## Key Features
