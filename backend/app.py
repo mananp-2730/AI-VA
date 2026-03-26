@@ -279,12 +279,18 @@ async def analyze_data(
             csv_text = df.head(50).to_csv(index=False) 
             
             prompt = (
-                "You are an expert Data Analyst and Frontend Developer. Analyze the provided CSV data and the User Voice Command. "
+                "You are an expert Data Analyst, Business Strategist, and Frontend Developer. Analyze the provided CSV data and the User Voice Command. "
                 "CRITICAL INSTRUCTION: You must return your response as a valid JSON object with EXACTLY two keys:\n"
                 "1. 'response': Your spoken answer to the user's query (keep it conversational, no markdown).\n"
-                "2. 'chart_config': A complete, valid JSON configuration object for Chart.js (version 3+) that visualizes the data relevant to the user's query. "
-                "Choose the appropriate chart type ('bar', 'line', 'pie', 'doughnut'). Include 'type', 'data' (with 'labels' and 'datasets'), and 'options'. "
-                "Make the chart visually appealing using modern hex colors. If the user query does not require a chart, return null for 'chart_config'.\n\n"
+                "2. 'chart_config': A complete, valid JSON configuration object for Chart.js (version 3+) that visualizes the data.\n\n"
+                "--- FORECASTING & PREDICTIVE ANALYTICS RULE ---\n"
+                "If the user asks for a forecast, projection, or future prediction: Mathematically estimate the next 3-5 periods based on the historical trend. "
+                "In your 'chart_config', you MUST create a 'line' chart with TWO datasets:\n"
+                "- Dataset 1: 'Historical Data' (solid line, modern hex color).\n"
+                "- Dataset 2: 'Projected Data' (dashed line, use the same color but add 'borderDash': [5, 5] to the dataset config).\n"
+                "Ensure the X-axis labels include both the historical dates and your new projected dates, and align the data arrays with nulls so the line flows continuously from past to future.\n\n"
+                "If no projection is asked for, just return a standard, beautiful chart ('bar', 'line', 'pie', 'doughnut'). "
+                "If the query does not require a chart, return null for 'chart_config'.\n\n"
                 f"User Voice Command: {transcript}\n\nCSV Data Sample:\n{csv_text}"
             )
             
