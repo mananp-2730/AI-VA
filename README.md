@@ -22,7 +22,7 @@ AI-VA is a cloud-hosted, stateful, multimodal web application that bridges the e
 * **Voice & UI:** Native Browser **Web Speech API** (STT/TTS), responsive split-pane architecture.
 * **Backend:** **Python 3.12** & **FastAPI** for high-performance API routing and cloud environment management.
 * **Database & Memory:** **SQLite**, **SQLAlchemy**, and **Pandas** for robust data manipulation and SQL query execution.
-* **Vision & AI Processing:** **Pillow** for image byte-stream handling, integrated with the **Google Gemini 2.5 Flash** model via the `google-genai` SDK.
+* **AI Processing:** **Pillow** for image byte-stream handling, integrated with the **Google Gemini 2.5 Flash** model via the `google-genai` SDK.
 * **Deployment:** CI/CD pipeline integrated directly with **Render**.
   
 ## Quick Start Guide (Local Development)
