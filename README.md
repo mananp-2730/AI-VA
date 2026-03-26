@@ -19,9 +19,9 @@ AI-VA is a cloud-hosted, stateful, multimodal web application that bridges the e
 
 ## System Architecture & Tech Stack
 * **Frontend:** HTML5, CSS3 (Flexbox/Grid), Vanilla JavaScript, Chart.js (Dynamic Data Visualization).
-* **Voice & UI:** Native Browser Web Speech API (STT/TTS), responsive split-pane architecture.
+* **Voice & UI:** Native Browser **Web Speech API** (STT/TTS), responsive split-pane architecture.
 * **Backend:** **Python 3.12** & **FastAPI** for high-performance API routing and cloud environment management.
-* **Database & Security:** **SQLite** (serverless database engine), **SQLAlchemy** (Python ORM for relational models), and **bcrypt** (cryptographic password hashing).
+* **Database & Memory:** **SQLite**, **SQLAlchemy**, and **Pandas** for robust data manipulation and SQL query execution.
 * **Vision & AI Processing:** **Pillow** for image byte-stream handling, integrated with the **Google Gemini 2.5 Flash** model via the `google-genai` SDK.
 * **Deployment:** CI/CD pipeline integrated directly with **Render**.
   
