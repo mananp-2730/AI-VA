@@ -393,6 +393,95 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
 app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
 
+# --- EPIC 7: ENTERPRISE SQL ROUTE ---
+@app.post("/api/enterprise_query")
+async def enterprise_query(transcript: str = Form(...)):
+    try:
+        # 1. Provide the AI with the Database Blueprint (Schema)
+        schema = """
+        Table: products (product_id, product_name, category, price)
+        Table: regions (region_id, region_name, regional_manager)
+        Table: sales (sale_id, sale_date, product_id, region_id, quantity, revenue)
+        """
+
+        # 2. Text-to-SQL Translation Prompt
+        sql_prompt = f"""
+        You are an expert SQL Database Administrator. Convert the user's request into a valid SQLite SQL query.
+        Use the following schema:
+        {schema}
+        
+        User Request: "{transcript}"
+        
+        CRITICAL INSTRUCTION: Return ONLY the raw SQL query. No markdown, no explanations. Just the SELECT statement.
+        """
+        
+        # Ask Gemini to write the SQL
+        sql_response = client.models.generate_content(
+            model='gemini-2.5-flash', 
+            contents=sql_prompt
+        )
+        
+        # Clean the AI's output to ensure it is pure SQL
+        raw_sql = sql_response.text.strip()
+        if raw_sql.startswith("```sql"):
+            raw_sql = raw_sql.replace("```sql", "", 1)
+        if raw_sql.startswith("```"):
+            raw_sql = raw_sql.replace("```", "", 1)
+        if raw_sql.endswith("```"):
+            raw_sql = raw_sql.rsplit("```", 1)[0]
+        raw_sql = raw_sql.strip()
+        
+        print(f"🤖 AI Generated SQL: {raw_sql}") # This prints to your terminal so you can watch it work!
+
+        # 3. Execute the SQL against the Enterprise Database
+        import sqlite3
+        import pandas as pd
+        import json
+        
+        conn = sqlite3.connect('enterprise_data.db')
+        df = pd.read_sql_query(raw_sql, conn)
+        conn.close()
+        
+        # 4. Convert the SQL results into a CSV string format for the Oracle
+        sql_results_text = df.to_csv(index=False)
+        
+        # 5. The Oracle Prompt (Data -> Insights & Chart)
+        insight_prompt = (
+            "You are an expert Data Analyst and Frontend Developer. Analyze the provided SQL query results and the User Voice Command. "
+            "CRITICAL INSTRUCTION: You must return your response as a valid JSON object with EXACTLY two keys:\n"
+            "1. 'response': Your spoken answer to the user's query (keep it conversational, no markdown).\n"
+            "2. 'chart_config': A complete, valid JSON configuration object for Chart.js (version 3+) that visualizes the data. "
+            "Choose the appropriate chart type ('bar', 'line', 'pie', 'doughnut'). Make the chart visually appealing using modern hex colors. "
+            "If the data is just a single number or doesn't need a chart, return null for 'chart_config'.\n\n"
+            f"User Voice Command: {transcript}\n\nSQL Query Used:\n{raw_sql}\n\nQuery Results:\n{sql_results_text}"
+        )
+        
+        # Ask Gemini to build the final dashboard
+        insight_response = client.models.generate_content(
+            model='gemini-2.5-flash', 
+            contents=insight_prompt,
+            config={"response_mime_type": "application/json"}
+        )
+        
+        # Parse the JSON response bulletproof style
+        raw_text = insight_response.text.strip()
+        if raw_text.startswith("```json"):
+            raw_text = raw_text.replace("```json", "", 1)
+        if raw_text.endswith("```"):
+            raw_text = raw_text.rsplit("```", 1)[0]
+        
+        parsed_data = json.loads(raw_text.strip())
+        
+        return {
+            "status": "success", 
+            "response": parsed_data.get("response", "I have analyzed the database."), 
+            "chart_config": parsed_data.get("chart_config", None),
+            "sql_query": raw_sql # We send the raw SQL to the frontend to prove it worked!
+        }
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
 if __name__ == "__main__":
     # Cloud providers assign a dynamic PORT environment variable. 
     # We default to 8000 for local testing if the cloud variable isn't found.
