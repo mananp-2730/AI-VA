@@ -1,4 +1,4 @@
-# AI-VA | Spatial BI & Generative Voice Assistant
+AI-VA | Multimodal AI Business Intelligence & Text-to-SQL Agent
 
 AI-VA is a cloud-hosted, multimodal web application that solves the enterprise data literacy gap. By bridging state-of-the-art vision models with spatial UI engineering and dynamic frontend generation, AI-VA allows users to upload complex business dashboards—or raw datasets—and have a seamless, continuous voice conversation with their data. 
 
