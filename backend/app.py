@@ -387,12 +387,6 @@ def delete_single_session(request: DeleteSessionRequest, db: Session = Depends(g
     
     return {"status": "success", "message": "Insight permanently deleted."}
 
-# --- NEW CONSOLIDATION CODE ---
-# This tells FastAPI to host your HTML/CSS/JS files directly
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
-app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
-
 # --- EPIC 7: ENTERPRISE SQL ROUTE ---
 @app.post("/api/enterprise_query")
 async def enterprise_query(transcript: str = Form(...)):
@@ -481,10 +475,20 @@ async def enterprise_query(transcript: str = Form(...)):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    
+
+# -------------------------------------------------------------------
+# THE CATCH-ALL MUST BE AT THE ABSOLUTE BOTTOM (Right before __main__)
+# -------------------------------------------------------------------
+# --- NEW CONSOLIDATION CODE ---
+# This tells FastAPI to host your HTML/CSS/JS files directly
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
+app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
+
 if __name__ == "__main__":
     # Cloud providers assign a dynamic PORT environment variable. 
     # We default to 8000 for local testing if the cloud variable isn't found.
     port = int(os.environ.get("PORT", 8000))
     # Host "0.0.0.0" tells the server to listen on all available public IP addresses
+    import uvicorn
     uvicorn.run("app:app", host="0.0.0.0", port=port)
