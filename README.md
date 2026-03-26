@@ -1,6 +1,6 @@
 ## **AI-VA | Multimodal AI Business Intelligence & Text-to-SQL Agent**
 
-AI-VA is a cloud-hosted, multimodal web application that solves the enterprise data literacy gap. By bridging state-of-the-art vision models with spatial UI engineering and dynamic frontend generation, AI-VA allows users to upload complex business dashboards—or raw datasets—and have a seamless, continuous voice conversation with their data. 
+AI-VA is a cloud-hosted, stateful, multimodal web application that bridges the enterprise data literacy gap. By combining state-of-the-art vision models, Agentic Text-to-SQL pipelines, and dynamic UI engineering, AI-VA allows users to bypass complex SQL queries and BI tools. Users can upload raw datasets, share visual dashboards, or connect directly to a live database, and have a seamless, continuous voice conversation with their data.
 
 **Live Demo:** [AI-VA on Render](https://ai-va-7zyw.onrender.com) *(Note: May take 50 seconds to spin up on the free tier)*
 
