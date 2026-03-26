@@ -317,40 +317,58 @@ recognition.onresult = async function(event) {
 
 // Send data to the FastAPI Backend
 async function sendDataToBackend(transcript) {
-    const file = csvFileInput.files[0];
-    const mode = analysisMode.value; 
+    statusText.innerText = "Status: AI is analyzing...";
+    statusText.className = "status-recording";
+
+    // EPIC 7: Check which mode we are in!
+    // (If the dropdown doesn't exist yet, it defaults to 'upload')
+    const dataSourceElement = document.getElementById('dataSource');
+    const dataSource = dataSourceElement ? dataSourceElement.value : 'upload';
     
     const formData = new FormData();
     formData.append("transcript", transcript);
-    formData.append("mode", mode); 
 
-    // --- UPGRADED SMART FILE ROUTER ---
-    console.log("PREPARING TO SEND TO BACKEND...");
-    console.log("1. Is there a new file upload?", file ? "YES" : "NO");
-    console.log("2. Is there a Time Machine file path?", currentFilePath ? currentFilePath : "NO (null)");
+    let apiUrl = '/api/analyze'; // Default to the local file route
 
-    if (file) {
-        console.log("-> Routing as a BRAND NEW upload.");
-        formData.append("file", file);
-    } else if (currentFilePath) {
-        console.log("-> Routing as a TIME MACHINE follow-up.");
-        formData.append("saved_file_path", currentFilePath);
-    } else {
-        console.log("❌ ERROR: Both file slots are empty. Aborting!");
-        statusText.innerText = "Error: Please upload a file first.";
-        statusText.className = "status-waiting";
+    if (dataSource === 'enterprise') {
+        console.log("🏢 Routing to Enterprise SQL Database...");
+        apiUrl = '/api/enterprise_query'; 
+        // We DO NOT need to attach files for the enterprise route!
         
-        // UN-FREEZE THE UI: Turn the mic back on so it doesn't stay stuck!
-        if (isSessionActive) {
-            isMicPaused = false;
-            try { recognition.start(); } catch(e){}
-        }
-        return; // Stop the request
-    }
-    // ----------------------------------
+    } else {
+        console.log("📁 Routing to Local File Analysis...");
+        
+        // --- YOUR EXISTING SMART FILE ROUTER ---
+        const file = csvFileInput.files[0];
+        const mode = analysisMode.value; 
+        formData.append("mode", mode); 
 
+        console.log("1. Is there a new file upload?", file ? "YES" : "NO");
+        console.log("2. Is there a Time Machine file path?", currentFilePath ? currentFilePath : "NO (null)");
+
+        if (file) {
+            console.log("-> Routing as a BRAND NEW upload.");
+            formData.append("file", file);
+        } else if (currentFilePath) {
+            console.log("-> Routing as a TIME MACHINE follow-up.");
+            formData.append("saved_file_path", currentFilePath);
+        } else {
+            console.log("❌ ERROR: Both file slots are empty. Aborting!");
+            statusText.innerText = "Error: Please upload a file first.";
+            statusText.className = "status-waiting";
+            
+            // UN-FREEZE THE UI: Turn the mic back on so it doesn't stay stuck!
+            if (isSessionActive) {
+                isMicPaused = false;
+                try { recognition.start(); } catch(e){}
+            }
+            return; // Stop the request
+        }
+    }
+
+    // --- THE FETCH REQUEST ---
     try {
-        const response = await fetch("/api/analyze", {
+        const response = await fetch(apiUrl, {
             method: "POST",
             body: formData
         });
@@ -409,13 +427,20 @@ async function sendDataToBackend(transcript) {
                 }
             }
 
-            // --- TRACK B: ZERO TO DASHBOARD LOGIC (CSV) ---
+            // --- TRACK B & ENTERPRISE: ZERO TO DASHBOARD LOGIC (CSV / SQL) ---
             if (data.chart_config) {
+                // If it's an enterprise query, we might want to wipe the placeholder image first
+                const visualCanvas = document.getElementById('visualCanvas');
+                const placeholderContent = document.querySelector('.placeholder-content');
+                if (dataSource === 'enterprise') {
+                    placeholderContent.style.display = 'none';
+                    visualCanvas.style.display = 'block';
+                }
+                
                 renderChart(data.chart_config);
             }
 
             // --- THE FIX: MEMORY & SAVE BUTTON REVEAL ---
-            // Now this is safely inside the block where 'data' exists!
             currentQueryText = transcript; 
             currentAiResponse = data.response;
             currentChartConfig = data.chart_config ? JSON.stringify(data.chart_config) : null;
@@ -437,6 +462,7 @@ async function sendDataToBackend(transcript) {
     } catch (error) {
         responseBox.innerText = "Failed to connect to backend.";
         statusText.innerText = "Status: Connection Error!";
+        console.error(error);
     }
 }
 
