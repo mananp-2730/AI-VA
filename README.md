@@ -59,7 +59,7 @@ Open a modern web browser and navigate to http://127.0.0.1:8000. Select "Enterpr
 
 ## Future Roadmap (Epic 5 & Beyond)
 * **Cloud Storage Migration:** Transition local file system memory to an AWS S3 bucket to ensure permanent file retention across ephemeral cloud hosting instances.
-* **Enterprise Integrations:** Connect directly to live SQL databases or Tableau/PowerBI APIs to bypass static image uploads.
+* **Multi-Agent Orchestration:** Implement frameworks like LangChain or AutoGen to separate the Text-to-SQL logic and the UI generation logic into distinct, highly specialized AI agents.
 * **Predictive Analytics:** Upgrade the backend logic to not just display current data, but forecast future trends.
 * **Persistent User Database (Auth Phase 3):** Migrate the backend authentication pipeline to a live SQLite/PostgreSQL database to save user chat histories and personalized dashboard galleries.
 
