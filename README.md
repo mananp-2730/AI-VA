@@ -18,7 +18,7 @@ AI-VA is a cloud-hosted, stateful, multimodal web application that bridges the e
 * **Secure Authentication Pipeline:** A full-stack security gatekeeper featuring a premium glass-morphic frontend UI wired to a FastAPI backend endpoint, utilizing bcrypt for cryptographic password hashing and SQLAlchemy for ORM.
 
 ## System Architecture & Tech Stack
-* **Frontend:** HTML5, CSS3 Flexbox, Vanilla JavaScript, **Chart.js** (for dynamic rendering).
+* **Frontend:** HTML5, CSS3 (Flexbox/Grid), Vanilla JavaScript, Chart.js (Dynamic Data Visualization).
 * **Voice Integration:** Native Browser **Web Speech API** (Speech-to-Text & Text-to-Speech) with continuous state management.
 * **Backend:** **Python 3.12** & **FastAPI** for high-performance API routing and cloud environment management.
 * **Database & Security:** **SQLite** (serverless database engine), **SQLAlchemy** (Python ORM for relational models), and **bcrypt** (cryptographic password hashing).
