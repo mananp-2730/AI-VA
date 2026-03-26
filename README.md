@@ -40,16 +40,22 @@ AI-VA is a cloud-hosted, stateful, multimodal web application that bridges the e
    source venv/bin/activate  # On Windows use: venv\Scripts\activate
    pip install -r requirements.txt
 
-3. Configure the Environment
+3. Initialize the Enterprise Database Sandbox
+   Run the setup script to generate the local SQLite database populated with dummy corporate data:
+   ```Bash
+   python setup_enterprise_db.py
+   
+4. Configure the Environment
    Create a .env file in the backend directory and add your Google AI Studio key:
    ```Plaintext
    GEMINI_API_KEY=your_actual_api_key_here
 
-4. Launch the Application
+5. Launch the Application
    Start the FastAPI server:
    ```bash
    python app.py
-  Open a modern web browser (Chrome/Edge recommended) and navigate to server (eg. http://127.0.0.1:8000). Upload a screenshot of a dashboard, click "Start Session", and speak to your data!
+
+Open a modern web browser and navigate to http://127.0.0.1:8000. Select "Enterprise SQL Database" from the dropdown, click the mic, and ask: "What were our total sales revenues by region? Please plot it on a pie chart."
 
 ## Future Roadmap (Epic 5 & Beyond)
 * **State Restoration (Phase 5):** Wiring up the 'My Insights' gallery so users can click a historical session and dynamically reload the exact Chart.js configuration and conversation state back onto the main canvas.
