@@ -57,11 +57,10 @@ AI-VA is a cloud-hosted, stateful, multimodal web application that bridges the e
 
 Open a modern web browser and navigate to http://127.0.0.1:8000. Select "Enterprise SQL Database" from the dropdown, click the mic, and ask: "What were our total sales revenues by region? Please plot it on a pie chart."
 
-## Future Roadmap (Epic 5 & Beyond)
+## Future Roadmap
 * **Cloud Storage Migration:** Transition local file system memory to an AWS S3 bucket to ensure permanent file retention across ephemeral cloud hosting instances.
 * **Multi-Agent Orchestration:** Implement frameworks like LangChain or AutoGen to separate the Text-to-SQL logic and the UI generation logic into distinct, highly specialized AI agents.
-* **Predictive Analytics:** Upgrade the backend logic to not just display current data, but forecast future trends.
-* **Persistent User Database (Auth Phase 3):** Migrate the backend authentication pipeline to a live SQLite/PostgreSQL database to save user chat histories and personalized dashboard galleries.
+* **OAuth 2.0 Integration:** Upgrade the custom authentication pipeline to support Google/Microsoft SSO for enterprise-grade security.
 
 
 
