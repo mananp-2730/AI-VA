@@ -331,12 +331,12 @@ async function sendDataToBackend(transcript) {
     let apiUrl = '/api/analyze'; // Default to the local file route
 
     if (dataSource === 'enterprise') {
-        console.log("🏢 Routing to Enterprise SQL Database...");
+        console.log("Routing to Enterprise SQL Database...");
         apiUrl = '/api/enterprise_query'; 
         // We DO NOT need to attach files for the enterprise route!
         
     } else {
-        console.log("📁 Routing to Local File Analysis...");
+        console.log("Routing to Local File Analysis...");
         
         // --- YOUR EXISTING SMART FILE ROUTER ---
         const file = csvFileInput.files[0];
