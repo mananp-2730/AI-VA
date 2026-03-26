@@ -8,7 +8,7 @@ AI-VA is a cloud-hosted, stateful, multimodal web application that bridges the e
 * **The Problem:** Enterprise data is locked behind complex SQL queries, static CSVs, or dense visual dashboards. Executives and non-technical stakeholders lack the time to write queries or decipher complex charts to extract actionable insights.
 * **The Solution:** AI-VA acts as an interactive, generative data translator. Users simply speak their questions. AI-VA dynamically queries the database, forecasts trends, generates interactive Chart.js dashboards in the browser, and speaks the strategic insights aloud.
   
-## Key Features
+## Core Architecture & Enterprise Features
 * **Generative BI Dashboards (Zero-to-Dashboard):** Upload a raw `.csv` file and ask a question. AI-VA acts as a data analyst and frontend developer, dynamically writing and rendering interactive `Chart.js` graphs directly in the browser.
 * **Spatial Highlighting Engine:** Upload a static dashboard (`.png`, `.jpg`). AI-VA utilizes Gemini's spatial prompting to return strict bounding-box coordinates `[ymin, xmin, ymax, xmax]`, drawing glowing, real-time CSS highlights over the exact data points being discussed.
 * **Continuous Conversational Loop:** Engineered with a custom Web Speech API integration that auto-mutes the microphone during AI TTS playback and automatically resumes listening, creating a frictionless, hands-free experience.
