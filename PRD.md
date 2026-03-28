@@ -17,3 +17,13 @@
 * **Role:** Marketing Manager / Operations Lead.
 * **Pain Point:** Has a raw .csv export from a CRM tool but doesn't know how to use pivot tables or Tableau to visualize it.
 * **Goal:** Upload a file and have the system automatically build the charts and explain the insights.
+
+## **3. Core Use Cases & User Journey**
+**The "Zero-to-Dashboard" Journey:**
+1. **Connect:** The user toggles to "Enterprise SQL" mode or uploads a raw CSV file.
+2. **Command:** The user clicks the microphone and asks a natural language question (e.g., "What were our top-selling product categories last month? Please plot it on a bar chart.").
+3. **Compute:** AI-VA translates the intent to raw SQL, executes the query against the live database, and feeds the resulting numbers to the UI engine.
+4. **Consume:** The user hears the spoken strategic insight while a dynamic Chart.js graph renders instantly on their screen.
+5. **Retain:** The user clicks "Save to My Insights" to permanently store the session in the Time Machine gallery for future reference.
+
+
