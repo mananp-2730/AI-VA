@@ -32,7 +32,10 @@ Building AI-VA required balancing technical complexity with a frictionless user 
   * **The Trade-off:** The user cannot interrupt the AI while it is speaking, creating a walkie-talkie-style interaction rather than true full-duplex conversation.
   * **The PM Rationale:** If the Web Speech API mic remained active while the AI's Text-to-Speech (TTS) engine spoke, the system would transcribe its own voice, creating an infinite hallucination loop. Ensuring data accuracy and system stability took priority over concurrent speaking capabilities.
 
-* **
+* **Decision 4: Skipping API Integrations (Salesforce/HubSpot)**
+  * **The Trade-off:** We require the user to upload a CSV or use our dummy SQL database rather than connecting directly to their real SaaS tools.
+  * **The PM Rationale:** Building OAuth pipelines for external APIs would delay the MVP launch by weeks. We prioritized building the core Generative Dashboard Engine first. If users find value in generating Chart.js files from raw CSVs, the logical next iteration is to build the API connectors.
+
 ## **System Architecture & Tech Stack**
 * **Frontend:** HTML5, CSS3 (Flexbox/Grid), Vanilla JavaScript, Chart.js (Dynamic Data Visualization).
 * **Voice & UI:** Native Browser **Web Speech API** (STT/TTS), responsive split-pane architecture.
