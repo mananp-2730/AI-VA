@@ -28,7 +28,7 @@
 
 ## **4. Feature Prioritization (MoSCoW Framework)**
 To ensure rapid deployment of the MVP, features were strictly prioritized based on user value and engineering feasibility.
-* **Must Have (Core MVP):
+* **Must Have (Core MVP):**
   * Seamless Web Speech API integration (STT & TTS) with auto-muting to prevent audio looping.
   * LLM-driven JSON generation to parse data into valid Chart.js configurations.
   * Secure, authenticated login gateway (FastAPI + bcrypt) to protect sensitive business data.
