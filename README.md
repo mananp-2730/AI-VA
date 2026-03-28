@@ -4,11 +4,11 @@ AI-VA is a cloud-hosted, stateful, multimodal web application that bridges the e
 
 **Live Demo:** [AI-VA on Render](https://ai-va-7zyw.onrender.com) *(Note: May take 50 seconds to spin up on the free tier)*
 
-## The Product Vision (The Problem & Solution)
+## **The Product Vision (The Problem & Solution)**
 * **The Problem:** Enterprise data is locked behind complex SQL queries, static CSVs, or dense visual dashboards. Executives and non-technical stakeholders lack the time to write queries or decipher complex charts to extract actionable insights.
 * **The Solution:** AI-VA acts as an interactive, generative data translator. Users simply speak their questions. AI-VA dynamically queries the database, forecasts trends, generates interactive Chart.js dashboards in the browser, and speaks the strategic insights aloud.
   
-## Core Architecture & Enterprise Features
+## **Core Architecture & Enterprise Features**
 * **Enterprise Text-to-SQL Agent:** Users can bypass file uploads entirely. AI-VA translates natural language voice commands into secure, raw SELECT queries, executes them against a live relational database (SQLite), and feeds the data back into the LLM to generate UI components.
 * **Zero-Shot Predictive Analytics:** Engineered with advanced prompt constraints allowing the AI to mathematically analyze historical sales/revenue trends, extend the timeline, and automatically render dashed predictive forecasting lines on the frontend UI.
 * **Stateful "Time Machine" Memory:** Full-stack asynchronous state management backed by SQLite. AI-VA saves physical files, logs session metadata, and allows users to load historical conversations from a side-panel gallery, seamlessly restoring the exact Chart.js configuration and context window.
@@ -17,7 +17,23 @@ AI-VA is a cloud-hosted, stateful, multimodal web application that bridges the e
 * **Continuous Conversational Loop:** Engineered with a custom Web Speech API integration that auto-mutes the microphone during AI TTS playback and automatically resumes listening, creating a frictionless, hands-free experience.
 * **Secure Authentication Pipeline:** A full-stack security gatekeeper featuring a premium glass-morphic frontend UI wired to a FastAPI backend endpoint, utilizing bcrypt for cryptographic password hashing and SQLAlchemy for ORM.
 
-## System Architecture & Tech Stack
+## **PM Thinking & Strategic Trade-Offs**
+Building AI-VA required balancing technical complexity with a frictionless user experience. Here are the key product decisions made during the MVP development:
+
+* **Decision 1: Gemini 2.5 Flash vs. Pro Models**
+  * **The Trade-off:** We sacrificed the deeper, multi-step reasoning of heavier models (like Gemini Pro or GPT-4) in favor of the blazing speed of Gemini 2.5 Flash.
+  * **The PM Rationale:** For a voice-activated assistant, latency is the ultimate metric. A user waiting 10 seconds for a response breaks the conversational illusion. Flash provides sub-second Text-to-SQL translation, keeping the voice loop natural and instantaneous.
+
+* **Decision 2: SQLite vs. Cloud PostgreSQL**
+  * **The Trade-off:** We launched with a local SQLite database instead of a scalable, enterprise-grade cloud SQL server.
+  * **The PM Rationale:** The core hypothesis to prove was "Can an LLM reliably translate voice to SQL and render UI components?" SQLite allowed for zero-configuration local testing and immediate validation of this "Text-to-SQL" agent without incurring cloud database costs or setting up complex VPCs for an MVP.
+
+* **Decision 3: Muting the Mic During TTS Playback**
+  * **The Trade-off:** The user cannot interrupt the AI while it is speaking, creating a walkie-talkie-style interaction rather than true full-duplex conversation.
+  * **The PM Rationale:** If the Web Speech API mic remained active while the AI's Text-to-Speech (TTS) engine spoke, the system would transcribe its own voice, creating an infinite hallucination loop. Ensuring data accuracy and system stability took priority over concurrent speaking capabilities.
+
+* **
+## **System Architecture & Tech Stack**
 * **Frontend:** HTML5, CSS3 (Flexbox/Grid), Vanilla JavaScript, Chart.js (Dynamic Data Visualization).
 * **Voice & UI:** Native Browser **Web Speech API** (STT/TTS), responsive split-pane architecture.
 * **Backend:** **Python 3.12** & **FastAPI** for high-performance API routing and cloud environment management.
@@ -25,7 +41,7 @@ AI-VA is a cloud-hosted, stateful, multimodal web application that bridges the e
 * **AI Processing:** **Pillow** for image byte-stream handling, integrated with the **Google Gemini 2.5 Flash** model via the `google-genai` SDK.
 * **Deployment:** CI/CD pipeline integrated directly with **Render**.
   
-## Quick Start Guide (Local Development)
+## **Quick Start Guide (Local Development)**
 
 1. Clone the Repository
    ```bash
@@ -57,7 +73,7 @@ AI-VA is a cloud-hosted, stateful, multimodal web application that bridges the e
 
 Open a modern web browser and navigate to http://127.0.0.1:8000. Select "Enterprise SQL Database" from the dropdown, click the mic, and ask: "What were our total sales revenues by region? Please plot it on a pie chart."
 
-## Future Roadmap
+## **Future Roadmap**
 * **Cloud Storage Migration:** Transition local file system memory to an AWS S3 bucket to ensure permanent file retention across ephemeral cloud hosting instances.
 * **Multi-Agent Orchestration:** Implement frameworks like LangChain or AutoGen to separate the Text-to-SQL logic and the UI generation logic into distinct, highly specialized AI agents.
 * **OAuth 2.0 Integration:** Upgrade the custom authentication pipeline to support Google/Microsoft SSO for enterprise-grade security.
