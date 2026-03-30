@@ -10,6 +10,7 @@ AI-VA is a cloud-hosted, stateful, multimodal web application that bridges the e
   
 ## **Core Architecture & Enterprise Features**
 * **Enterprise Text-to-SQL Agent:** Users can bypass file uploads entirely. AI-VA translates natural language voice commands into secure, raw SELECT queries, executes them against a live relational database (SQLite), and feeds the data back into the LLM to generate UI components.
+* **Executive Summary Generator:** Engineered a zero-latency client-side PDF export engine. Users can instantly capture the AI's strategic insights alongside the rendered Chart.js graphs into a professionally branded, dark-mode PDF document for boardroom distribution.
 * **Zero-Shot Predictive Analytics:** Engineered with advanced prompt constraints allowing the AI to mathematically analyze historical sales/revenue trends, extend the timeline, and automatically render dashed predictive forecasting lines on the frontend UI.
 * **Stateful "Time Machine" Memory:** Full-stack asynchronous state management backed by SQLite. AI-VA saves physical files, logs session metadata, and allows users to load historical conversations from a side-panel gallery, seamlessly restoring the exact Chart.js configuration and context window.
 * **Generative BI Dashboards:** Upload a raw .csv file and ask a question. AI-VA acts as a data analyst and frontend developer, dynamically writing and rendering interactive Chart.js graphs directly in the browser.
