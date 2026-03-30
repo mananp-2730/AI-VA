@@ -453,6 +453,9 @@ async function sendDataToBackend(transcript) {
             saveInsightBtn.style.display = 'inline-block';
             saveInsightBtn.innerText = 'Save to My Insights';
             saveInsightBtn.disabled = false;
+
+            // EPIC 8: Reveal the PDF Download Button!
+            document.getElementById('downloadPdfBtn').style.display = 'inline-block';
             // ---------------------------------------------
 
         } else {
