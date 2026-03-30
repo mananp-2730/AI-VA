@@ -37,6 +37,10 @@ Building AI-VA required balancing technical complexity with a frictionless user 
   * **The Trade-off:** We require the user to upload a CSV or use our dummy SQL database rather than connecting directly to their real SaaS tools.
   * **The PM Rationale:** Building OAuth pipelines for external APIs would delay the MVP launch by weeks. We prioritized building the core Generative Dashboard Engine first. If users find value in generating Chart.js files from raw CSVs, the logical next iteration is to build the API connectors.
 
+* **Decision 5: Frontend (jsPDF) vs. Backend PDF Generation**
+  * **The Trade-off:** We offloaded PDF rendering entirely to the user's browser using `jsPDF` rather than building a backend Python rendering engine (like ReportLab).
+  * **The PM Rationale:** Generating PDFs on the server requires heavy compute and adds unnecessary network latency. By capturing the HTML canvas directly on the client side, we achieve instant downloads, zero server compute costs, and preserve the exact visual state of the user's dashboard.
+
 ## **System Architecture & Tech Stack**
 * **Frontend:** HTML5, CSS3 (Flexbox/Grid), Vanilla JavaScript, Chart.js (Dynamic Data Visualization).
 * **Voice & UI:** Native Browser **Web Speech API** (STT/TTS), responsive split-pane architecture.
