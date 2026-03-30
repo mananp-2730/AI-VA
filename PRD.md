@@ -25,6 +25,7 @@
 3. **Compute:** AI-VA translates the intent to raw SQL, executes the query against the live database, and feeds the resulting numbers to the UI engine.
 4. **Consume:** The user hears the spoken strategic insight while a dynamic Chart.js graph renders instantly on their screen.
 5. **Retain:** The user clicks "Save to My Insights" to permanently store the session in the Time Machine gallery for future reference.
+6. **Distribute:** The user clicks "Download Exec Summary" to instantly package the visual chart and AI text insight into a branded, boardroom-ready PDF document.
 
 ## **4. Feature Prioritization (MoSCoW Framework)**
 To ensure rapid deployment of the MVP, features were strictly prioritized based on user value and engineering feasibility.
