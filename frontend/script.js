@@ -773,52 +773,80 @@ galleryToggleBtn.addEventListener('click', () => {
     loadGallery();
 });
 
-// --- EPIC 8: PDF GENERATOR ---
+// --- EPIC 8: BULLETPROOF PDF GENERATOR ---
 document.getElementById('downloadPdfBtn').addEventListener('click', function() {
-    console.log("Generating Executive Summary PDF...");
-    
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-
-    // 1. Paint the Dark Theme Background (Matches your UI)
-    doc.setFillColor(15, 23, 42); // Deep slate background
-    doc.rect(0, 0, 210, 297, 'F'); // A4 dimensions in mm
-
-    // 2. Add the Header (Emerald Green Branding)
-    doc.setTextColor(16, 185, 129); // #10b981
-    doc.setFontSize(22);
-    doc.setFont("helvetica", "bold");
-    doc.text("AI-VA Executive Summary", 20, 30);
-
-    // 3. Add the AI's Strategic Insight
-    doc.setTextColor(255, 255, 255); // White text
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "normal");
-    
-    const insightText = document.getElementById('responseBox').innerText;
-    // Word-wrap the text so it doesn't run off the page (170mm max width)
-    const splitText = doc.splitTextToSize("Strategic Insight: " + insightText, 170);
-    doc.text(splitText, 20, 50);
-
-    // 4. Capture and Embed the Chart.js Graph
-    const canvas = document.getElementById('visualCanvas');
-    if (canvas && canvas.style.display !== 'none') {
-        // Convert the HTML canvas into a high-res image
-        const chartImage = canvas.toDataURL("image/png", 1.0);
+    try {
+        console.log("📄 PDF Button Clicked! Starting generation...");
         
-        // Calculate where the image should go based on how long the text is
-        const textHeight = splitText.length * 6; 
+        // 1. Safety Check: Did the jsPDF library actually load?
+        if (!window.jspdf) {
+            console.error("❌ ERROR: jsPDF library is missing. The CDN link might be blocked or incorrect.");
+            alert("PDF Engine failed to load. Please check your internet or adblocker.");
+            return;
+        }
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        console.log("✅ PDF Engine initialized successfully.");
+
+        // 2. Paint the Dark Theme Background
+        doc.setFillColor(15, 23, 42); 
+        doc.rect(0, 0, 210, 297, 'F'); 
+
+        // 3. Add the Header
+        doc.setTextColor(16, 185, 129); 
+        doc.setFontSize(22);
+        doc.setFont("helvetica", "bold");
+        doc.text("AI-VA Executive Summary", 20, 30);
+        console.log("✅ Header painted.");
+
+        // 4. Add the AI's Strategic Insight
+        doc.setTextColor(255, 255, 255); 
+        doc.setFontSize(12);
+        doc.setFont("helvetica", "normal");
         
-        // Draw the image onto the PDF
-        doc.addImage(chartImage, 'PNG', 20, 50 + textHeight + 10, 170, 85); 
+        const responseBox = document.getElementById('responseBox');
+        if (!responseBox) throw new Error("Could not find the responseBox element!");
+        
+        const insightText = responseBox.innerText;
+        const splitText = doc.splitTextToSize("Strategic Insight: " + insightText, 170);
+        doc.text(splitText, 20, 50);
+        console.log("✅ Text insight added to PDF.");
+
+        // 5. Capture the Chart.js Graph
+        const canvas = document.getElementById('visualCanvas');
+        let textHeight = splitText.length * 6; 
+
+        if (canvas && canvas.style.display !== 'none') {
+            console.log("📊 Found chart canvas, converting to image...");
+            // Force a solid background for the chart image capture
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = canvas.width;
+            tempCanvas.height = canvas.height;
+            const ctx = tempCanvas.getContext('2d');
+            ctx.fillStyle = '#0f172a'; // Match dark theme
+            ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+            ctx.drawImage(canvas, 0, 0);
+
+            const chartImage = tempCanvas.toDataURL("image/png", 1.0);
+            doc.addImage(chartImage, 'PNG', 20, 50 + textHeight + 10, 170, 85); 
+            console.log("✅ Chart successfully embedded.");
+        } else {
+            console.warn("⚠️ No active chart found to embed.");
+        }
+
+        // 6. Add Footer & Trigger Download
+        doc.setTextColor(100, 116, 139); 
+        doc.setFontSize(10);
+        const date = new Date().toLocaleDateString();
+        doc.text("Generated securely by AI-VA on " + date, 20, 280);
+
+        doc.save("AIVA_Executive_Summary.pdf");
+        console.log("🎉 SUCCESS: PDF Download Triggered!");
+
+    } catch (error) {
+        // If ANYTHING fails, it gets caught right here!
+        console.error("❌ CRITICAL PDF ERROR:", error);
+        alert("Failed to generate PDF. Check the Developer Console (F12) for details.");
     }
-
-    // 5. Add a Professional Footer
-    doc.setTextColor(100, 116, 139); // Slate gray
-    doc.setFontSize(10);
-    const date = new Date().toLocaleDateString();
-    doc.text("Generated securely by AI-VA on " + date, 20, 280);
-
-    // 6. Trigger the Download
-    doc.save("AIVA_Executive_Summary.pdf");
 });
