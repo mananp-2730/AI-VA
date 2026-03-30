@@ -814,11 +814,15 @@ document.getElementById('downloadPdfBtn').addEventListener('click', function() {
         console.log("✅ Text insight added to PDF.");
 
         // 5. Capture the Chart.js Graph
-        const canvas = document.getElementById('visualCanvas');
+        const chartContainer = document.getElementById('visualCanvas');
+        
+        // SMART FIX: If visualCanvas is a div, find the actual canvas hiding inside it!
+        const canvas = chartContainer.tagName === 'CANVAS' ? chartContainer : chartContainer.querySelector('canvas');
+        
         let textHeight = splitText.length * 6; 
 
-        if (canvas && canvas.style.display !== 'none') {
-            console.log("📊 Found chart canvas, converting to image...");
+        if (canvas) {
+            console.log("📊 Found actual canvas element, converting to image...");
             // Force a solid background for the chart image capture
             const tempCanvas = document.createElement('canvas');
             tempCanvas.width = canvas.width;
@@ -832,7 +836,7 @@ document.getElementById('downloadPdfBtn').addEventListener('click', function() {
             doc.addImage(chartImage, 'PNG', 20, 50 + textHeight + 10, 170, 85); 
             console.log("✅ Chart successfully embedded.");
         } else {
-            console.warn("⚠️ No active chart found to embed.");
+            console.warn("⚠️ No active chart canvas found to embed.");
         }
 
         // 6. Add Footer & Trigger Download
