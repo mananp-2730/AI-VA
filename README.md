@@ -43,6 +43,10 @@ Building AI-VA required balancing technical complexity with a frictionless user 
   * **The Trade-off:** We offloaded PDF rendering entirely to the user's browser using `jsPDF` rather than building a backend Python rendering engine (like ReportLab).
   * **The PM Rationale:** Generating PDFs on the server requires heavy compute and adds unnecessary network latency. By capturing the HTML canvas directly on the client side, we achieve instant downloads, zero server compute costs, and preserve the exact visual state of the user's dashboard.
 
+* **Decision 6: Click-to-Query vs. Voice-Only Follow-ups**
+  * **The Trade-off:** We added click event listeners to the generated charts, allowing users to physically click the UI to trigger follow-up queries instead of strictly forcing voice commands.
+  * **The PM Rationale:** Multimodal inputs reduce user friction. If a user sees a concerning metric flagged by the anomaly detector, clicking the red bar is vastly faster and more intuitive than speaking a new command. This creates a hybrid voice-touch interface that respects the executive's natural analytical workflow.
+
 ## **System Architecture & Tech Stack**
 * **Frontend:** HTML5, CSS3 (Flexbox/Grid), Vanilla JavaScript, Chart.js (Dynamic Data Visualization).
 * **Voice & UI:** Native Browser **Web Speech API** (STT/TTS), responsive split-pane architecture.
