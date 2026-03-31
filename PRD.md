@@ -51,4 +51,3 @@ How do we know AI-VA is actually solving the problem?
 1. **Time-to-Insight (TTI):** Measure the time from the end of the user's voice command to the final chart rendering. Target: < 4 seconds.
 2. **Query Accuracy Rate:** The percentage of natural language queries successfully converted into valid SQL without throwing a 500 Server Error.
 3. **Session Retention:** The percentage of users who save an insight to their gallery and reload it in a subsequent session.
-
