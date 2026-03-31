@@ -40,6 +40,8 @@ To ensure rapid deployment of the MVP, features were strictly prioritized based 
 * **Could Have (The "Wow" Factor):**
   * Zero-shot predictive analytics ("The Oracle") to mathematically forecast future trends on graphs.
   * Spatial image highlighting using bounding box [ymin, xmin, ymax, xmax] coordinates for static dashboard analysis.
+  * Automated anomaly detection (The Watchdog) to proactively flag and colorize data outliers.
+  * Interactive click-to-query chart drill-downs bridging touch UI with backend SQL generation.
 * **Won't Have (Deferred to V2):**
   * Multi-player collaboration (sharing dashboards via URL).
   * OAuth 2.0 / Google SSO integration.
