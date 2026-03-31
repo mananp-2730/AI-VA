@@ -166,9 +166,19 @@ darkModeToggle.addEventListener('click', () => {
     }
 });
 
-// --- EPIC 8: DYNAMIC DRILL-DOWN CHART RENDERING ---
+// --- EPIC 8: DYNAMIC DRILL-DOWN CHART RENDERING (FIXED) ---
 function renderChart(config) {
-    const ctx = document.getElementById('visualCanvas').getContext('2d');
+    // 1. Bulletproof Canvas Selection (Finds the true canvas inside the div)
+    const container = document.getElementById('visualCanvas');
+    let canvas = container.tagName === 'CANVAS' ? container : container.querySelector('canvas');
+    
+    // If there is no canvas inside the container yet, create one dynamically!
+    if (!canvas && container.tagName !== 'CANVAS') {
+        canvas = document.createElement('canvas');
+        container.appendChild(canvas);
+    }
+
+    const ctx = canvas.getContext('2d');
     
     // Destroy the old chart if it exists so we don't overlap
     if (window.currentChart) {
@@ -184,21 +194,19 @@ function renderChart(config) {
             const clickedElementIndex = elements[0].index;
             const datasetIndex = elements[0].datasetIndex;
             
-            // 2. Extract the label (e.g., "North America") and the value (e.g., 50000)
+            // 2. Extract the label (e.g., "North America") and the value
             const clickedLabel = this.data.labels[clickedElementIndex];
             const clickedValue = this.data.datasets[datasetIndex].data[clickedElementIndex];
             
-            console.log(`User clicked on: ${clickedLabel} (Value: ${clickedValue})`);
+            console.log(`🎯 User clicked on: ${clickedLabel} (Value: ${clickedValue})`);
             
             // 3. Construct a silent follow-up prompt for the AI
             const drillDownQuery = `Break down the data specifically for '${clickedLabel}'. Show me the details that make up this number.`;
             
             // 4. Send this new query right back to the backend!
-            // (We update the UI so the user knows it's thinking)
             document.getElementById('statusText').innerText = `Drilling down into ${clickedLabel}...`;
             document.getElementById('statusText').className = "status-recording";
             
-            // Call our main API function with the new silent query
             sendDataToBackend(drillDownQuery);
         }
     };
@@ -209,7 +217,7 @@ function renderChart(config) {
     
     // Render the new interactive chart!
     window.currentChart = new Chart(ctx, config);
-    document.getElementById('visualCanvas').style.display = 'block';
+    container.style.display = 'block'; // Ensure the container is visible
 }
 // Listen for file uploads and validate/display
 csvFileInput.addEventListener('change', function() {
