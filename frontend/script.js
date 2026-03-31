@@ -166,29 +166,50 @@ darkModeToggle.addEventListener('click', () => {
     }
 });
 
-// Function to render a Chart.js graph from JSON config
-function renderChart(chartConfig) {
-    const visualCanvas = document.getElementById('visualCanvas');
-    const placeholderContent = document.querySelector('.placeholder-content');
+// --- EPIC 8: DYNAMIC DRILL-DOWN CHART RENDERING ---
+function renderChart(config) {
+    const ctx = document.getElementById('visualCanvas').getContext('2d');
     
-    // Hide placeholder and show canvas area
-    placeholderContent.style.display = 'none';
-    visualCanvas.style.display = 'flex';
-    visualCanvas.style.justifyContent = 'center';
-    visualCanvas.style.alignItems = 'center';
-    
-    // Clear out any old images or old canvases
-    visualCanvas.innerHTML = '<canvas id="myChart" style="max-width: 100%; max-height: 80vh;"></canvas>';
-    
-    const ctx = document.getElementById('myChart').getContext('2d');
-    
-    // Destroy the old chart if it exists so they don't overlap
-    if (currentChart) {
-        currentChart.destroy();
+    // Destroy the old chart if it exists so we don't overlap
+    if (window.currentChart) {
+        window.currentChart.destroy();
     }
+
+    // THE UPGRADE: Inject an onClick listener into the AI's config
+    if (!config.options) config.options = {};
     
-    // Draw the new chart
-    currentChart = new Chart(ctx, chartConfig);
+    config.options.onClick = function(event, elements) {
+        if (elements.length > 0) {
+            // 1. Figure out EXACTLY what the user clicked on
+            const clickedElementIndex = elements[0].index;
+            const datasetIndex = elements[0].datasetIndex;
+            
+            // 2. Extract the label (e.g., "North America") and the value (e.g., 50000)
+            const clickedLabel = this.data.labels[clickedElementIndex];
+            const clickedValue = this.data.datasets[datasetIndex].data[clickedElementIndex];
+            
+            console.log(`User clicked on: ${clickedLabel} (Value: ${clickedValue})`);
+            
+            // 3. Construct a silent follow-up prompt for the AI
+            const drillDownQuery = `Break down the data specifically for '${clickedLabel}'. Show me the details that make up this number.`;
+            
+            // 4. Send this new query right back to the backend!
+            // (We update the UI so the user knows it's thinking)
+            document.getElementById('statusText').innerText = `Drilling down into ${clickedLabel}...`;
+            document.getElementById('statusText').className = "status-recording";
+            
+            // Call our main API function with the new silent query
+            sendDataToBackend(drillDownQuery);
+        }
+    };
+
+    // Ensure it stays responsive and dark-mode friendly
+    config.options.responsive = true;
+    config.options.maintainAspectRatio = false;
+    
+    // Render the new interactive chart!
+    window.currentChart = new Chart(ctx, config);
+    document.getElementById('visualCanvas').style.display = 'block';
 }
 // Listen for file uploads and validate/display
 csvFileInput.addEventListener('change', function() {
