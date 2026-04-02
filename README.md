@@ -95,7 +95,6 @@ Open a modern web browser and navigate to http://127.0.0.1:8000. Select "Enterpr
 
 ## **Future Roadmap**
 * **Cloud Storage Migration:** Transition local file system memory to an AWS S3 bucket to ensure permanent file retention across ephemeral cloud hosting instances.
-* **Multi-Agent Orchestration:** Implement frameworks like LangChain or AutoGen to separate the Text-to-SQL logic and the UI generation logic into distinct, highly specialized AI agents.
 * **OAuth 2.0 Integration:** Upgrade the custom authentication pipeline to support Google/Microsoft SSO for enterprise-grade security.
 
 
