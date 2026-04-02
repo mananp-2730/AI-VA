@@ -36,16 +36,18 @@ To ensure rapid deployment of the MVP, features were strictly prioritized based 
   * Secure, authenticated login gateway (FastAPI + bcrypt) to protect sensitive business data.
 * **Should Have (Enterprise Value):**
   * Agentic Text-to-SQL translation allowing direct connections to relational databases (SQLite).
+  * Modular Multi-Agent architecture separating SQL generation and UI rendering to improve accuracy and allow for independent model scaling.
   * Persistent session memory (SQLite DB) to allow users to save and reload historical insights.
 * **Could Have (The "Wow" Factor):**
   * Zero-shot predictive analytics ("The Oracle") to mathematically forecast future trends on graphs.
   * Spatial image highlighting using bounding box [ymin, xmin, ymax, xmax] coordinates for static dashboard analysis.
   * Automated anomaly detection (The Watchdog) to proactively flag and colorize data outliers.
   * Interactive click-to-query chart drill-downs bridging touch UI with backend SQL generation.
+  * Comparative BI capabilities handling complex datasets and dynamically rendering dual-axis charts for metrics on different scales.
 * **Won't Have (Deferred to V2):**
   * Multi-player collaboration (sharing dashboards via URL).
   * OAuth 2.0 / Google SSO integration.
-
+ 
 ## **5. Success Metrics (KPIs)**
 How do we know AI-VA is actually solving the problem?
 1. **Time-to-Insight (TTI):** Measure the time from the end of the user's voice command to the final chart rendering. Target: < 4 seconds.
