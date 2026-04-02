@@ -22,7 +22,7 @@
 **The "Zero-to-Dashboard" Journey:**
 1. **Connect:** The user toggles to "Enterprise SQL" mode or uploads a raw CSV file.
 2. **Command:** The user clicks the microphone and asks a natural language question (e.g., "What were our top-selling product categories last month? Please plot it on a bar chart.").
-3. **Compute:** AI-VA translates the intent to raw SQL, executes the query against the live database, and feeds the resulting numbers to the UI engine.
+3. **Compute:** The Master Orchestrator delegates the command to a specialized SQL AI Agent to query the secure database, then passes the structured results to a separate Frontend Analyst AI Agent to generate UI components.
 4. **Consume:** The user hears the spoken strategic insight while a dynamic Chart.js graph renders instantly on their screen.
 5. **Drill-Down:** The user physically clicks a concerning data point on the rendered chart, automatically triggering a deeper, granular SQL query without needing to use the microphone again.
 6. **Retain:** The user clicks "Save to My Insights" to permanently store the session in the Time Machine gallery for future reference.
