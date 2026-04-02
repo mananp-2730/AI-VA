@@ -392,7 +392,7 @@ import pandas as pd
 import json
 
 # =====================================================================
-# 🤖 AGENT 1: THE SQL DATA ENGINEER
+# AGENT 1: THE SQL DATA ENGINEER
 # Role: Strictly translates human intent into highly accurate SQL queries.
 # =====================================================================
 def agent_sql_engineer(transcript: str) -> str:
@@ -428,7 +428,7 @@ def agent_sql_engineer(transcript: str) -> str:
     return raw_sql.strip()
 
 # =====================================================================
-# 🎨 AGENT 2: THE FRONTEND ANALYST
+# AGENT 2: THE FRONTEND ANALYST
 # Role: Analyzes raw data, writes strategic insights, and builds the UI.
 # =====================================================================
 def agent_frontend_analyst(transcript: str, raw_sql: str, sql_results_text: str) -> dict:
@@ -459,16 +459,16 @@ def agent_frontend_analyst(transcript: str, raw_sql: str, sql_results_text: str)
     return json.loads(raw_text.strip())
 
 # =====================================================================
-# 🧠 THE MASTER ORCHESTRATOR (API ROUTE)
+# THE MASTER ORCHESTRATOR (API ROUTE)
 # Role: Manages the pipeline, coordinates agents, and executes DB logic.
 # =====================================================================
 @app.post("/api/enterprise_query")
 async def enterprise_query(transcript: str = Form(...)):
     try:
         # Step 1: Orchestrator calls Agent 1
-        print("🤖 Master: Delegating to SQL Engineer Agent...")
+        print("Master: Delegating to SQL Engineer Agent...")
         raw_sql = agent_sql_engineer(transcript)
-        print(f"✅ SQL Engineer Returned: {raw_sql}")
+        print(f"SQL Engineer Returned: {raw_sql}")
 
         # Step 2: Orchestrator handles the secure Database Execution
         print("🗄️ Master: Executing Query on Database...")
@@ -477,12 +477,12 @@ async def enterprise_query(transcript: str = Form(...)):
         conn.close()
         
         sql_results_text = df.to_csv(index=False)
-        print(f"✅ Database execution complete. Rows returned: {len(df)}")
+        print(f"Database execution complete. Rows returned: {len(df)}")
 
         # Step 3: Orchestrator calls Agent 2
-        print("🎨 Master: Delegating to Frontend Analyst Agent...")
+        print("Master: Delegating to Frontend Analyst Agent...")
         parsed_data = agent_frontend_analyst(transcript, raw_sql, sql_results_text)
-        print("✅ Frontend Analyst generated insights and UI config.")
+        print("Frontend Analyst generated insights and UI config.")
 
         # Step 4: Orchestrator returns the final payload to the client
         return {
