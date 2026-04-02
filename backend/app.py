@@ -439,15 +439,15 @@ async def enterprise_query(transcript: str = Form(...)):
         # 4. Convert the SQL results into a CSV string format for the Oracle
         sql_results_text = df.to_csv(index=False)
         
-        # 5. The Watchdog Prompt (Data -> Insights, Anomalies & Chart)
+        # 5. The Advanced Insight Prompt (Watchdog + Boardroom Split)
         insight_prompt = (
             "You are an expert Data Analyst and Frontend Developer. Analyze the provided SQL query results and the User Voice Command. "
             "CRITICAL INSTRUCTION: You must return your response as a valid JSON object with EXACTLY two keys:\n"
             "1. 'response': Your spoken answer to the user's query (keep it conversational, no markdown). "
-            "**THE WATCHDOG DIRECTIVE:** Proactively scan the data for any significant anomalies, massive spikes, or severe drops. If you find one, explicitly call it out in your spoken response (e.g., 'Warning: I noticed a significant drop in...').\n"
+            "**THE WATCHDOG DIRECTIVE:** Proactively scan the data for any significant anomalies, massive spikes, or severe drops. If you find one, explicitly call it out in your spoken response.\n"
             "2. 'chart_config': A complete, valid JSON configuration object for Chart.js (version 3+) that visualizes the data. "
-            "Choose the appropriate chart type ('bar', 'line', 'pie'). Make the chart visually appealing using modern hex colors. "
-            "**THE WATCHDOG HIGHLIGHT:** If you detected an anomaly, use Chart.js array coloring. Make the normal data points a standard corporate color (like slate or emerald), but color the specific anomalous data point(s) bright red (#ef4444) to immediately draw the executive's attention to the risk. "
+            "**THE WATCHDOG HIGHLIGHT:** If you detected an anomaly, color the specific anomalous data point(s) bright red (#ef4444). "
+            "**THE BOARDROOM SPLIT DIRECTIVE:** If the SQL data returns MULTIPLE metrics (e.g., Revenue AND Marketing Spend), you MUST create a comparative chart. Create multiple objects inside the 'datasets' array. If the two metrics are on vastly different scales, configure a dual-axis chart: assign 'yAxisID': 'y' to the first dataset and 'yAxisID': 'y1' to the second dataset. Ensure the 'scales' object in the options configures both 'y' and 'y1' axes properly. Use distinct, professional colors for each dataset (e.g., emerald green and slate blue).\n"
             "If the data is just a single number or doesn't need a chart, return null for 'chart_config'.\n\n"
             f"User Voice Command: {transcript}\n\nSQL Query Used:\n{raw_sql}\n\nQuery Results:\n{sql_results_text}"
         )
