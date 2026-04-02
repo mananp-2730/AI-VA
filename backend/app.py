@@ -387,6 +387,115 @@ def delete_single_session(request: DeleteSessionRequest, db: Session = Depends(g
     
     return {"status": "success", "message": "Insight permanently deleted."}
 
+import sqlite3
+import pandas as pd
+import json
+
+# =====================================================================
+# 🤖 AGENT 1: THE SQL DATA ENGINEER
+# Role: Strictly translates human intent into highly accurate SQL queries.
+# =====================================================================
+def agent_sql_engineer(transcript: str) -> str:
+    schema = """
+    Table: products (product_id, product_name, category, price)
+    Table: regions (region_id, region_name, regional_manager)
+    Table: sales (sale_id, sale_date, product_id, region_id, quantity, revenue)
+    """
+
+    sql_prompt = f"""
+    You are an expert SQL Database Administrator. Convert the user's request into a valid SQLite SQL query.
+    Use the following schema:
+    {schema}
+    
+    User Request: "{transcript}"
+    
+    CRITICAL INSTRUCTION: Return ONLY the raw SQL query. No markdown, no explanations. Just the SELECT statement.
+    """
+    
+    sql_response = client.models.generate_content(
+        model='gemini-2.5-flash', 
+        contents=sql_prompt
+    )
+    
+    raw_sql = sql_response.text.strip()
+    if raw_sql.startswith("```sql"):
+        raw_sql = raw_sql.replace("```sql", "", 1)
+    if raw_sql.startswith("```"):
+        raw_sql = raw_sql.replace("```", "", 1)
+    if raw_sql.endswith("```"):
+        raw_sql = raw_sql.rsplit("```", 1)[0]
+        
+    return raw_sql.strip()
+
+# =====================================================================
+# 🎨 AGENT 2: THE FRONTEND ANALYST
+# Role: Analyzes raw data, writes strategic insights, and builds the UI.
+# =====================================================================
+def agent_frontend_analyst(transcript: str, raw_sql: str, sql_results_text: str) -> dict:
+    insight_prompt = (
+        "You are an expert Data Analyst and Frontend Developer. Analyze the provided SQL query results and the User Voice Command. "
+        "CRITICAL INSTRUCTION: You must return your response as a valid JSON object with EXACTLY two keys:\n"
+        "1. 'response': Your spoken answer to the user's query (keep it conversational, no markdown). "
+        "**THE WATCHDOG DIRECTIVE:** Proactively scan the data for any significant anomalies, massive spikes, or severe drops. If you find one, explicitly call it out in your spoken response.\n"
+        "2. 'chart_config': A complete, valid JSON configuration object for Chart.js (version 3+) that visualizes the data. "
+        "**THE WATCHDOG HIGHLIGHT:** If you detected an anomaly, color the specific anomalous data point(s) bright red (#ef4444). "
+        "**THE BOARDROOM SPLIT DIRECTIVE:** If the SQL data returns MULTIPLE metrics (e.g., Revenue AND Marketing Spend), you MUST create a comparative chart. Create multiple objects inside the 'datasets' array. If the two metrics are on vastly different scales, configure a dual-axis chart: assign 'yAxisID': 'y' to the first dataset and 'yAxisID': 'y1' to the second dataset. Ensure the 'scales' object in the options configures both 'y' and 'y1' axes properly. Use distinct, professional colors for each dataset (e.g., emerald green and slate blue).\n"
+        "If the data is just a single number or doesn't need a chart, return null for 'chart_config'.\n\n"
+        f"User Voice Command: {transcript}\n\nSQL Query Used:\n{raw_sql}\n\nQuery Results:\n{sql_results_text}"
+    )
+    
+    insight_response = client.models.generate_content(
+        model='gemini-2.5-flash', 
+        contents=insight_prompt,
+        config={"response_mime_type": "application/json"}
+    )
+    
+    raw_text = insight_response.text.strip()
+    if raw_text.startswith("```json"):
+        raw_text = raw_text.replace("```json", "", 1)
+    if raw_text.endswith("```"):
+        raw_text = raw_text.rsplit("```", 1)[0]
+    
+    return json.loads(raw_text.strip())
+
+# =====================================================================
+# 🧠 THE MASTER ORCHESTRATOR (API ROUTE)
+# Role: Manages the pipeline, coordinates agents, and executes DB logic.
+# =====================================================================
+@app.post("/api/enterprise_query")
+async def enterprise_query(transcript: str = Form(...)):
+    try:
+        # Step 1: Orchestrator calls Agent 1
+        print("🤖 Master: Delegating to SQL Engineer Agent...")
+        raw_sql = agent_sql_engineer(transcript)
+        print(f"✅ SQL Engineer Returned: {raw_sql}")
+
+        # Step 2: Orchestrator handles the secure Database Execution
+        print("🗄️ Master: Executing Query on Database...")
+        conn = sqlite3.connect('enterprise_data.db')
+        df = pd.read_sql_query(raw_sql, conn)
+        conn.close()
+        
+        sql_results_text = df.to_csv(index=False)
+        print(f"✅ Database execution complete. Rows returned: {len(df)}")
+
+        # Step 3: Orchestrator calls Agent 2
+        print("🎨 Master: Delegating to Frontend Analyst Agent...")
+        parsed_data = agent_frontend_analyst(transcript, raw_sql, sql_results_text)
+        print("✅ Frontend Analyst generated insights and UI config.")
+
+        # Step 4: Orchestrator returns the final payload to the client
+        return {
+            "status": "success", 
+            "response": parsed_data.get("response", "I have analyzed the database."), 
+            "chart_config": parsed_data.get("chart_config", None),
+            "sql_query": raw_sql # We send the raw SQL to the frontend to prove it worked!
+        }
+
+    except Exception as e:
+        print(f"❌ Critical Orchestration Error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+    
 # -------------------------------------------------------------------
 # THE CATCH-ALL MUST BE AT THE ABSOLUTE BOTTOM (Right before __main__)
 # -------------------------------------------------------------------
