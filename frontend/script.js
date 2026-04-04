@@ -356,8 +356,14 @@ async function sendDataToBackend(transcript) {
     const dataSourceElement = document.getElementById('dataSource');
     const dataSource = dataSourceElement ? dataSourceElement.value : 'upload';
     
-    const formData = new FormData();
-    formData.append("transcript", transcript);
+    // --- THE CONTEXT ENGINE UPGRADE ---
+            // Format the history array into a readable string for the AI
+            let historyString = conversationHistory.map(item => `User asked: "${item.user}"\nAI answered: "${item.ai}"`).join('\n\n');
+            if (historyString === "") historyString = "No previous history.";
+
+            const formData = new FormData();
+            formData.append('transcript', transcript);
+            formData.append('history', historyString); // Sending memory to the Master Orchestrator!
 
     let apiUrl = '/api/analyze'; // Default to the local file route
 
