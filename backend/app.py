@@ -462,10 +462,8 @@ def agent_frontend_analyst(transcript: str, raw_sql: str, sql_results_text: str)
     return json.loads(raw_text.strip())
 
 # =====================================================================
-# THE MASTER ORCHESTRATOR (API ROUTE)
-# Role: Manages the pipeline, coordinates agents, and executes DB logic.
-# =====================================================================
 # 🧠 THE MASTER ORCHESTRATOR (API ROUTE)
+# Role: Manages the pipeline, coordinates agents, and executes DB logic.
 # =====================================================================
 @app.post("/api/enterprise_query")
 async def enterprise_query(transcript: str = Form(...), history: str = Form(default="No previous history.")):
