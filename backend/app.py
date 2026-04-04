@@ -462,15 +462,15 @@ def agent_frontend_analyst(transcript: str, raw_sql: str, sql_results_text: str)
     return json.loads(raw_text.strip())
 
 # =====================================================================
-# 🧠 THE MASTER ORCHESTRATOR (API ROUTE)
+# THE MASTER ORCHESTRATOR (API ROUTE)
 # Role: Manages the pipeline, coordinates agents, and executes DB logic.
 # =====================================================================
 @app.post("/api/enterprise_query")
 async def enterprise_query(transcript: str = Form(...), history: str = Form(default="No previous history.")):
     try:
         # Step 1: Orchestrator calls Agent 1 (Passing the history!)
-        print(f"🧠 Master: Received Context Window -> {history}")
-        print("🤖 Master: Delegating to SQL Engineer Agent...")
+        print(f"Master: Received Context Window -> {history}")
+        print("Master: Delegating to SQL Engineer Agent...")
         raw_sql = agent_sql_engineer(transcript, history)
         print(f"✅ SQL Engineer Returned: {raw_sql}")
 
