@@ -482,6 +482,18 @@ async function sendDataToBackend(transcript) {
             currentAiResponse = data.response;
             currentChartConfig = data.chart_config ? JSON.stringify(data.chart_config) : null;
             
+            // --- RECORDING THE MEMORY ---
+            // Push the current conversation into our history array
+            conversationHistory.push({
+                user: transcript,
+                ai: data.response
+            });
+
+            // The "Rolling Window": Keep only the last 5 interactions to keep it fast and cheap!
+            if (conversationHistory.length > 5) {
+                conversationHistory.shift(); 
+            }
+            
             // NEW: Remember the file path the server just gave us!
             if (data.file_path) {
                 currentFilePath = data.file_path;
