@@ -21,6 +21,8 @@ let isMicPaused = false;     // Tracks if the VP manually paused it
 // Memory Trackers
 let currentQueryText = "";
 let currentAiResponse = "";
+// --- EPIC 9: THE CONTEXT ENGINE (Conversational Memory) ---
+let conversationHistory = []; // Stores the last 5 interactions
 let currentChartConfig = null;
 let currentFilePath = null; // NEW: Tracks where the file is on the server!
 const saveInsightBtn = document.getElementById('saveInsightBtn');
