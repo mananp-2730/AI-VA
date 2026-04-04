@@ -392,10 +392,10 @@ import pandas as pd
 import json
 
 # =====================================================================
-# AGENT 1: THE SQL DATA ENGINEER
+# 🤖 AGENT 1: THE SQL DATA ENGINEER (Now with Memory!)
 # Role: Strictly translates human intent into highly accurate SQL queries.
 # =====================================================================
-def agent_sql_engineer(transcript: str) -> str:
+def agent_sql_engineer(transcript: str, history: str) -> str:
     schema = """
     Table: products (product_id, product_name, category, price)
     Table: regions (region_id, region_name, regional_manager)
@@ -407,7 +407,10 @@ def agent_sql_engineer(transcript: str) -> str:
     Use the following schema:
     {schema}
     
-    User Request: "{transcript}"
+    Previous Conversation History (Use this for context if the user uses pronouns like "it", "them", or asks a follow-up question):
+    {history}
+    
+    Current User Request: "{transcript}"
     
     CRITICAL INSTRUCTION: Return ONLY the raw SQL query. No markdown, no explanations. Just the SELECT statement.
     """
