@@ -28,6 +28,46 @@ load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
 client = genai.Client(api_key=api_key) if api_key else None
 
+# =====================================================================
+# 🔍 THE DYNAMIC SCHEMA MAPPER
+# Role: Reads the internal structure of any SQLite DB on the fly.
+# =====================================================================
+def get_dynamic_schema(db_path: str = 'enterprise_data.db') -> str:
+    import sqlite3
+    try:
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        
+        # 1. Ask SQLite for a list of all tables in the database
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+        tables = cursor.fetchall()
+        
+        schema_lines = []
+        for table in tables:
+            table_name = table[0]
+            # Skip internal SQLite system tables
+            if table_name.startswith("sqlite_"): 
+                continue
+                
+            # 2. Ask SQLite for the columns inside this specific table
+            cursor.execute(f"PRAGMA table_info({table_name});")
+            columns = cursor.fetchall()
+            
+            # Format it perfectly for the LLM: Table: name (col1, col2, col3)
+            column_names = [col[1] for col in columns]
+            schema_lines.append(f"Table: {table_name} ({', '.join(column_names)})")
+            
+        conn.close()
+        
+        # Join all the table strings together into one master blueprint
+        dynamic_schema = "\n".join(schema_lines)
+        print(f"🔍 Dynamic Schema Mapped Successfully:\n{dynamic_schema}")
+        return dynamic_schema
+        
+    except Exception as e:
+        print(f"❌ Schema Mapping Error: {e}")
+        return "Error reading schema."
+
 app = FastAPI(title="AI-VA Backend", version="1.0")
 
 app.add_middleware(
