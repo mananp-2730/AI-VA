@@ -432,7 +432,7 @@ import pandas as pd
 import json
 
 # =====================================================================
-# 🤖 AGENT 1: THE SQL DATA ENGINEER (Now with Dynamic Schema!)
+# AGENT 1: THE SQL DATA ENGINEER (Now with Dynamic Schema!)
 # Role: Strictly translates human intent into highly accurate SQL queries.
 # =====================================================================
 def agent_sql_engineer(transcript: str, history: str) -> str:
