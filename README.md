@@ -91,7 +91,7 @@ Building AI-VA required balancing technical complexity with a frictionless user 
    ```bash
    python app.py
 
-Open a modern web browser and navigate to http://127.0.0.1:8000. Select "Enterprise SQL Database" from the dropdown, click the mic, and ask: "What were our total sales revenues by region? Please plot it on a pie chart."
+Open a modern web browser and navigate to server link (e.g. http://127.0.0.1:8000). Select "Enterprise SQL Database" from the dropdown, click the mic, and ask: "What were our total sales revenues by region? Please plot it on a pie chart."
 
 ## **Future Roadmap**
 * **Cloud Storage Migration:** Transition local file system memory to an AWS S3 bucket to ensure permanent file retention across ephemeral cloud hosting instances.
