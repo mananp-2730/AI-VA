@@ -432,20 +432,17 @@ import pandas as pd
 import json
 
 # =====================================================================
-# AGENT 1: THE SQL DATA ENGINEER (Now with Memory!)
+# 🤖 AGENT 1: THE SQL DATA ENGINEER (Now with Dynamic Schema!)
 # Role: Strictly translates human intent into highly accurate SQL queries.
 # =====================================================================
 def agent_sql_engineer(transcript: str, history: str) -> str:
-    schema = """
-    Table: products (product_id, product_name, category, price)
-    Table: regions (region_id, region_name, regional_manager)
-    Table: sales (sale_id, sale_date, product_id, region_id, quantity, revenue)
-    """
+    # THE UPGRADE: Generate the database blueprint on the fly!
+    dynamic_schema = get_dynamic_schema('enterprise_data.db')
 
     sql_prompt = f"""
     You are an expert SQL Database Administrator. Convert the user's request into a valid SQLite SQL query.
     Use the following schema:
-    {schema}
+    {dynamic_schema}
     
     Previous Conversation History (Use this for context if the user uses pronouns like "it", "them", or asks a follow-up question):
     {history}
