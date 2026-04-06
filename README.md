@@ -56,6 +56,7 @@ Building AI-VA required balancing technical complexity with a frictionless user 
 
 * **Decision 8: Client-Side vs. Server-Side Context Memory**
   * **The Trade-off:** We stored the rolling conversation history array in the frontend JavaScript rather than persisting it in the backend SQLite database.
+  * **The PM Rationale:** Appending the context window directly to the API payload keeps the backend strictly stateless during the active orchestration loop. It reduces database write-latency and ensures that if a user refreshes the page, they get a clean slate automatically.
 
 ## **System Architecture & Tech Stack**
 * **Frontend:** HTML5, CSS3 (Flexbox/Grid), Vanilla JavaScript, Chart.js (Dynamic Data Visualization).
