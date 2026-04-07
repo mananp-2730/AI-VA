@@ -48,6 +48,7 @@ To ensure rapid deployment of the MVP, features were strictly prioritized based 
 * **Won't Have (Deferred to V2):**
   * Multi-player collaboration (sharing dashboards via URL).
   * OAuth 2.0 / Google SSO integration.
+  * Automated CRON scheduled reporting.
  
 ## **5. Success Metrics (KPIs)**
 How do we know AI-VA is actually solving the problem?
