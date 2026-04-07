@@ -5,7 +5,7 @@
 
 ## **1. Executive Summary & Problem Space**
 * **The Problem:** Modern enterprises sit on mountains of data stored in complex SQL databases, dense CSV files, and static BI dashboards. However, the business leaders who need this data the most often lack the technical SQL skills or the time to manually build charts. They rely heavily on data teams, creating massive operational bottlenecks.
-* **The Solution:** AI-VA bridges the data-literacy gap by serving as an autonomous, voice-activated data analyst. By combining LLMs, Text-to-SQL architecture, and dynamic frontend rendering, AI-VA allows non-technical stakeholders to literally "talk to their data" and receive instant spoken insights alongside generated interactive dashboards.
+* **The Solution:** AI-VA bridges the data-literacy gap by serving as an autonomous, voice-activated data analyst. By combining LLMs, Multi-Agent architecture, and dynamic frontend rendering, AI-VA allows stakeholders to literally "talk to their data" and receive instant spoken insights.
 
 ## **2. Target Audience & User Personas**
 **Persona 1: The Time-Poor Executive (Primary)**
