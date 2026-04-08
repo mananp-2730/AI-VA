@@ -919,7 +919,7 @@ if (slackPushBtn) {
 
         // 2. Visual feedback: Change button state so the user knows it's working
         const originalText = slackPushBtn.innerText;
-        slackPushBtn.innerText = "Pushing... 🚀";
+        slackPushBtn.innerText = "Pushing...";
         slackPushBtn.disabled = true;
 
         try {
