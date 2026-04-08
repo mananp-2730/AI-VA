@@ -912,7 +912,7 @@ const slackPushBtn = document.getElementById('slackPushBtn');
 if (slackPushBtn) {
     slackPushBtn.addEventListener('click', async () => {
         // 1. Ensure the user has actually generated an insight first!
-        if (!window.currentAiResponse || window.currentAiResponse === "") {
+        if (!currentAiResponse) {
             alert("Please ask AI-VA a question to generate an insight before pushing to Slack!");
             return;
         }
@@ -926,7 +926,7 @@ if (slackPushBtn) {
             // 3. Package the current AI insight to send to our backend
             const formData = new FormData();
             formData.append('insight', currentAiResponse); 
-            // Note: Ensure your main AI response is saved to a global 'window.currentAiResponse' variable during generation!
+            // Note: Ensure your main AI response is saved to a global 'currentAiResponse' variable during generation!
 
             // 4. Fire it to the FastAPI Master Orchestrator
             const response = await fetch('/api/slack_push', {
