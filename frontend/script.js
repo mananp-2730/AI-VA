@@ -905,7 +905,7 @@ document.getElementById('downloadPdfBtn').addEventListener('click', function() {
 });
 
 // =====================================================================
-// 📢 EPIC 10: THE DISTRIBUTION PLAY (Slack Webhooks)
+// EPIC 10: THE DISTRIBUTION PLAY (Slack Webhooks)
 // =====================================================================
 const slackPushBtn = document.getElementById('slackPushBtn');
 
