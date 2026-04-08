@@ -536,6 +536,73 @@ async def enterprise_query(transcript: str = Form(...), history: str = Form(defa
     except Exception as e:
         print(f"❌ Critical Orchestration Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+# =====================================================================
+# 📢 THE DISTRIBUTION PLAY (SLACK WEBHOOKS)
+# Role: Pushes insights directly to corporate communication channels.
+# =====================================================================
+import urllib.request
+import urllib.error
+import os
+
+@app.post("/api/slack_push")
+async def slack_push(insight: str = Form(...)):
+    try:
+        webhook_url = os.getenv("SLACK_WEBHOOK_URL", "")
+        
+        # We use Slack's 'Block Kit' to format a premium Enterprise message
+        slack_payload = {
+            "blocks": [
+                {
+                    "type": "header",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "📊 New AI-VA Boardroom Insight",
+                        "emoji": True
+                    }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": f"*AI Strategic Analysis:*\n{insight}"
+                    }
+                },
+                {
+                    "type": "divider"
+                },
+                {
+                    "type": "context",
+                    "elements": [
+                        {
+                            "type": "mrkdwn",
+                            "text": "🤖 Generated autonomously by the AI-VA Multi-Agent Orchestrator"
+                        }
+                    ]
+                }
+            ]
+        }
+
+        # 1. If there is no URL, simulate the push for local testing
+        if not webhook_url:
+            print("⚠️ SLACK SIMULATION: No Webhook URL found in .env.")
+            print(f"📦 Simulated Payload: \n{json.dumps(slack_payload, indent=2)}")
+            return {"status": "success", "message": "Simulated Slack Push (No URL configured)"}
+        
+        # 2. If a URL exists, fire the payload across the internet to Slack!
+        req = urllib.request.Request(
+            webhook_url, 
+            data=json.dumps(slack_payload).encode('utf-8'), 
+            headers={'Content-Type': 'application/json'}
+        )
+        urllib.request.urlopen(req)
+        
+        print("✅ Successfully pushed insight to Slack!")
+        return {"status": "success", "message": "Pushed to Slack!"}
+
+    except Exception as e:
+        print(f"❌ Slack Push Error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
     
 # -------------------------------------------------------------------
 # THE CATCH-ALL MUST BE AT THE ABSOLUTE BOTTOM (Right before __main__)
