@@ -913,7 +913,7 @@ if (slackPushBtn) {
     slackPushBtn.addEventListener('click', async () => {
         // 1. Ensure the user has actually generated an insight first!
         if (!window.currentAiResponse || window.currentAiResponse === "") {
-            alert("⚠️ Please ask AI-VA a question to generate an insight before pushing to Slack!");
+            alert("Please ask AI-VA a question to generate an insight before pushing to Slack!");
             return;
         }
 
