@@ -557,7 +557,7 @@ async def slack_push(insight: str = Form(...)):
                     "type": "header",
                     "text": {
                         "type": "plain_text",
-                        "text": "📊 New AI-VA Boardroom Insight",
+                        "text": "New AI-VA Boardroom Insight",
                         "emoji": True
                     }
                 },
@@ -576,7 +576,7 @@ async def slack_push(insight: str = Form(...)):
                     "elements": [
                         {
                             "type": "mrkdwn",
-                            "text": "🤖 Generated autonomously by the AI-VA Multi-Agent Orchestrator"
+                            "text": "Generated autonomously by the AI-VA Multi-Agent Orchestrator"
                         }
                     ]
                 }
