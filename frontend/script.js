@@ -903,3 +903,57 @@ document.getElementById('downloadPdfBtn').addEventListener('click', function() {
         alert("Failed to generate PDF. Check the Developer Console (F12) for details.");
     }
 });
+
+// =====================================================================
+// 📢 EPIC 10: THE DISTRIBUTION PLAY (Slack Webhooks)
+// =====================================================================
+const slackPushBtn = document.getElementById('slackPushBtn');
+
+if (slackPushBtn) {
+    slackPushBtn.addEventListener('click', async () => {
+        // 1. Ensure the user has actually generated an insight first!
+        if (!window.currentAiResponse || window.currentAiResponse === "") {
+            alert("⚠️ Please ask AI-VA a question to generate an insight before pushing to Slack!");
+            return;
+        }
+
+        // 2. Visual feedback: Change button state so the user knows it's working
+        const originalText = slackPushBtn.innerText;
+        slackPushBtn.innerText = "Pushing... 🚀";
+        slackPushBtn.disabled = true;
+
+        try {
+            // 3. Package the current AI insight to send to our backend
+            const formData = new FormData();
+            formData.append('insight', window.currentAiResponse); 
+            // Note: Ensure your main AI response is saved to a global 'window.currentAiResponse' variable during generation!
+
+            // 4. Fire it to the FastAPI Master Orchestrator
+            const response = await fetch('/api/slack_push', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+
+            // 5. Success! Reset the button after 3 seconds
+            if (data.status === 'success') {
+                slackPushBtn.innerText = "Pushed! ✅";
+                setTimeout(() => {
+                    slackPushBtn.innerText = originalText;
+                    slackPushBtn.disabled = false;
+                }, 3000);
+            } else {
+                throw new Error("Slack API failed.");
+            }
+
+        } catch (error) {
+            console.error("Slack Error:", error);
+            slackPushBtn.innerText = "Error ❌";
+            setTimeout(() => {
+                slackPushBtn.innerText = originalText;
+                slackPushBtn.disabled = false;
+            }, 3000);
+        }
+    });
+}
