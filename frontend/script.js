@@ -925,7 +925,7 @@ if (slackPushBtn) {
         try {
             // 3. Package the current AI insight to send to our backend
             const formData = new FormData();
-            formData.append('insight', window.currentAiResponse); 
+            formData.append('insight', currentAiResponse); 
             // Note: Ensure your main AI response is saved to a global 'window.currentAiResponse' variable during generation!
 
             // 4. Fire it to the FastAPI Master Orchestrator
