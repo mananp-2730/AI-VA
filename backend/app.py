@@ -538,7 +538,7 @@ async def enterprise_query(transcript: str = Form(...), history: str = Form(defa
         raise HTTPException(status_code=500, detail=str(e))
 
 # =====================================================================
-# 📢 THE DISTRIBUTION PLAY (SLACK WEBHOOKS)
+# THE DISTRIBUTION PLAY (SLACK WEBHOOKS)
 # Role: Pushes insights directly to corporate communication channels.
 # =====================================================================
 import urllib.request
