@@ -41,6 +41,7 @@ To ensure rapid deployment of the MVP, features were strictly prioritized based 
   * Persistent session memory (SQLite DB) to allow users to save and reload historical insights.
 * **Could Have (The "Wow" Factor):**
   * Zero-shot predictive analytics ("The Oracle") to mathematically forecast future trends on graphs.
+  * Slack Webhook Integrations: 1-click publishing module to push text and graphical insights directly into corporate communication channels.
   * Spatial image highlighting using bounding box [ymin, xmin, ymax, xmax] coordinates for static dashboard analysis.
   * Automated anomaly detection (The Watchdog) to proactively flag and colorize data outliers.
   * Interactive click-to-query chart drill-downs bridging touch UI with backend SQL generation.
