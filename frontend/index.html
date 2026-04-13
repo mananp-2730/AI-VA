@@ -8,12 +8,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-    <div class="top-controls">
-        <button id="galleryToggleBtn" class="theme-toggle-btn">My Insights</button>
-        <button id="logoutBtn" class="theme-toggle-btn" style="margin-left: 10px; background-color: #ea4335; border-color: #c5221f; display: none;">
-            Log Out
+    <div class="top-controls" style="position: absolute; top: 20px; right: 20px; z-index: 100;">
+        <button id="galleryToggleBtn" style="background: none; border: none; color: #a7b1c2; font-size: 30px; cursor: pointer; transition: 0.3s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#a7b1c2'">
+            ☰
         </button>
     </div>
+
     <button id="darkModeToggle" class="theme-fab">🌙</button>
     
     <div id="authOverlay" class="auth-overlay">
@@ -51,13 +51,21 @@
         </div>
     </div>
 
-    <div id="gallerySidebar" class="gallery-sidebar">
-        <div class="gallery-header">
-            <h2>My Saved Insights</h2>
+    <div id="gallerySidebar" class="gallery-sidebar" style="display: flex; flex-direction: column; height: 100%;">
+        <div class="gallery-header" style="padding-bottom: 10px;">
+            <h2>Menu</h2>
             <button id="closeGalleryBtn" class="close-btn">&times;</button>
         </div>
-        <div id="galleryContent" class="gallery-content">
+        
+        <div id="galleryContent" class="gallery-content" style="flex: 1; overflow-y: auto; padding-top: 10px;">
+            <h3 style="color: #00d2ff; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px;">My Saved Insights</h3>
             <p class="empty-state">No insights saved yet. Ask your data a question and save the result!</p>
+        </div>
+
+        <div style="padding: 20px; border-top: 1px solid #2d3748; background-color: #1e222a;">
+            <button id="logoutBtn" style="width: 100%; padding: 12px; background-color: #ea4335; color: white; border: 2px solid #c5221f; border-radius: 8px; font-weight: bold; cursor: pointer; display: none; transition: 0.2s;">
+                🚪 Log Out
+            </button>
         </div>
     </div>
     
