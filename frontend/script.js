@@ -62,13 +62,25 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         
         // 4. Update the UI to greet them personally
-        const decodedName = decodeURIComponent(userName); // Fixes spaces in names
+        const decodedName = decodeURIComponent(userName);
         console.log(`Authentication Passed! Welcome, ${decodedName}`);
         
         const statusText = document.getElementById("statusText");
         if (statusText) {
             statusText.innerText = `Status: Logged in as ${decodedName}`;
             statusText.style.color = "#10b981"; // Success Green
+        }
+
+        // 5. Reveal and activate the Log Out Button
+        const logoutBtn = document.getElementById("logoutBtn");
+        if (logoutBtn) {
+            logoutBtn.style.display = "inline-block";
+            logoutBtn.addEventListener("click", () => {
+                // Destroy the cookie by setting its expiration date to the past
+                document.cookie = "ai_va_user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                // Refresh the page to bring the security gate back down
+                window.location.reload();
+            });
         }
     }
 });
