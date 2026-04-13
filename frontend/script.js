@@ -40,7 +40,7 @@ const authSwitchText = document.getElementById('authSwitchText');
 let isLoginMode = true;
 
 // =====================================================================
-// 🔐 ENTERPRISE SECURITY: COOKIE GATEKEEPER
+// ENTERPRISE SECURITY: COOKIE GATEKEEPER
 // =====================================================================
 document.addEventListener("DOMContentLoaded", () => {
     // 1. Helper function to read browser cookies
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         // 4. Update the UI to greet them personally
         const decodedName = decodeURIComponent(userName); // Fixes spaces in names
-        console.log(`✅ Authentication Passed! Welcome, ${decodedName}`);
+        console.log(`Authentication Passed! Welcome, ${decodedName}`);
         
         const statusText = document.getElementById("statusText");
         if (statusText) {
