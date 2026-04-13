@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // 5. Reveal and activate the Log Out Button
         const logoutBtn = document.getElementById("logoutBtn");
         if (logoutBtn) {
-            logoutBtn.style.display = "inline-block";
+            logoutBtn.style.display = "block";
             logoutBtn.addEventListener("click", () => {
                 // Destroy the cookie by setting its expiration date to the past
                 document.cookie = "ai_va_user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
