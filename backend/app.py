@@ -539,6 +539,64 @@ async def enterprise_query(transcript: str = Form(...), history: str = Form(defa
         raise HTTPException(status_code=500, detail=str(e))
 
 # =====================================================================
+# 🔐 ENTERPRISE SECURITY: GOOGLE SSO (OAUTH 2.0)
+# =====================================================================
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
+GOOGLE_REDIRECT_URI = "http://127.0.0.1:8000/auth/google/callback"
+
+@app.get("/auth/google/login")
+async def google_login():
+    # Step 1: We construct the secure Google Login URL and send the user there.
+    print("🔐 Initiating Google SSO Handshake...")
+    auth_url = (
+        f"https://accounts.google.com/o/oauth2/v2/auth?"
+        f"response_type=code&client_id={GOOGLE_CLIENT_ID}&"
+        f"redirect_uri={GOOGLE_REDIRECT_URI}&"
+        f"scope=openid%20email%20profile&"
+        f"access_type=offline"
+    )
+    return RedirectResponse(auth_url)
+
+@app.get("/auth/google/callback")
+async def google_callback(code: str):
+    try:
+        # Step 2: Google sent them back with a 'code'. We trade it for an Access Token.
+        token_url = "https://oauth2.googleapis.com/token"
+        data = {
+            "code": code,
+            "client_id": GOOGLE_CLIENT_ID,
+            "client_secret": GOOGLE_CLIENT_SECRET,
+            "redirect_uri": GOOGLE_REDIRECT_URI,
+            "grant_type": "authorization_code",
+        }
+        
+        async with httpx.AsyncClient() as client:
+            token_res = await client.post(token_url, data=data)
+            token_data = token_res.json()
+            access_token = token_data.get("access_token")
+
+            # Step 3: We use the Access Token to ask Google for their Email & Name!
+            userinfo_url = "https://www.googleapis.com/oauth2/v2/userinfo"
+            headers = {"Authorization": f"Bearer {access_token}"}
+            user_res = await client.get(userinfo_url, headers=headers)
+            user_data = user_res.json()
+
+        user_email = user_data.get("email")
+        user_name = user_data.get("name")
+        
+        print(f"✅ Secure SSO Login Successful!")
+        print(f"👤 Welcome, {user_name} ({user_email})")
+
+        # Step 4: For now, we just redirect them back to the main frontend dashboard
+        # (In the future, we will save this email to the database for the CRON job!)
+        return RedirectResponse("/")
+
+    except Exception as e:
+        print(f"❌ Google SSO Error: {e}")
+        raise HTTPException(status_code=500, detail="SSO Authentication Failed")
+    
+# =====================================================================
 # THE DISTRIBUTION PLAY (SLACK WEBHOOKS)
 # Role: Pushes insights directly to corporate communication channels.
 # =====================================================================
@@ -604,7 +662,7 @@ async def slack_push(insight: str = Form(...)):
     except Exception as e:
         print(f"❌ Slack Push Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
-    
+   
 # -------------------------------------------------------------------
 # THE CATCH-ALL MUST BE AT THE ABSOLUTE BOTTOM (Right before __main__)
 # -------------------------------------------------------------------
