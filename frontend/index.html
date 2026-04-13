@@ -3,13 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI-VA | CSV Voice Assistant</title>
-    <div style="margin-bottom: 20px;">
-    <button onclick="window.location.href='/auth/google/login'" style="background-color: white; color: #3c4043; border: 1px solid #dadce0; padding: 10px 24px; border-radius: 4px; cursor: pointer; font-weight: 500; font-size: 14px; font-family: 'Google Sans', Roboto, Arial, sans-serif; display: inline-flex; align-items: center; gap: 12px; transition: background-color 0.2s, box-shadow 0.2s; box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3);">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo" style="width: 18px; height: 18px;">
-        Continue with Google
-    </button>
-    </div>
+    <title>AI-VA | Spatial BI & Voice Assistant</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -18,11 +12,23 @@
         <button id="galleryToggleBtn" class="theme-toggle-btn">My Insights</button>
     </div>
     <button id="darkModeToggle" class="theme-fab">🌙</button>
+    
     <div id="authOverlay" class="auth-overlay">
         <div class="auth-card">
             <h2 id="authTitle">Welcome to AI-VA</h2>
             <p id="authSubtitle">Log in to access your spatial dashboard.</p>
             
+            <div style="margin-bottom: 15px; margin-top: 15px; text-align: center;">
+                <button onclick="window.location.href='/auth/google/login'" style="width: 100%; justify-content: center; background-color: white; color: #3c4043; border: 1px solid #dadce0; padding: 10px 24px; border-radius: 4px; cursor: pointer; font-weight: 500; font-size: 14px; font-family: 'Google Sans', Roboto, Arial, sans-serif; display: inline-flex; align-items: center; gap: 12px; transition: background-color 0.2s, box-shadow 0.2s; box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3);">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo" style="width: 18px; height: 18px;">
+                    Continue with Google
+                </button>
+            </div>
+
+            <div style="text-align: center; margin-bottom: 15px; color: #888; font-size: 12px; font-weight: bold;">
+                — OR —
+            </div>
+
             <form id="authForm">
                 <div class="input-group">
                     <label for="emailInput">Work Email</label>
@@ -41,6 +47,7 @@
             </p>
         </div>
     </div>
+
     <div id="gallerySidebar" class="gallery-sidebar">
         <div class="gallery-header">
             <h2>My Saved Insights</h2>
@@ -48,8 +55,9 @@
         </div>
         <div id="galleryContent" class="gallery-content">
             <p class="empty-state">No insights saved yet. Ask your data a question and save the result!</p>
-            </div>
+        </div>
     </div>
+    
     <div class="workspace">
         <div class="visual-pane">
             <div class="placeholder-content upload-card">
@@ -64,7 +72,7 @@
                 </div>
             </div>
             <div id="visualCanvas" style="display: none; width: 100%; height: 100%; position: relative;">
-                </div>
+            </div>
         </div>
 
         <div class="assistant-pane">
@@ -129,7 +137,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <script src="script.js"></script>
 </body>
 </html>
