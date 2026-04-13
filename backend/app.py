@@ -10,6 +10,7 @@ from google import genai
 import io
 from PIL import Image
 import json
+import httpx
 from typing import Optional
 import shutil
 import uuid
