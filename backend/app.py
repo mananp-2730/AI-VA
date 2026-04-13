@@ -589,9 +589,19 @@ async def google_callback(code: str):
         print(f"Secure SSO Login Successful!")
         print(f"Welcome, {user_name} ({user_email})")
 
-        # Step 4: For now, we just redirect them back to the main frontend dashboard
-        # (In the future, we will save this email to the database for the CRON job!)
-        return RedirectResponse("/")
+        # Step 4: Create the redirect response
+        response = RedirectResponse(url="/")
+        
+        # Step 5: Stamp the VIP Pass (Cookie) onto the user's browser!
+        # We store their name, make it last for 7 days (604800 seconds).
+        response.set_cookie(
+            key="ai_va_user", 
+            value=user_name, 
+            max_age=604800, 
+            httponly=False  # False allows our frontend JavaScript to read the name!
+        )
+        
+        return response
 
     except Exception as e:
         print(f"Google SSO Error: {e}")
