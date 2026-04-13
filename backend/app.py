@@ -539,7 +539,7 @@ async def enterprise_query(transcript: str = Form(...), history: str = Form(defa
         raise HTTPException(status_code=500, detail=str(e))
 
 # =====================================================================
-# 🔐 ENTERPRISE SECURITY: GOOGLE SSO (OAUTH 2.0)
+# ENTERPRISE SECURITY: GOOGLE SSO (OAUTH 2.0)
 # =====================================================================
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
@@ -548,7 +548,7 @@ GOOGLE_REDIRECT_URI = "http://127.0.0.1:8000/auth/google/callback"
 @app.get("/auth/google/login")
 async def google_login():
     # Step 1: We construct the secure Google Login URL and send the user there.
-    print("🔐 Initiating Google SSO Handshake...")
+    print("Initiating Google SSO Handshake...")
     auth_url = (
         f"https://accounts.google.com/o/oauth2/v2/auth?"
         f"response_type=code&client_id={GOOGLE_CLIENT_ID}&"
@@ -585,15 +585,15 @@ async def google_callback(code: str):
         user_email = user_data.get("email")
         user_name = user_data.get("name")
         
-        print(f"✅ Secure SSO Login Successful!")
-        print(f"👤 Welcome, {user_name} ({user_email})")
+        print(f"Secure SSO Login Successful!")
+        print(f"Welcome, {user_name} ({user_email})")
 
         # Step 4: For now, we just redirect them back to the main frontend dashboard
         # (In the future, we will save this email to the database for the CRON job!)
         return RedirectResponse("/")
 
     except Exception as e:
-        print(f"❌ Google SSO Error: {e}")
+        print(f"Google SSO Error: {e}")
         raise HTTPException(status_code=500, detail="SSO Authentication Failed")
     
 # =====================================================================
