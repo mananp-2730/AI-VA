@@ -92,6 +92,9 @@ Building AI-VA required balancing technical complexity with a frictionless user 
    Create a .env file in the backend directory and add your Google AI Studio key:
    ```Plaintext
    GEMINI_API_KEY=your_actual_api_key_here
+   GOOGLE_CLIENT_ID=your_oauth_client_id_here
+   GOOGLE_CLIENT_SECRET=your_oauth_client_secret_here
+   SLACK_WEBHOOK_URL=your_slack_webhook_here
 
 5. Launch the Application
    Start the FastAPI server:
