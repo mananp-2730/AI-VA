@@ -102,7 +102,6 @@ Open a modern web browser and navigate to server link (e.g. http://127.0.0.1:800
 
 ## **Future Roadmap**
 * **Cloud Storage Migration:** Transition local file system memory to an AWS S3 bucket to ensure permanent file retention across ephemeral cloud hosting instances.
-* **OAuth 2.0 Integration:** Upgrade the custom authentication pipeline to support Google/Microsoft SSO for enterprise-grade security.
 * **The "Monday Morning" Engine:** Background CRON job that automatically wakes up, analyzes the data, generates the PDF, and prepares the weekly report without the user even logging in.
 
 
