@@ -6,9 +6,11 @@ AI-VA is a cloud-hosted, stateful, multimodal web application that bridges the e
 ## **The Product Vision (The Problem & Solution)**
 * **The Problem:** Enterprise data is locked behind complex SQL queries, static CSVs, or dense visual dashboards. Executives and non-technical stakeholders lack the time to write queries or decipher complex charts to extract actionable insights.
 * **The Solution:** AI-VA acts as an interactive, generative data translator. Users simply speak their questions. AI-VA dynamically queries the database, forecasts trends, generates interactive Chart.js dashboards in the browser, and speaks the strategic insights aloud.
-  
+
 ## **Core Architecture & Enterprise Features**
 * **Multi-Agent Orchestration Pipeline:** Refactored the backend from a monolithic prompt into a modular AI pipeline. A 'Master Orchestrator' API route coordinates tasks between an Agentic SQL Engineer (specialized purely in text-to-SQL) and a Frontend Analyst Agent (specialized in data analysis and JSON UI generation).
+* **Enterprise Security & Google SSO:** Completely overhauled the authentication pipeline to support Google Single Sign-On (OAuth 2.0). Features secure, HTTP cookie-based session management and a seamless bypass of the frontend glass-morphic gatekeeper for verified enterprise users.
+* **Modern Enterprise UI:** Designed a sleek, hidden 'Hamburger' drawer navigation system (sidebar), housing the 'My Insights' gallery and a secure session Log Out sequence to maximize screen real estate for spatial BI analysis.
 * **The Distribution Play (Slack Webhooks):** Engineered a native enterprise integration utilizing Slack's Block Kit API. Executives can instantly push AI-generated strategic insights directly into corporate communication channels with a single click, creating a seamless viral distribution loop.
 * **Comparative BI (Dual-Axis Charts):** Upgraded the Frontend Analyst Agent to automatically detect scale mismatches across multiple metrics (e.g., Revenue vs. Units Sold) and dynamically render dual-axis Chart.js configurations for complex executive analysis.
 * **Enterprise Text-to-SQL Agent:** Users can bypass file uploads entirely. AI-VA translates natural language voice commands into secure, raw SELECT queries, executes them against a live relational database (SQLite), and feeds the data back into the LLM to generate UI components.
@@ -20,9 +22,7 @@ AI-VA is a cloud-hosted, stateful, multimodal web application that bridges the e
 * **Generative BI Dashboards:** Upload a raw .csv file and ask a question. AI-VA acts as a data analyst and frontend developer, dynamically writing and rendering interactive Chart.js graphs directly in the browser.
 * **Spatial Highlighting Engine:** Upload a static dashboard image. AI-VA utilizes Gemini's spatial prompting to return strict bounding-box coordinates [ymin, xmin, ymax, xmax], drawing glowing, real-time CSS highlights over the exact data points being discussed.
 * **Continuous Conversational Loop:** Engineered with a custom Web Speech API integration that auto-mutes the microphone during AI TTS playback and automatically resumes listening, creating a frictionless, hands-free experience.
-* **Secure Authentication Pipeline:** A full-stack security gatekeeper featuring a premium glass-morphic frontend UI wired to a FastAPI backend endpoint, utilizing bcrypt for cryptographic password hashing and SQLAlchemy for ORM.
 * **Conversational Context Engine:** Engineered a rolling memory window array on the client-side that captures recent interactions and feeds them back into the LLM. This enables users to use natural pronouns (e.g., "break *that* down") for seamless, human-like follow-up queries.
-* **Comparative BI (Dual-Axis Charts):** Upgraded the Frontend Analyst Agent to automatically detect scale mismatches across multiple metrics (e.g., Revenue vs. Units Sold) and dynamically render dual-axis Chart.js configurations for complex executive analysis.
 
 ## **PM Thinking & Strategic Trade-Offs**
 Building AI-VA required balancing technical complexity with a frictionless user experience. Here are the key product decisions made during the MVP development:
