@@ -34,23 +34,22 @@ To ensure rapid deployment of the MVP, features were strictly prioritized based 
 * **Must Have (Core MVP):**
   * Seamless Web Speech API integration (STT & TTS) with auto-muting to prevent audio looping.
   * LLM-driven JSON generation to parse data into valid Chart.js configurations.
-  * Secure, authenticated login gateway (FastAPI + bcrypt) to protect sensitive business data.
+  * Enterprise Security Gateway: Secure, authenticated login pipeline featuring Google SSO (OAuth 2.0) and cookie-based session management, alongside traditional bcrypt fallback.
 * **Should Have (Enterprise Value):**
   * Agentic Text-to-SQL translation allowing direct connections to relational databases (SQLite).
   * Modular Multi-Agent architecture separating SQL generation and UI rendering to improve accuracy and allow for independent model scaling.
-  * Persistent session memory (SQLite DB) to allow users to save and reload historical insights.
+  * Persistent session memory (SQLite DB) to allow users to save and reload historical insights via an organized Sidebar Drawer navigation system.
 * **Could Have (The "Wow" Factor):**
-  * Zero-shot predictive analytics ("The Oracle") to mathematically forecast future trends on graphs.
   * Slack Webhook Integrations: 1-click publishing module to push text and graphical insights directly into corporate communication channels.
+  * Zero-shot predictive analytics ("The Oracle") to mathematically forecast future trends on graphs.
   * Spatial image highlighting using bounding box [ymin, xmin, ymax, xmax] coordinates for static dashboard analysis.
   * Automated anomaly detection (The Watchdog) to proactively flag and colorize data outliers.
   * Interactive click-to-query chart drill-downs bridging touch UI with backend SQL generation.
   * Comparative BI capabilities handling complex datasets and dynamically rendering dual-axis charts for metrics on different scales.
 * **Won't Have (Deferred to V2):**
   * Multi-player collaboration (sharing dashboards via URL).
-  * OAuth 2.0 / Google SSO integration.
-  * Automated CRON scheduled reporting.
-  * Slack / MS Teams Webhook integrations.
+  * Automated CRON scheduled reporting (The "Monday Morning" Engine).
+  * Global Database Identity Sync (syncing local storage files across Chrome profiles via backend lookup).
  
 ## **5. Success Metrics (KPIs)**
 How do we know AI-VA is actually solving the problem?
