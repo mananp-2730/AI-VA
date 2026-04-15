@@ -598,12 +598,19 @@ async def google_callback(code: str):
         response = RedirectResponse(url="/")
         
         # Step 5: Stamp the VIP Pass (Cookie) onto the user's browser!
-        # We store their name, make it last for 7 days (604800 seconds).
         response.set_cookie(
             key="ai_va_user", 
             value=user_name, 
             max_age=604800, 
-            httponly=False  # False allows our frontend JavaScript to read the name!
+            httponly=False  
+        )
+        
+        # NEW: Stamp their email so the database knows who owns the data!
+        response.set_cookie(
+            key="ai_va_email", 
+            value=user_email, 
+            max_age=604800, 
+            httponly=False  
         )
         
         return response
