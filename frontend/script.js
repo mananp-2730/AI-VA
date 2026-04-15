@@ -37,7 +37,19 @@ const authSubtitle = document.getElementById('authSubtitle');
 const authSubmitBtn = document.querySelector('.auth-submit');
 const authSwitchText = document.getElementById('authSwitchText');
 
+// ... your existing variables ...
 let isLoginMode = true;
+
+// =====================================================================
+// GLOBAL HELPERS (NEW!)
+// =====================================================================
+// This allows ANY function in this file to read secure cookies!
+const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return decodeURIComponent(parts.pop().split(';').shift());
+    return null;
+};
 
 // =====================================================================
 // ENTERPRISE SECURITY: COOKIE GATEKEEPER
