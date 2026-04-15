@@ -544,7 +544,12 @@ async def enterprise_query(transcript: str = Form(...), history: str = Form(defa
 # =====================================================================
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
-GOOGLE_REDIRECT_URI = "http://127.0.0.1:8000/auth/google/callback"
+
+# Environment Aware Routing: Check if we are on Render or Localhost
+if os.getenv("RENDER"):
+    GOOGLE_REDIRECT_URI = "https://ai-va-7zyw.onrender.com/auth/google/callback"
+else:
+    GOOGLE_REDIRECT_URI = "http://127.0.0.1:8000/auth/google/callback"
 
 @app.get("/auth/google/login")
 async def google_login():
