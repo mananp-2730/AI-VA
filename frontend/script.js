@@ -55,25 +55,20 @@ const getCookie = (name) => {
 // ENTERPRISE SECURITY: COOKIE GATEKEEPER
 // =====================================================================
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Helper function to read browser cookies
-    const getCookie = (name) => {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-        return null;
-    };
+    // DELETED THE OLD getCookie FUNCTION FROM HERE!
+    // It is now safely at the top of your file where everyone can use it.
 
-    // 2. Check if the user has the "VIP Pass" from our Python backend
+    // 1. Check if the user has the "VIP Pass" from our Python backend
     const userName = getCookie("ai_va_user");
     
     if (userName) {
-        // 3. User is verified! Hide the login screen!
+        // 2. User is verified! Hide the login screen!
         const authOverlay = document.getElementById("authOverlay");
         if (authOverlay) {
             authOverlay.style.display = "none";
         }
         
-        // 4. Update the UI to greet them personally
+        // 3. Update the UI to greet them personally
         const decodedName = decodeURIComponent(userName);
         console.log(`Authentication Passed! Welcome, ${decodedName}`);
         
@@ -83,13 +78,15 @@ document.addEventListener("DOMContentLoaded", () => {
             statusText.style.color = "#10b981"; // Success Green
         }
 
-        // 5. Reveal and activate the Log Out Button
+        // 4. Reveal and activate the Log Out Button
         const logoutBtn = document.getElementById("logoutBtn");
         if (logoutBtn) {
             logoutBtn.style.display = "block";
             logoutBtn.addEventListener("click", () => {
-                // Destroy the cookie by setting its expiration date to the past
+                // NEW: Destroy BOTH cookies by setting their expiration dates to the past!
                 document.cookie = "ai_va_user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = "ai_va_email=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                
                 // Refresh the page to bring the security gate back down
                 window.location.reload();
             });
