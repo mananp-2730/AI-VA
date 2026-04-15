@@ -209,8 +209,8 @@ def login_user(request: LoginRequest, db: Session = Depends(get_db)):
 # --- THE MEMORY PIPELINE (PHASE 4) ---
 @app.post("/api/save_session")
 def save_session(request: SaveSessionRequest, db: Session = Depends(get_db)):
-    # NEW: Clean the email string to fix browser %40 encoding!
-    clean_email = request.email.replace("%40", "@")
+    # NEW: Clean the %40 encoding AND strip phantom quotes!
+    clean_email = request.email.replace("%40", "@").strip('"')
     
     # 1. Verify the user exists using the clean email
     user = db.query(User).filter(User.email == clean_email).first()
