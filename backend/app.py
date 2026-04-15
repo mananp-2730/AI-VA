@@ -108,7 +108,11 @@ class User(Base):
 # NEW: 4.5. Define the Saved Sessions Table (The Memory)
 class SavedSession(Base):
     __tablename__ = "saved_sessions"
+    id = Column(Integer, primary_key=True, index=True)
     
+    # NEW: The Global Identity Tracker
+    user_email = Column(String, index=True)
+
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
     query_text = Column(Text)
