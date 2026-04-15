@@ -683,7 +683,8 @@ closeGalleryBtn.addEventListener('click', () => {
 // 1. Save the current insight to SQLite
 saveInsightBtn.addEventListener('click', async () => {
     // NEW: Grab the email from the Google SSO Cookie instead of localStorage!
-    const userEmail = getCookie("ai_va_email"); 
+    // Decode the email so manan%40gmail.com perfectly matches manan@gmail.com!
+const userEmail = decodeURIComponent(getCookie("ai_va_email"));
     
     if (!userEmail) {
         alert("Authentication error. Please log in again.");
