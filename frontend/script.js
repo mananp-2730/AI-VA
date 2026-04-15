@@ -682,7 +682,9 @@ closeGalleryBtn.addEventListener('click', () => {
 
 // 1. Save the current insight to SQLite
 saveInsightBtn.addEventListener('click', async () => {
-    const userEmail = localStorage.getItem('aiva_user_email');
+    // NEW: Grab the email from the Google SSO Cookie instead of localStorage!
+    const userEmail = getCookie("ai_va_email"); 
+    
     if (!userEmail) {
         alert("Authentication error. Please log in again.");
         return;
