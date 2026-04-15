@@ -722,14 +722,19 @@ saveInsightBtn.addEventListener('click', async () => {
 
 // 2. Fetch and render the user's history
 async function loadGallery() {
-    const userEmail = localStorage.getItem('aiva_user_email');
-    if (!userEmail) return;
+    // NEW: Grab the email from the Google SSO Cookie instead of localStorage!
+    const userEmail = getCookie("ai_va_email"); 
+    
+    if (!userEmail) {
+        console.warn("No user logged in. Skipping gallery sync.");
+        return;
+    }
 
     try {
         const response = await fetch('/api/my_sessions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: userEmail })
+            body: JSON.stringify({ email: userEmail }) // Pass the cookie email!
         });
 
         const data = await response.json();
