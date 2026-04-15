@@ -209,8 +209,11 @@ def login_user(request: LoginRequest, db: Session = Depends(get_db)):
 # --- THE MEMORY PIPELINE (PHASE 4) ---
 @app.post("/api/save_session")
 def save_session(request: SaveSessionRequest, db: Session = Depends(get_db)):
-    # 1. Verify the user exists
-    user = db.query(User).filter(User.email == request.email).first()
+    # NEW: Clean the email string to fix browser %40 encoding!
+    clean_email = request.email.replace("%40", "@")
+    
+    # 1. Verify the user exists using the clean email
+    user = db.query(User).filter(User.email == clean_email).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found.")
     
@@ -220,7 +223,7 @@ def save_session(request: SaveSessionRequest, db: Session = Depends(get_db)):
         query_text=request.query_text,
         ai_response=request.ai_response,
         chart_config=request.chart_config,
-        file_path=request.file_path # NEW: Save it to SQLite!
+        file_path=request.file_path
     )
     
     # 3. Write to the database
@@ -229,17 +232,20 @@ def save_session(request: SaveSessionRequest, db: Session = Depends(get_db)):
     
     return {"status": "success", "message": "Insight securely saved to gallery."}
 
+
 @app.post("/api/my_sessions")
 def get_my_sessions(request: GetSessionsRequest, db: Session = Depends(get_db)):
+    # NEW: Clean the email string
+    clean_email = request.email.replace("%40", "@")
+    
     # 1. Verify the user exists
-    user = db.query(User).filter(User.email == request.email).first()
+    user = db.query(User).filter(User.email == clean_email).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found.")
     
-    # 2. Fetch all sessions for this specific user, newest first
+    # ... (Keep the rest of your fetching logic exactly the same) ...
     sessions = db.query(SavedSession).filter(SavedSession.user_id == user.id).order_by(SavedSession.created_at.desc()).all()
     
-    # 3. Package the data to send back to the frontend
     session_list = []
     for s in sessions:
         session_list.append({
@@ -252,14 +258,18 @@ def get_my_sessions(request: GetSessionsRequest, db: Session = Depends(get_db)):
         
     return {"status": "success", "sessions": session_list}
 
+
 @app.post("/api/get_session")
 def get_single_session(request: GetSingleSessionRequest, db: Session = Depends(get_db)):
+    # NEW: Clean the email string
+    clean_email = request.email.replace("%40", "@")
+    
     # 1. Verify the user exists
-    user = db.query(User).filter(User.email == request.email).first()
+    user = db.query(User).filter(User.email == clean_email).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found.")
     
-    # 2. Fetch the specific session from the database, ensuring it belongs to this exact user
+    # ... (Keep the rest of your fetching logic exactly the same) ...
     session = db.query(SavedSession).filter(
         SavedSession.id == request.session_id,
         SavedSession.user_id == user.id
@@ -268,13 +278,12 @@ def get_single_session(request: GetSingleSessionRequest, db: Session = Depends(g
     if not session:
         raise HTTPException(status_code=404, detail="Session not found or access denied.")
         
-    # 3. Package the exact memory to send back to the frontend
     return {
         "status": "success",
         "query_text": session.query_text,
         "ai_response": session.ai_response,
         "chart_config": session.chart_config,
-        "file_path": session.file_path, # NEW: Hand it back to the UI!
+        "file_path": session.file_path,
         "created_at": session.created_at.isoformat()
     }
 
