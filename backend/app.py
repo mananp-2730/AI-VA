@@ -569,7 +569,7 @@ async def google_login():
     return RedirectResponse(auth_url)
 
 @app.get("/auth/google/callback")
-async def google_callback(code: str):
+async def google_callback(code: str, db: Session = Depends(get_db)):
     try:
         # Step 2: Google sent them back with a 'code'. We trade it for an Access Token.
         token_url = "https://oauth2.googleapis.com/token"
@@ -595,6 +595,22 @@ async def google_callback(code: str):
         user_email = user_data.get("email")
         user_name = user_data.get("name")
         
+        # ==========================================
+        # THE DATABASE BRIDGE
+        # ==========================================
+        # Check if this Google user exists in our SQLite database
+        db_user = db.query(User).filter(User.email == user_email).first()
+        
+        # If they don't exist, we create an account for them automatically!
+        if not db_user:
+            print(f"Creating new Enterprise user for {user_email}")
+            # We give them a dummy password since Google handles their real security
+            new_user = User(email=user_email, password_hash="google_sso_verified")
+            db.add(new_user)
+            db.commit()
+            db.refresh(new_user)
+        # ==========================================
+        
         print(f"Secure SSO Login Successful!")
         print(f"Welcome, {user_name} ({user_email})")
 
@@ -602,20 +618,8 @@ async def google_callback(code: str):
         response = RedirectResponse(url="/")
         
         # Step 5: Stamp the VIP Pass (Cookie) onto the user's browser!
-        response.set_cookie(
-            key="ai_va_user", 
-            value=user_name, 
-            max_age=604800, 
-            httponly=False  
-        )
-        
-        # NEW: Stamp their email so the database knows who owns the data!
-        response.set_cookie(
-            key="ai_va_email", 
-            value=user_email, 
-            max_age=604800, 
-            httponly=False  
-        )
+        response.set_cookie(key="ai_va_user", value=user_name, max_age=604800, httponly=False)
+        response.set_cookie(key="ai_va_email", value=user_email, max_age=604800, httponly=False)
         
         return response
 
