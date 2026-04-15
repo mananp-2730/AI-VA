@@ -41,13 +41,19 @@ const authSwitchText = document.getElementById('authSwitchText');
 let isLoginMode = true;
 
 // =====================================================================
-// GLOBAL HELPERS (NEW!)
+// GLOBAL HELPERS
 // =====================================================================
-// This allows ANY function in this file to read secure cookies!
 const getCookie = (name) => {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return decodeURIComponent(parts.pop().split(';').shift());
+    if (parts.length === 2) {
+        let val = decodeURIComponent(parts.pop().split(';').shift());
+        // 🚀 THE FIX: If FastAPI wrapped it in quotes, chop them off!
+        if (val.startsWith('"') && val.endsWith('"')) {
+            val = val.slice(1, -1);
+        }
+        return val;
+    }
     return null;
 };
 
