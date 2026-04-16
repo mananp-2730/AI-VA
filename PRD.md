@@ -26,7 +26,7 @@
 4. **Consume:** The user hears the spoken strategic insight while a dynamic Chart.js graph renders instantly on their screen.
 5. **Contextual Follow-up:** The user asks a pronoun-driven follow-up question (e.g., "Break *that* down by region"). The Context Engine feeds the rolling memory back into the SQL Agent for seamless conversational continuity.
 6. **Drill-Down:** The user physically clicks a concerning data point on the rendered chart, automatically triggering a deeper, granular SQL query without needing to use the microphone again.
-7. **Retain:** The user clicks "Save to My Insights" to permanently store the session in the Time Machine gallery (accessed via the Sidebar Menu) for future reference.
+7. **Retain:** The user clicks "Save to My Insights" to permanently store the session in the Time Machine gallery (accessed via the Sidebar Menu). The session is permanently synced to their Google Identity.
 8. **Distribute:** The user clicks "Download Exec Summary" to instantly package the visual chart and AI text insight into a branded, boardroom-ready PDF document, or pushes the insight directly to corporate Slack channels.
 
 ## **4. Feature Prioritization (MoSCoW Framework)**
