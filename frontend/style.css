@@ -18,18 +18,19 @@ body {
 /* --- LEFT PANE (The Stage) --- */
 .visual-pane {
     flex: 1; /* Takes up all remaining space */
-    background-color: #e8eaed; /* (Note: feel free to change this back to your dark mode color if needed!) */
+    background-color: #1e293b; /* Or whatever your dark mode color is */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 40px;
     
-    /* THE STRAITJACKET RULES FOR CHART.JS */
-    position: relative; /* CRITICAL: Tells Chart.js where its boundaries are */
-    overflow: hidden; /* CRITICAL: Stops the X-axis from pushing off the screen */
-    min-height: 0; /* CRITICAL: Forces Flexbox to allow shrinking when you zoom back out */
+    /* THE STRAITJACKET FOR THE PARENT */
+    position: relative; 
+    overflow: hidden; 
+    min-height: 0; /* Forces Flexbox to allow shrinking */
     width: 100%;
+    height: 100vh; /* Lock it to the viewport height */
 }
 
 .placeholder-content {
