@@ -17,20 +17,30 @@ body {
 
 /* --- LEFT PANE (The Stage) --- */
 .visual-pane {
-    flex: 1; /* Takes up all remaining space */
-    background-color: #1e293b; /* Or whatever your dark mode color is */
+    flex: 1; 
+    background-color: #1e293b; /* Or your dark mode color */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 40px;
-    
-    /* THE STRAITJACKET FOR THE PARENT */
     position: relative; 
     overflow: hidden; 
-    min-height: 0; /* Forces Flexbox to allow shrinking */
+    min-height: 0; 
     width: 100%;
-    height: 100vh; /* Lock it to the viewport height */
+    height: 100vh; 
+    box-sizing: border-box; /* THE NEW FIX: Keeps padding inside the 100vh! */
+}
+
+/* --- THE CANVAS WRAPPER --- */
+#visualCanvas {
+    position: relative;
+    width: 100%;
+    flex: 1; 
+    min-height: 0; 
+    display: flex; /* THE NEW FIX: Forces it to properly hug the chart */
+    justify-content: center;
+    align-items: center;
 }
 
 .placeholder-content {
