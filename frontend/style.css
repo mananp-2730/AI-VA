@@ -18,29 +18,32 @@ body {
 /* --- LEFT PANE (The Stage) --- */
 .visual-pane {
     flex: 1; 
-    background-color: #1e293b; /* Or your dark mode color */
+    background-color: #1a1a2e; /* Or your dark mode color */
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start; /* 🚀 CHANGED: Makes content start at the top so scrolling works perfectly */
     padding: 40px;
-    position: relative; 
-    overflow: hidden; 
-    min-height: 0; 
-    width: 100%;
+    position: sticky; 
+    top: 0; 
     height: 100vh; 
-    box-sizing: border-box; /* THE NEW FIX: Keeps padding inside the 100vh! */
+    box-sizing: border-box; 
+    
+    /* YOUR BRILLIANT IDEA: Conditional Vertical Scrollbar! */
+    overflow-y: auto; 
+    overflow-x: hidden; 
 }
 
 /* --- THE CANVAS WRAPPER --- */
 #visualCanvas {
     position: relative;
     width: 100%;
-    flex: 1; 
-    min-height: 0; 
-    display: flex; /* THE NEW FIX: Forces it to properly hug the chart */
-    justify-content: center;
-    align-items: center;
+    
+    /* THE TRIGGER: Force the chart to be a readable size. 
+       If the screen is smaller than this, your scrollbar activates! */
+    min-height: 500px; 
+    display: block; 
+    margin-top: 20px;
 }
 
 .placeholder-content {
