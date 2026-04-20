@@ -464,6 +464,14 @@ async function sendDataToBackend(transcript) {
         }
     }
 
+    // Inside sendDataToBackend(), right before the fetch() block:
+    // Hide existing canvas and show skeleton
+    const canvasContainer = document.getElementById('visualCanvas');
+    if (canvasContainer) canvasContainer.style.display = 'none';
+
+    const skeleton = document.getElementById('skeletonLoader');
+    if (skeleton) skeleton.style.display = 'flex';
+
     // --- THE FETCH REQUEST ---
     try {
         const response = await fetch(apiUrl, {
