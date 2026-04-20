@@ -40,6 +40,35 @@ const authSwitchText = document.getElementById('authSwitchText');
 // ... your existing variables ...
 let isLoginMode = true;
 
+/* =========================================
+   ENTERPRISE CHART.JS GLOBAL THEME
+   ========================================= */
+
+// 1. Sleek Corporate Typography
+Chart.defaults.font.family = "'Inter', 'Segoe UI', 'Roboto', sans-serif";
+Chart.defaults.font.size = 13;
+Chart.defaults.color = '#94a3b8'; // Soft slate gray for text
+
+// 2. Premium Tooltips (Dark Glassmorphism)
+Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(15, 23, 42, 0.9)';
+Chart.defaults.plugins.tooltip.titleFont = { size: 14, weight: 'bold', family: "'Inter', sans-serif" };
+Chart.defaults.plugins.tooltip.bodyFont = { size: 13, family: "'Inter', sans-serif" };
+Chart.defaults.plugins.tooltip.padding = 12;
+Chart.defaults.plugins.tooltip.cornerRadius = 8;
+Chart.defaults.plugins.tooltip.displayColors = false; // Hides the clunky color box in tooltips
+
+// 3. Subtle, Professional Grid Lines
+Chart.defaults.scale.grid.color = 'rgba(148, 163, 184, 0.1)'; // Barely visible grid
+Chart.defaults.scale.grid.borderColor = 'transparent'; // Removes harsh outer borders
+
+// 4. Smooth Elements
+Chart.defaults.elements.bar.borderRadius = 6; // Beautifully rounded bar charts
+Chart.defaults.elements.bar.borderSkipped = false;
+Chart.defaults.elements.line.tension = 0.4; // Smooth, sweeping curves instead of jagged spikes
+Chart.defaults.elements.line.borderWidth = 3;
+Chart.defaults.elements.point.radius = 4;
+Chart.defaults.elements.point.hoverRadius = 7;
+
 // =====================================================================
 // GLOBAL HELPERS
 // =====================================================================
@@ -288,7 +317,7 @@ function renderChart(config) {
 
     const canvasContainer = document.getElementById('visualCanvas');
     if (canvasContainer) canvasContainer.style.display = 'block';
-    
+
 }
 // Listen for file uploads and validate/display
 csvFileInput.addEventListener('change', function() {
