@@ -281,6 +281,14 @@ function renderChart(config) {
     // Render the new interactive chart!
     window.currentChart = new Chart(ctx, config);
     container.style.display = 'block'; // Ensure the container is visible
+
+    // Hide skeleton and reveal the beautiful new chart!
+    const skeleton = document.getElementById('skeletonLoader');
+    if (skeleton) skeleton.style.display = 'none';
+
+    const canvasContainer = document.getElementById('visualCanvas');
+    if (canvasContainer) canvasContainer.style.display = 'block';
+    
 }
 // Listen for file uploads and validate/display
 csvFileInput.addEventListener('change', function() {
