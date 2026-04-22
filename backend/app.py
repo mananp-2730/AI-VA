@@ -459,12 +459,16 @@ def agent_sql_engineer(transcript: str, history: str) -> str:
     Use the following schema:
     {dynamic_schema}
     
-    Previous Conversation History (Use this for context if the user uses pronouns like "it", "them", or asks a follow-up question):
+    Previous Conversation History:
     {history}
     
     Current User Request: "{transcript}"
     
-    CRITICAL INSTRUCTION: Return ONLY the raw SQL query. No markdown, no explanations. Just the SELECT statement.
+    CRITICAL ERROR HANDLING RULE (NET 1):
+    If the user asks a question that is completely unrelated to our business database (e.g., "what is the weather", "write a poem", or asks about products/data we do not have), DO NOT write a SQL query.
+    Instead, return exactly this string: "IRRELEVANT_QUERY"
+    
+    CRITICAL INSTRUCTION: Return ONLY the raw SQL query (or the error string). No markdown, no explanations. Just the SELECT statement.
     """
     
     sql_response = client.models.generate_content(
