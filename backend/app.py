@@ -541,7 +541,7 @@ async def enterprise_query(transcript: str = Form(...), history: str = Form(defa
             }
 
         # Step 2: Orchestrator handles the secure Database Execution
-        print("🗄️ Master: Executing Query on Database...")
+        print("Master: Executing Query on Database...")
         conn = sqlite3.connect('enterprise_data.db')
         df = pd.read_sql_query(raw_sql, conn)
         conn.close()
