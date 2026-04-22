@@ -530,6 +530,16 @@ async def enterprise_query(transcript: str = Form(...), history: str = Form(defa
         raw_sql = agent_sql_engineer(transcript, history)
         print(f"✅ SQL Engineer Returned: {raw_sql}")
 
+        # 🚀 NET 1 INTERCEPT: Check if the AI refused the question
+        if "IRRELEVANT_QUERY" in raw_sql:
+            print("🛡️ Net 1 Activated: Blocked irrelevant query.")
+            return {
+                "status": "success", 
+                "response": "I'm sorry, but I don't have access to that specific data in my current database. I can help you analyze our sales, revenue, or active projects instead! What would you like to see?", 
+                "chart_config": None,
+                "sql_query": "Query aborted: Irrelevant context." 
+            }
+
         # Step 2: Orchestrator handles the secure Database Execution
         print("🗄️ Master: Executing Query on Database...")
         conn = sqlite3.connect('enterprise_data.db')
@@ -549,12 +559,18 @@ async def enterprise_query(transcript: str = Form(...), history: str = Form(defa
             "status": "success", 
             "response": parsed_data.get("response", "I have analyzed the database."), 
             "chart_config": parsed_data.get("chart_config", None),
-            "sql_query": raw_sql # We send the raw SQL to the frontend to prove it worked!
+            "sql_query": raw_sql
         }
 
     except Exception as e:
-        print(f"❌ Critical Orchestration Error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        # 🚀 NET 2 CATCH: Database crash, SQL syntax error, or missing columns
+        print(f"🛡️ Net 2 Activated - CRASH AVOIDED: {str(e)}")
+        return {
+            "status": "success", # Return success so the frontend doesn't throw a 500 error page!
+            "response": "I encountered a slight hiccup trying to pull that exact data. Could you try rephrasing the question, or ask me for a high-level overview instead?",
+            "chart_config": None,
+            "sql_query": "Execution Failed."
+        }
 
 # =====================================================================
 # ENTERPRISE SECURITY: GOOGLE SSO (OAUTH 2.0)
