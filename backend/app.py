@@ -564,7 +564,7 @@ async def enterprise_query(transcript: str = Form(...), history: str = Form(defa
 
     except Exception as e:
         # NET 2 CATCH: Database crash, SQL syntax error, or missing columns
-        print(f"🛡️ Net 2 Activated - CRASH AVOIDED: {str(e)}")
+        print(f"Net 2 Activated - CRASH AVOIDED: {str(e)}")
         return {
             "status": "success", # Return success so the frontend doesn't throw a 500 error page!
             "response": "I encountered a slight hiccup trying to pull that exact data. Could you try rephrasing the question, or ask me for a high-level overview instead?",
