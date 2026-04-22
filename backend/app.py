@@ -530,7 +530,7 @@ async def enterprise_query(transcript: str = Form(...), history: str = Form(defa
         raw_sql = agent_sql_engineer(transcript, history)
         print(f"✅ SQL Engineer Returned: {raw_sql}")
 
-        # 🚀 NET 1 INTERCEPT: Check if the AI refused the question
+        # NET 1 INTERCEPT: Check if the AI refused the question
         if "IRRELEVANT_QUERY" in raw_sql:
             print("🛡️ Net 1 Activated: Blocked irrelevant query.")
             return {
