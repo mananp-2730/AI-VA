@@ -532,7 +532,7 @@ async def enterprise_query(transcript: str = Form(...), history: str = Form(defa
 
         # NET 1 INTERCEPT: Check if the AI refused the question
         if "IRRELEVANT_QUERY" in raw_sql:
-            print("🛡️ Net 1 Activated: Blocked irrelevant query.")
+            print("Net 1 Activated: Blocked irrelevant query.")
             return {
                 "status": "success", 
                 "response": "I'm sorry, but I don't have access to that specific data in my current database. I can help you analyze our sales, revenue, or active projects instead! What would you like to see?", 
