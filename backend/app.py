@@ -563,7 +563,7 @@ async def enterprise_query(transcript: str = Form(...), history: str = Form(defa
         }
 
     except Exception as e:
-        # 🚀 NET 2 CATCH: Database crash, SQL syntax error, or missing columns
+        # NET 2 CATCH: Database crash, SQL syntax error, or missing columns
         print(f"🛡️ Net 2 Activated - CRASH AVOIDED: {str(e)}")
         return {
             "status": "success", # Return success so the frontend doesn't throw a 500 error page!
