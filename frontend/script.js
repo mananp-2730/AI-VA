@@ -937,7 +937,7 @@ galleryToggleBtn.addEventListener('click', () => {
 });
 
 // =====================================================================
-// EPIC 8: BOARDROOM-READY PDF GENERATOR (html2pdf.js) - FIXED
+// EPIC 8: BOARDROOM-READY PDF GENERATOR (html2pdf.js) - THE ULTIMATE FIX
 // =====================================================================
 document.getElementById('downloadPdfBtn').addEventListener('click', function() {
     const originalText = this.innerText;
@@ -969,31 +969,49 @@ document.getElementById('downloadPdfBtn').addEventListener('click', function() {
             imgElement.style.display = 'none'; // Hide if it was just a text answer
         }
 
-        // 4. THE FIX: Hide it BEHIND the main UI so the browser is forced to draw it!
+        // 4. THE FIX: The "Overflow & Paint" Hack
         const template = document.getElementById('pdfReportTemplate');
         template.style.display = 'block';
         template.style.position = 'absolute';
         template.style.top = '0';
         template.style.left = '0';
-        template.style.zIndex = '-9999'; // Trapped behind the workspace!
+        template.style.zIndex = '-1'; // Keep it securely behind the main workspace
+
+        // CRITICAL: We must temporarily kill the body's scroll lock, otherwise
+        // the browser acts like a guillotine and cuts off the invisible template!
+        const originalOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'visible';
 
         // 5. Configure the PDF settings
         const opt = {
             margin:       0.5,
             filename:     'AIVA_Strategic_Insight.pdf',
             image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true }, 
+            html2canvas:  { scale: 2, useCORS: true, scrollY: 0 }, // Forces the engine to start at the top
             jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
         };
 
-        // 6. THE FIX: Wait for the promise to COMPLETELY finish before hiding it again
-        html2pdf().set(opt).from(template).save().then(() => {
-            template.style.display = 'none'; // Only hide it AFTER download triggers
-            console.log("🎉 SUCCESS: Boardroom PDF Generated!");
-            
-            this.innerText = originalText;
-            this.disabled = false;
-        });
+        // 6. THE TIMING FIX: Give the browser 150ms to actually paint the image onto the DOM
+        setTimeout(() => {
+            html2pdf().set(opt).from(template).save().then(() => {
+                
+                // 7. CLEANUP: Hide the template and lock the body back up!
+                template.style.display = 'none';
+                document.body.style.overflow = originalOverflow;
+                
+                console.log("🎉 SUCCESS: Boardroom PDF Generated!");
+                
+                // Reset the button
+                document.getElementById('downloadPdfBtn').innerText = originalText;
+                document.getElementById('downloadPdfBtn').disabled = false;
+                
+            }).catch(err => {
+                console.error("PDF Engine Error:", err);
+                document.body.style.overflow = originalOverflow;
+                document.getElementById('downloadPdfBtn').innerText = originalText;
+                document.getElementById('downloadPdfBtn').disabled = false;
+            });
+        }, 150);
 
     } catch (error) {
         console.error("❌ PDF Generation Error:", error);
