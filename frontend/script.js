@@ -937,9 +937,9 @@ galleryToggleBtn.addEventListener('click', () => {
 });
 
 // =====================================================================
-// EPIC 8: BOARDROOM-READY PDF GENERATOR (html2pdf.js)
+// EPIC 8: BOARDROOM-READY PDF GENERATOR (html2pdf.js) - FIXED
 // =====================================================================
-document.getElementById('downloadPdfBtn').addEventListener('click', async function() {
+document.getElementById('downloadPdfBtn').addEventListener('click', function() {
     const originalText = this.innerText;
     this.innerText = "Generating PDF...";
     this.disabled = true;
@@ -969,30 +969,35 @@ document.getElementById('downloadPdfBtn').addEventListener('click', async functi
             imgElement.style.display = 'none'; // Hide if it was just a text answer
         }
 
-        // 4. Unhide the template momentarily (off-screen) so html2pdf can read it
+        // 4. THE FIX: Hide it BEHIND the main UI so the browser is forced to draw it!
         const template = document.getElementById('pdfReportTemplate');
         template.style.display = 'block';
         template.style.position = 'absolute';
-        template.style.left = '-9999px';
+        template.style.top = '0';
+        template.style.left = '0';
+        template.style.zIndex = '-9999'; // Trapped behind the workspace!
 
         // 5. Configure the PDF settings
         const opt = {
-            margin:       0.5, // Half-inch margins
+            margin:       0.5,
             filename:     'AIVA_Strategic_Insight.pdf',
             image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true }, // Scale 2 ensures crisp retina text
+            html2canvas:  { scale: 2, useCORS: true }, 
             jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
         };
 
-        // 6. Generate, trigger download, and clean up!
-        await html2pdf().set(opt).from(template).save();
-        template.style.display = 'none';
-        
-        console.log("🎉 SUCCESS: Boardroom PDF Generated!");
+        // 6. THE FIX: Wait for the promise to COMPLETELY finish before hiding it again
+        html2pdf().set(opt).from(template).save().then(() => {
+            template.style.display = 'none'; // Only hide it AFTER download triggers
+            console.log("🎉 SUCCESS: Boardroom PDF Generated!");
+            
+            this.innerText = originalText;
+            this.disabled = false;
+        });
+
     } catch (error) {
         console.error("❌ PDF Generation Error:", error);
         alert("Failed to generate PDF. Please try again.");
-    } finally {
         this.innerText = originalText;
         this.disabled = false;
     }
