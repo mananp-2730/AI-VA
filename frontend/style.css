@@ -676,3 +676,70 @@ body.dark-theme .gallery-response { color: #9aa0a6; }
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
 }
+
+/* =========================================
+   🚀 BOARDROOM PDF REPORT STYLES
+   ========================================= */
+#pdfReportTemplate {
+    width: 800px; /* Standard A4 width ratio */
+    padding: 40px;
+    background-color: #ffffff; 
+    color: #202124;
+}
+.pdf-header {
+    border-bottom: 3px solid #1a73e8;
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+.pdf-header h2 {
+    margin: 0;
+    color: #1a73e8;
+    font-size: 28px;
+}
+.pdf-header p {
+    margin: 0;
+    color: #5f6368;
+    font-weight: bold;
+}
+.pdf-section {
+    margin-bottom: 30px;
+}
+.pdf-section h3 {
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #1a73e8;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 5px;
+}
+.pdf-section p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #3c4043;
+}
+.pdf-chart-container {
+    width: 100%;
+    text-align: center;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+#pdfChartImage {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.pdf-footer {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 12px;
+    color: #9aa0a6;
+    border-top: 1px solid #e0e0e0;
+    padding-top: 10px;
+}
