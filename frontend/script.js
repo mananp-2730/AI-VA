@@ -937,91 +937,128 @@ galleryToggleBtn.addEventListener('click', () => {
 });
 
 // =====================================================================
-// EPIC 8: BOARDROOM-READY PDF GENERATOR - THE BULLETPROOF SWAP
+// EPIC 8: TRUE ENTERPRISE VECTOR PDF GENERATOR (Native jsPDF)
 // =====================================================================
-document.getElementById('downloadPdfBtn').addEventListener('click', function() {
+document.getElementById('downloadPdfBtn').addEventListener('click', async function() {
     const originalText = this.innerText;
-    this.innerText = "Compiling Document...";
+    this.innerText = "Compiling Report...";
     this.disabled = true;
 
     try {
-        console.log("📄 Starting High-Res PDF Generation...");
+        console.log("📄 Starting Native Vector PDF Compilation...");
         
-        // 1. Grab the active conversational data
+        // 1. Initialize the jsPDF Engine
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ orientation: "portrait", unit: "in", format: "letter" });
+
+        // 2. Data Extraction
         const queryText = currentQueryText || "No query provided.";
         const insightText = currentAiResponse || "No insight generated.";
         
-        // 2. Populate our hidden HTML template
-        document.getElementById('pdfDate').innerText = new Date().toLocaleDateString();
-        document.getElementById('pdfQuery').innerText = `"${queryText}"`;
-        document.getElementById('pdfInsight').innerText = insightText;
-
-        // 3. Extract the Chart.js canvas as a high-res image
         const chartContainer = document.getElementById('visualCanvas');
         const canvas = chartContainer.tagName === 'CANVAS' ? chartContainer : chartContainer.querySelector('canvas');
-        const imgElement = document.getElementById('pdfChartImage');
+        let chartImgData = null;
         
+        // Force a white background on the chart before taking the snapshot,
+        // otherwise dark mode transparent charts look black on the PDF!
         if (canvas) {
-            imgElement.src = canvas.toDataURL("image/png", 1.0);
-            imgElement.style.display = 'block';
-        } else {
-            imgElement.style.display = 'none'; 
+            const ctx = canvas.getContext('2d');
+            ctx.save();
+            ctx.globalCompositeOperation = 'destination-over';
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            chartImgData = canvas.toDataURL("image/png", 1.0);
+            ctx.restore();
         }
 
-        // 4. 🚀 THE BULLETPROOF FIX: The Hide & Swap Hack
-        const workspace = document.querySelector('.workspace');
-        const template = document.getElementById('pdfReportTemplate');
+        // ==========================================
+        // THE DOCUMENT LAYOUT ARCHITECTURE
+        // ==========================================
+
+        // --- 1. PREMIUM HEADER BANNER ---
+        doc.setFillColor(15, 23, 42); // Deep corporate slate #0f172a
+        doc.rect(0, 0, 8.5, 1.2, 'F'); 
         
-        // Release the CSS locks temporarily!
-        const originalOverflow = document.body.style.overflow;
-        const originalHeight = document.body.style.height;
-        document.body.style.overflow = 'auto';
-        document.body.style.height = 'auto';
+        doc.setTextColor(255, 255, 255);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(22);
+        doc.text("STRATEGIC INSIGHT REPORT", 0.5, 0.7);
+        
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+        doc.setTextColor(148, 163, 184); // Soft gray
+        doc.text(`Generated: ${new Date().toLocaleDateString()}`, 6.5, 0.7);
 
-        // Swap visibility so the template is the ONLY thing on the screen
-        workspace.style.display = 'none';
-        template.style.display = 'block';
-        template.style.margin = '0 auto'; // Center it nicely
+        // --- 2. EXECUTIVE QUERY SECTION ---
+        doc.setTextColor(30, 41, 59); // Dark slate text
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(12);
+        doc.text("EXECUTIVE QUERY", 0.5, 1.8);
+        
+        doc.setDrawColor(226, 232, 240); // Light gray line
+        doc.setLineWidth(0.02);
+        doc.line(0.5, 1.9, 8.0, 1.9); // Horizontal divider
+        
+        doc.setFont("helvetica", "italic");
+        doc.setFontSize(11);
+        doc.setTextColor(71, 85, 105);
+        // Automatically wrap long text!
+        const splitQuery = doc.splitTextToSize(`"${queryText}"`, 7.5); 
+        doc.text(splitQuery, 0.5, 2.15);
 
-        // 5. Configure the PDF settings
-        const opt = {
-            margin:       0.5,
-            filename:     'AIVA_Strategic_Insight.pdf',
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
-            jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-        };
+        // Calculate where the next section should start dynamically
+        let currentY = 2.15 + (splitQuery.length * 0.2) + 0.4;
 
-        // 6. Give the browser 200ms to paint the canvas image, then capture!
-        setTimeout(() => {
-            html2pdf().set(opt).from(template).save().then(() => {
-                
-                // 7. CLEANUP: Swap everything back to normal!
-                template.style.display = 'none';
-                workspace.style.display = 'flex';
-                document.body.style.overflow = originalOverflow;
-                document.body.style.height = originalHeight;
-                
-                console.log("🎉 SUCCESS: Boardroom PDF Generated!");
-                
-                document.getElementById('downloadPdfBtn').innerText = originalText;
-                document.getElementById('downloadPdfBtn').disabled = false;
-                
-            }).catch(err => {
-                // If it fails, restore the UI anyway!
-                console.error("PDF Engine Error:", err);
-                template.style.display = 'none';
-                workspace.style.display = 'flex';
-                document.body.style.overflow = originalOverflow;
-                document.body.style.height = originalHeight;
-                document.getElementById('downloadPdfBtn').innerText = originalText;
-                document.getElementById('downloadPdfBtn').disabled = false;
-            });
-        }, 200); 
+        // --- 3. STRATEGIC ANALYSIS SECTION ---
+        doc.setTextColor(30, 41, 59);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(12);
+        doc.text("AI ANALYSIS & FINDINGS", 0.5, currentY);
+        
+        doc.line(0.5, currentY + 0.1, 8.0, currentY + 0.1);
+        
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(11);
+        doc.setTextColor(51, 65, 85);
+        const splitInsight = doc.splitTextToSize(insightText, 7.5);
+        doc.text(splitInsight, 0.5, currentY + 0.35);
+
+        currentY += 0.35 + (splitInsight.length * 0.2) + 0.5;
+
+        // --- 4. DATA VISUALIZATION SECTION ---
+        if (chartImgData) {
+            // Safety: If the text was so long that the chart falls off the page, make a new page!
+            if (currentY + 4 > 10) {
+                doc.addPage();
+                currentY = 0.5;
+            }
+
+            doc.setTextColor(30, 41, 59);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(12);
+            doc.text("DATA VISUALIZATION", 0.5, currentY);
+            doc.line(0.5, currentY + 0.1, 8.0, currentY + 0.1);
+
+            // Draw the chart crisp and scaled perfectly (Width: 7.5in, Height: 3.5in)
+            doc.addImage(chartImgData, 'PNG', 0.5, currentY + 0.3, 7.5, 3.5);
+        }
+
+        // --- 5. ENTERPRISE FOOTER ---
+        const pageHeight = doc.internal.pageSize.height;
+        doc.setFontSize(9);
+        doc.setTextColor(148, 163, 184);
+        doc.setFont("helvetica", "italic");
+        doc.text("Confidential - Generated autonomously by the AI-VA Engine", 0.5, pageHeight - 0.4);
+
+        // 3. Save the document! (This happens instantly in memory)
+        doc.save("AIVA_Executive_Report.pdf");
+        
+        console.log("🎉 SUCCESS: Native Vector PDF Generated!");
 
     } catch (error) {
         console.error("❌ PDF Generation Error:", error);
-        alert("Failed to generate PDF. Please try again.");
+        alert("Failed to generate PDF. Check console for details.");
+    } finally {
         this.innerText = originalText;
         this.disabled = false;
     }
