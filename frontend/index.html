@@ -151,7 +151,29 @@
             </div>
         </div>
     </div>
-
+    <div id="pdfReportTemplate" style="display: none;">
+        <div class="pdf-header">
+            <h2>AI-VA Executive Summary</h2>
+            <p id="pdfDate"></p>
+        </div>
+        <div class="pdf-section">
+            <h3>Executive Query</h3>
+            <p id="pdfQuery"></p>
+        </div>
+        <div class="pdf-section">
+            <h3>Strategic Insight</h3>
+            <p id="pdfInsight"></p>
+        </div>
+        <div class="pdf-section">
+            <h3>Data Visualization</h3>
+            <div class="pdf-chart-container">
+                <img id="pdfChartImage" src="" alt="Chart">
+            </div>
+        </div>
+        <div class="pdf-footer">
+            <p>Generated securely by AI-VA Spatial BI Engine.</p>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
 </body>
