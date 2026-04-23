@@ -936,85 +936,65 @@ galleryToggleBtn.addEventListener('click', () => {
     loadGallery();
 });
 
-// --- EPIC 8: BULLETPROOF PDF GENERATOR ---
-document.getElementById('downloadPdfBtn').addEventListener('click', function() {
+// =====================================================================
+// EPIC 8: BOARDROOM-READY PDF GENERATOR (html2pdf.js)
+// =====================================================================
+document.getElementById('downloadPdfBtn').addEventListener('click', async function() {
+    const originalText = this.innerText;
+    this.innerText = "Generating PDF...";
+    this.disabled = true;
+
     try {
-        console.log("📄 PDF Button Clicked! Starting generation...");
+        console.log("📄 Starting High-Res PDF Generation...");
         
-        // 1. Safety Check: Did the jsPDF library actually load?
-        if (!window.jspdf) {
-            console.error("❌ ERROR: jsPDF library is missing. The CDN link might be blocked or incorrect.");
-            alert("PDF Engine failed to load. Please check your internet or adblocker.");
-            return;
-        }
-
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        console.log("✅ PDF Engine initialized successfully.");
-
-        // 2. Paint the Dark Theme Background
-        doc.setFillColor(15, 23, 42); 
-        doc.rect(0, 0, 210, 297, 'F'); 
-
-        // 3. Add the Header
-        doc.setTextColor(16, 185, 129); 
-        doc.setFontSize(22);
-        doc.setFont("helvetica", "bold");
-        doc.text("AI-VA Executive Summary", 20, 30);
-        console.log("✅ Header painted.");
-
-        // 4. Add the AI's Strategic Insight
-        doc.setTextColor(255, 255, 255); 
-        doc.setFontSize(12);
-        doc.setFont("helvetica", "normal");
+        // 1. Grab the active conversational data
+        const queryText = currentQueryText || "No query provided.";
+        const insightText = currentAiResponse || "No insight generated.";
         
-        const responseBox = document.getElementById('responseBox');
-        if (!responseBox) throw new Error("Could not find the responseBox element!");
-        
-        const insightText = responseBox.innerText;
-        const splitText = doc.splitTextToSize("Strategic Insight: " + insightText, 170);
-        doc.text(splitText, 20, 50);
-        console.log("✅ Text insight added to PDF.");
+        // 2. Populate our hidden HTML template
+        document.getElementById('pdfDate').innerText = new Date().toLocaleDateString();
+        document.getElementById('pdfQuery').innerText = `"${queryText}"`;
+        document.getElementById('pdfInsight').innerText = insightText;
 
-        // 5. Capture the Chart.js Graph
+        // 3. Extract the Chart.js canvas as a high-res image
         const chartContainer = document.getElementById('visualCanvas');
-        
-        // SMART FIX: If visualCanvas is a div, find the actual canvas hiding inside it!
         const canvas = chartContainer.tagName === 'CANVAS' ? chartContainer : chartContainer.querySelector('canvas');
+        const imgElement = document.getElementById('pdfChartImage');
         
-        let textHeight = splitText.length * 6; 
-
         if (canvas) {
-            console.log("📊 Found actual canvas element, converting to image...");
-            // Force a solid background for the chart image capture
-            const tempCanvas = document.createElement('canvas');
-            tempCanvas.width = canvas.width;
-            tempCanvas.height = canvas.height;
-            const ctx = tempCanvas.getContext('2d');
-            ctx.fillStyle = '#0f172a'; // Match dark theme
-            ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-            ctx.drawImage(canvas, 0, 0);
-
-            const chartImage = tempCanvas.toDataURL("image/png", 1.0);
-            doc.addImage(chartImage, 'PNG', 20, 50 + textHeight + 10, 170, 85); 
-            console.log("✅ Chart successfully embedded.");
+            // Convert the live chart to a static PNG for the document
+            imgElement.src = canvas.toDataURL("image/png", 1.0);
+            imgElement.style.display = 'block';
         } else {
-            console.warn("⚠️ No active chart canvas found to embed.");
+            imgElement.style.display = 'none'; // Hide if it was just a text answer
         }
 
-        // 6. Add Footer & Trigger Download
-        doc.setTextColor(100, 116, 139); 
-        doc.setFontSize(10);
-        const date = new Date().toLocaleDateString();
-        doc.text("Generated securely by AI-VA on " + date, 20, 280);
+        // 4. Unhide the template momentarily (off-screen) so html2pdf can read it
+        const template = document.getElementById('pdfReportTemplate');
+        template.style.display = 'block';
+        template.style.position = 'absolute';
+        template.style.left = '-9999px';
 
-        doc.save("AIVA_Executive_Summary.pdf");
-        console.log("🎉 SUCCESS: PDF Download Triggered!");
+        // 5. Configure the PDF settings
+        const opt = {
+            margin:       0.5, // Half-inch margins
+            filename:     'AIVA_Strategic_Insight.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true }, // Scale 2 ensures crisp retina text
+            jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
 
+        // 6. Generate, trigger download, and clean up!
+        await html2pdf().set(opt).from(template).save();
+        template.style.display = 'none';
+        
+        console.log("🎉 SUCCESS: Boardroom PDF Generated!");
     } catch (error) {
-        // If ANYTHING fails, it gets caught right here!
-        console.error("❌ CRITICAL PDF ERROR:", error);
-        alert("Failed to generate PDF. Check the Developer Console (F12) for details.");
+        console.error("❌ PDF Generation Error:", error);
+        alert("Failed to generate PDF. Please try again.");
+    } finally {
+        this.innerText = originalText;
+        this.disabled = false;
     }
 });
 
