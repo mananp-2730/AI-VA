@@ -937,11 +937,11 @@ galleryToggleBtn.addEventListener('click', () => {
 });
 
 // =====================================================================
-// EPIC 8: BOARDROOM-READY PDF GENERATOR (html2pdf.js) - THE ULTIMATE FIX
+// EPIC 8: BOARDROOM-READY PDF GENERATOR - THE BULLETPROOF SWAP
 // =====================================================================
 document.getElementById('downloadPdfBtn').addEventListener('click', function() {
     const originalText = this.innerText;
-    this.innerText = "Generating PDF...";
+    this.innerText = "Compiling Document...";
     this.disabled = true;
 
     try {
@@ -962,56 +962,62 @@ document.getElementById('downloadPdfBtn').addEventListener('click', function() {
         const imgElement = document.getElementById('pdfChartImage');
         
         if (canvas) {
-            // Convert the live chart to a static PNG for the document
             imgElement.src = canvas.toDataURL("image/png", 1.0);
             imgElement.style.display = 'block';
         } else {
-            imgElement.style.display = 'none'; // Hide if it was just a text answer
+            imgElement.style.display = 'none'; 
         }
 
-        // 4. THE FIX: The "Overflow & Paint" Hack
+        // 4. 🚀 THE BULLETPROOF FIX: The Hide & Swap Hack
+        const workspace = document.querySelector('.workspace');
         const template = document.getElementById('pdfReportTemplate');
-        template.style.display = 'block';
-        template.style.position = 'absolute';
-        template.style.top = '0';
-        template.style.left = '0';
-        template.style.zIndex = '-1'; // Keep it securely behind the main workspace
-
-        // CRITICAL: We must temporarily kill the body's scroll lock, otherwise
-        // the browser acts like a guillotine and cuts off the invisible template!
+        
+        // Release the CSS locks temporarily!
         const originalOverflow = document.body.style.overflow;
-        document.body.style.overflow = 'visible';
+        const originalHeight = document.body.style.height;
+        document.body.style.overflow = 'auto';
+        document.body.style.height = 'auto';
+
+        // Swap visibility so the template is the ONLY thing on the screen
+        workspace.style.display = 'none';
+        template.style.display = 'block';
+        template.style.margin = '0 auto'; // Center it nicely
 
         // 5. Configure the PDF settings
         const opt = {
             margin:       0.5,
             filename:     'AIVA_Strategic_Insight.pdf',
             image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true, scrollY: 0 }, // Forces the engine to start at the top
+            html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
             jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
         };
 
-        // 6. THE TIMING FIX: Give the browser 150ms to actually paint the image onto the DOM
+        // 6. Give the browser 200ms to paint the canvas image, then capture!
         setTimeout(() => {
             html2pdf().set(opt).from(template).save().then(() => {
                 
-                // 7. CLEANUP: Hide the template and lock the body back up!
+                // 7. CLEANUP: Swap everything back to normal!
                 template.style.display = 'none';
+                workspace.style.display = 'flex';
                 document.body.style.overflow = originalOverflow;
+                document.body.style.height = originalHeight;
                 
                 console.log("🎉 SUCCESS: Boardroom PDF Generated!");
                 
-                // Reset the button
                 document.getElementById('downloadPdfBtn').innerText = originalText;
                 document.getElementById('downloadPdfBtn').disabled = false;
                 
             }).catch(err => {
+                // If it fails, restore the UI anyway!
                 console.error("PDF Engine Error:", err);
+                template.style.display = 'none';
+                workspace.style.display = 'flex';
                 document.body.style.overflow = originalOverflow;
+                document.body.style.height = originalHeight;
                 document.getElementById('downloadPdfBtn').innerText = originalText;
                 document.getElementById('downloadPdfBtn').disabled = false;
             });
-        }, 150);
+        }, 200); 
 
     } catch (error) {
         console.error("❌ PDF Generation Error:", error);
