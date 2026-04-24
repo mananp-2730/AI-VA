@@ -46,6 +46,7 @@ To ensure rapid deployment of the MVP, features were strictly prioritized based 
   * Zero-shot predictive analytics ("The Oracle") to mathematically forecast future trends on graphs.
   * Spatial image highlighting using bounding box [ymin, xmin, ymax, xmax] coordinates for static dashboard analysis.
   * Automated anomaly detection (The Watchdog) to proactively flag and colorize data outliers.
+  * Native Vector Executive Summaries: A client-side `jsPDF` compilation engine that generates pristine, mathematically-drawn boardroom reports instantly in-browser, bypassing rasterized screenshots entirely.
   * Interactive click-to-query chart drill-downs bridging touch UI with backend SQL generation.
   * Comparative BI capabilities handling complex datasets and dynamically rendering dual-axis charts for metrics on different scales.
 * **Won't Have (Deferred to V2):**
