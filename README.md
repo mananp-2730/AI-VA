@@ -63,7 +63,7 @@ Building AI-VA required balancing technical complexity with a frictionless user 
   * **The PM Rationale:** Appending the context window directly to the API payload keeps the backend strictly stateless during the active orchestration loop. It reduces database write-latency and ensures that if a user refreshes the page, they get a clean slate automatically.
 
 * **Decision 9: Native Vector PDFs vs. HTML Rasterization**
-  
+  * **The Trade-off:** We abandoned easy frontend screenshot libraries (like `html2pdf`) which cause jarring UI flashes, and invested time into manually coordinating a native `jsPDF` vector engine.
 
 ## **System Architecture & Tech Stack**
 * **Frontend:** HTML5, CSS3 (Flexbox/Grid), Vanilla JavaScript, Chart.js (Dynamic Data Visualization).
