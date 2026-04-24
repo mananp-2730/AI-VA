@@ -35,6 +35,7 @@ To ensure rapid deployment of the MVP, features were strictly prioritized based 
   * Seamless Web Speech API integration (STT & TTS) with auto-muting to prevent audio looping.
   * LLM-driven JSON generation to parse data into valid Chart.js configurations.
   * Enterprise Security Gateway: Secure, authenticated login pipeline featuring Google SSO (OAuth 2.0) and cookie-based session management, alongside traditional bcrypt fallback.
+  * Triple-Net Error Handling: A bulletproof fail-safe architecture preventing raw 500 crashes and ensuring graceful conversational pivots for out-of-scope queries.
 * **Should Have (Enterprise Value):**
   * Agentic Text-to-SQL translation allowing direct connections to relational databases (SQLite).
   * Modular Multi-Agent architecture separating SQL generation and UI rendering to improve accuracy and allow for independent model scaling.
