@@ -49,6 +49,7 @@ To ensure rapid deployment of the MVP, features were strictly prioritized based 
   * Native Vector Executive Summaries: A client-side `jsPDF` compilation engine that generates pristine, mathematically-drawn boardroom reports instantly in-browser, bypassing rasterized screenshots entirely.
   * Interactive click-to-query chart drill-downs bridging touch UI with backend SQL generation.
   * Comparative BI capabilities handling complex datasets and dynamically rendering dual-axis charts for metrics on different scales.
+  * The "Zero-Latency" UX Illusion: Skeleton loaders and active listening UI animations that manage user psychology and mask backend AI processing times.
 * **Won't Have (Deferred to V2):**
   * Multi-player collaboration (sharing dashboards via URL).
   * Automated CRON scheduled reporting (The "Monday Morning" Engine).
