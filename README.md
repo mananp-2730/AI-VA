@@ -64,6 +64,7 @@ Building AI-VA required balancing technical complexity with a frictionless user 
 
 * **Decision 9: Native Vector PDFs vs. HTML Rasterization**
   * **The Trade-off:** We abandoned easy frontend screenshot libraries (like `html2pdf`) which cause jarring UI flashes, and invested time into manually coordinating a native `jsPDF` vector engine.
+  * **The PM Rationale:** Enterprise deliverables must look flawless. Rasterized screenshots result in blurry text when zoomed in on iPads or printed. Natively drawing vector text in browser memory ensures pristine quality, eliminates UI flashing, and guarantees the document meets McKinsey/Bain deliverable standards.
 
 ## **System Architecture & Tech Stack**
 * **Frontend:** HTML5, CSS3 (Flexbox/Grid), Vanilla JavaScript, Chart.js (Dynamic Data Visualization).
