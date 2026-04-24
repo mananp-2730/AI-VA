@@ -1,6 +1,6 @@
 ##  **Product Requirements Document (PRD): AI-VA**
 * **Product Name:** AI-VA (Spatial BI & Generative Voice Assistant)
-* **Document Status:** V1.7 (Global Identity Sync Launched)
+* **Document Status:** V1.8 (Enterprise Architecture & Native Reporting Launched)
 * **Product Owner & Manager:** Manan
 
 ## **1. Executive Summary & Problem Space**
