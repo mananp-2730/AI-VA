@@ -24,6 +24,7 @@ AI-VA is a cloud-hosted, stateful, multimodal web application that bridges the e
 * **Spatial Highlighting Engine:** Upload a static dashboard image. AI-VA utilizes Gemini's spatial prompting to return strict bounding-box coordinates [ymin, xmin, ymax, xmax], drawing glowing, real-time CSS highlights over the exact data points being discussed.
 * **Continuous Conversational Loop:** Engineered with a custom Web Speech API integration that auto-mutes the microphone during AI TTS playback and automatically resumes listening, creating a frictionless, hands-free experience.
 * **Conversational Context Engine:** Engineered a rolling memory window array on the client-side that captures recent interactions and feeds them back into the LLM. This enables users to use natural pronouns (e.g., "break *that* down") for seamless, human-like follow-up queries.
+* **The "Zero-Latency" Illusion (UX Engineering):** Engineered a psychological bridge for API wait times. Features a dynamic CSS pulse animation during active microphone listening and a sweeping glass-morphic skeleton loader while the multi-agent pipeline processes SQL. This ensures the application feels instantly responsive, maximizing executive trust in the UI.
 
 ## **PM Thinking & Strategic Trade-Offs**
 Building AI-VA required balancing technical complexity with a frictionless user experience. Here are the key product decisions made during the MVP development:
