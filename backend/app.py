@@ -477,12 +477,11 @@ def agent_sql_engineer(transcript: str, history: str) -> str:
     )
     
     raw_sql = sql_response.text.strip()
-    if raw_sql.startswith("```sql"):
-        raw_sql = raw_sql.replace("```sql", "", 1)
-    if raw_sql.startswith("```"):
-        raw_sql = raw_sql.replace("```", "", 1)
-    if raw_sql.endswith("```"):
-        raw_sql = raw_sql.rsplit("```", 1)[0]
+    
+    # 🚀 THE BULLETPROOF MARKDOWN STRIPPER
+    raw_sql = raw_sql.replace("```sqlite", "")
+    raw_sql = raw_sql.replace("```sql", "")
+    raw_sql = raw_sql.replace("```", "")
         
     return raw_sql.strip()
 
