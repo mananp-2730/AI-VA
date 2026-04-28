@@ -478,7 +478,7 @@ def agent_sql_engineer(transcript: str, history: str) -> str:
     
     raw_sql = sql_response.text.strip()
     
-    # 🚀 THE BULLETPROOF MARKDOWN STRIPPER
+    # THE BULLETPROOF MARKDOWN STRIPPER
     raw_sql = raw_sql.replace("```sqlite", "")
     raw_sql = raw_sql.replace("```sql", "")
     raw_sql = raw_sql.replace("```", "")
