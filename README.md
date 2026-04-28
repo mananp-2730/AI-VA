@@ -80,6 +80,7 @@ Building AI-VA required balancing technical complexity with a frictionless user 
 1. Clone the Repository
    ```bash
    git clone [https://github.com/mananp-2730/AI-VA.git](https://github.com/mananp-2730/AI-VA.git)
+
    cd AI-VA
 
 2. Set Up the Backend Engine
