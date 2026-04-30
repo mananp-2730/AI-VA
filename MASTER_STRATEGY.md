@@ -26,3 +26,4 @@ This is the chronological sequence of our engineering milestones.
 
 ### Phase 4: Proactive & Viral BI (V3.0+)
 * **Feature 1:** The "Monday Morning" Engine (Automated Cron jobs that query data, generate insights, and push PDF reports to Slack automatically).
+* **Feature 2:** Multi-Player Collaboration (Generating secure, read-only URLs for executives to share interactive dashboards across the company).
