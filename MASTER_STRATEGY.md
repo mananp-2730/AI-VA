@@ -21,3 +21,4 @@ This is the chronological sequence of our engineering milestones.
 * **Feature 3:** Role-Based Access Control (RBAC) (Engineering the backend to ensure a regional manager can only query data from their assigned region).
 
 ### Phase 3: The Live Ecosystem (V2.5)
+* **Feature 1:** OAuth Data Connectors (Building the pipeline to allow users to authenticate and query live HubSpot, Salesforce, or Snowflake instances instead of CSVs).
