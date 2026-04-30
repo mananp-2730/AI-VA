@@ -25,3 +25,4 @@ This is the chronological sequence of our engineering milestones.
 * **Feature 2:** Streaming Responses (Implementing WebSocket connections to stream the AI's text response in real-time while the chart renders, reducing perceived latency to near-zero).
 
 ### Phase 4: Proactive & Viral BI (V3.0+)
+* **Feature 1:** The "Monday Morning" Engine (Automated Cron jobs that query data, generate insights, and push PDF reports to Slack automatically).
