@@ -16,3 +16,4 @@ This is the chronological sequence of our engineering milestones.
 * **Result:** A functioning, stateful, single-player MVP operating on a local SQLite sandbox.
 
 ### Phase 2: The Infrastructure Pivot (V2.0) -> *NEXT UP*
+* **Feature 1:** Cloud Storage Migration (Transitioning from local file saves to AWS S3 / Google Cloud Storage for permanent file retention).
