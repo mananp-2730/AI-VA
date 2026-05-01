@@ -30,3 +30,5 @@ This is the chronological sequence of our engineering milestones.
 
 ## 3. The "Watchout" Factors (Risk & Cost Mitigation)
 As a startup, cash flow and runway are everything. We must watch out for these hidden traps:
+
+* **The Cloud Storage Trap:** Storing thousands of user-uploaded CSVs in AWS S3 gets expensive. 
