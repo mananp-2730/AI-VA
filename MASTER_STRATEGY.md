@@ -39,3 +39,5 @@ As a startup, cash flow and runway are everything. We must watch out for these h
   * *Mitigation Strategy:* We continue our strategy of offloading all UI/PDF rendering entirely to the user's browser (client-side compute costs us $0).
 * **Enterprise Security Liability:** Connecting to live corporate databases (V2.5) means we are handling highly sensitive data.
   * *Mitigation Strategy:* We must never store a client's actual data on our servers. AI-VA must act purely as a pass-through processing layer.
+
+## 4. Execution Ledger & Progress Tracking
