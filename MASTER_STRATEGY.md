@@ -43,3 +43,4 @@ As a startup, cash flow and runway are everything. We must watch out for these h
 ## 4. Execution Ledger & Progress Tracking
 
 | Milestone / Epic | Status | Time Taken | Budget Impact | Notes |
+| :--- | :---: | :---: | :---: | :--- |
