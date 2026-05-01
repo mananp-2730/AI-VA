@@ -35,3 +35,4 @@ As a startup, cash flow and runway are everything. We must watch out for these h
   * *Mitigation Strategy:* We must implement a strict "Data Expiry" policy. Raw CSV uploads are automatically purged after 30 days unless the user is on a premium enterprise tier. We only save the metadata/insights.
 * **The LLM Token Bloat:** Feeding entire databases or massive chat histories into Gemini will cause our API costs to skyrocket.
   * *Mitigation Strategy:* Strict implementation of the "Rolling Window" memory array (which we already started) and using Pandas to pre-aggregate data before passing it to the AI. We never send raw rows; we only send summaries.
+* **The Server-Side Rendering Trap:** Generating PDFs or complex charts on our Python server will require massive, expensive CPU compute instances.
