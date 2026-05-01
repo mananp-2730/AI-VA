@@ -31,4 +31,5 @@ This is the chronological sequence of our engineering milestones.
 ## 3. The "Watchout" Factors (Risk & Cost Mitigation)
 As a startup, cash flow and runway are everything. We must watch out for these hidden traps:
 
-* **The Cloud Storage Trap:** Storing thousands of user-uploaded CSVs in AWS S3 gets expensive. 
+* **The Cloud Storage Trap:** Storing thousands of user-uploaded CSVs in AWS S3 gets expensive.
+  * *Mitigation Strategy:* We must implement a strict "Data Expiry" policy. Raw CSV uploads are automatically purged after 30 days unless the user is on a premium enterprise tier. We only save the metadata/insights.
