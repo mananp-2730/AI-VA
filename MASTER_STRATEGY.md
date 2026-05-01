@@ -37,3 +37,4 @@ As a startup, cash flow and runway are everything. We must watch out for these h
   * *Mitigation Strategy:* Strict implementation of the "Rolling Window" memory array (which we already started) and using Pandas to pre-aggregate data before passing it to the AI. We never send raw rows; we only send summaries.
 * **The Server-Side Rendering Trap:** Generating PDFs or complex charts on our Python server will require massive, expensive CPU compute instances.
   * *Mitigation Strategy:* We continue our strategy of offloading all UI/PDF rendering entirely to the user's browser (client-side compute costs us $0).
+* **Enterprise Security Liability:** Connecting to live corporate databases (V2.5) means we are handling highly sensitive data.
