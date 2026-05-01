@@ -29,3 +29,4 @@ This is the chronological sequence of our engineering milestones.
 * **Feature 2:** Multi-Player Collaboration (Generating secure, read-only URLs for executives to share interactive dashboards across the company).
 
 ## 3. The "Watchout" Factors (Risk & Cost Mitigation)
+As a startup, cash flow and runway are everything. We must watch out for these hidden traps:
