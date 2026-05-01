@@ -41,3 +41,5 @@ As a startup, cash flow and runway are everything. We must watch out for these h
   * *Mitigation Strategy:* We must never store a client's actual data on our servers. AI-VA must act purely as a pass-through processing layer.
 
 ## 4. Execution Ledger & Progress Tracking
+
+| Milestone / Epic | Status | Time Taken | Budget Impact | Notes |
