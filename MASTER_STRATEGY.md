@@ -44,3 +44,4 @@ As a startup, cash flow and runway are everything. We must watch out for these h
 
 | Milestone / Epic | Status | Time Taken | Budget Impact | Notes |
 | :--- | :---: | :---: | :---: | :--- |
+| **Monolithic Prompt to Multi-Agent** | 🟩 100% | 1 Sprint | $0.00 | Massive accuracy increase. |
