@@ -315,8 +315,8 @@ async def analyze_data(
         raise HTTPException(status_code=400, detail="No data file found. Please upload a dashboard or CSV.")
         
     # 2. Read the file into memory for Gemini to analyze
-    with open(current_file_path, "rb") as f:
-        file_bytes = f.read() # USE THIS variable for your Gemini prompt!
+    #with open(current_file_path, "rb") as f:
+    #    file_bytes = f.read() # USE THIS variable for your Gemini prompt!
         
     # 3. Determine the file type based on the path
     is_image = current_file_path.lower().endswith(('.png', '.jpg', '.jpeg'))
