@@ -1030,7 +1030,7 @@ document.getElementById('downloadPdfBtn').addEventListener('click', async functi
         // 3. Save the document! (This happens instantly in memory)
         doc.save("AIVA_Executive_Report.pdf");
         
-        console.log("🎉 SUCCESS: Native Vector PDF Generated!");
+        console.log("SUCCESS: Native Vector PDF Generated!");
 
     } catch (error) {
         console.error("❌ PDF Generation Error:", error);
