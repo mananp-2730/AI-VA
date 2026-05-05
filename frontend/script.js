@@ -922,7 +922,7 @@ document.getElementById('downloadPdfBtn').addEventListener('click', async functi
     this.disabled = true;
 
     try {
-        console.log("📄 Starting Native Vector PDF Compilation...");
+        console.log("Starting Native Vector PDF Compilation...");
         
         // 1. Initialize the jsPDF Engine
         const { jsPDF } = window.jspdf;
