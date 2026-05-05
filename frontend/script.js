@@ -78,7 +78,7 @@ const getCookie = (name) => {
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) {
         let val = decodeURIComponent(parts.pop().split(';').shift());
-        // 🚀 THE FIX: If FastAPI wrapped it in quotes, chop them off!
+        // THE FIX: If FastAPI wrapped it in quotes, chop them off!
         if (val.startsWith('"') && val.endsWith('"')) {
             val = val.slice(1, -1);
         }
