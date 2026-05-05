@@ -15,6 +15,8 @@ const fileDisplay = document.getElementById('file-display');
 const visualCanvas = document.getElementById('visualCanvas');
 const placeholderContent = document.querySelector('.placeholder-content');
 const pauseButton = document.getElementById('pauseButton');
+const voiceSelect = document.getElementById('voiceSelect'); // Moved global for efficiency
+const dataSourceElement = document.getElementById('dataSource'); // Moved global for efficiency
 let isSessionActive = false; // Tracks if the continuous loop is running
 let isMicPaused = false;     // Tracks if the VP manually paused it
 
@@ -37,7 +39,6 @@ const authSubtitle = document.getElementById('authSubtitle');
 const authSubmitBtn = document.querySelector('.auth-submit');
 const authSwitchText = document.getElementById('authSwitchText');
 
-// ... your existing variables ...
 let isLoginMode = true;
 
 /* =========================================
@@ -90,15 +91,11 @@ const getCookie = (name) => {
 // ENTERPRISE SECURITY: COOKIE GATEKEEPER
 // =====================================================================
 document.addEventListener("DOMContentLoaded", () => {
-    // DELETED THE OLD getCookie FUNCTION FROM HERE!
-    // It is now safely at the top of your file where everyone can use it.
-
     // 1. Check if the user has the "VIP Pass" from our Python backend
     const userName = getCookie("ai_va_user");
     
     if (userName) {
         // 2. User is verified! Hide the login screen!
-        const authOverlay = document.getElementById("authOverlay");
         if (authOverlay) {
             authOverlay.style.display = "none";
         }
@@ -107,7 +104,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const decodedName = decodeURIComponent(userName);
         console.log(`Authentication Passed! Welcome, ${decodedName}`);
         
-        const statusText = document.getElementById("statusText");
         if (statusText) {
             statusText.innerText = `Status: Logged in as ${decodedName}`;
             statusText.style.color = "#10b981"; // Success Green
@@ -207,7 +203,6 @@ authForm.addEventListener('submit', async (e) => {
 });
 
 // --- VOICE SELECTOR LOGIC ---
-const voiceSelect = document.getElementById('voiceSelect');
 let availableVoices = [];
 
 function populateVoiceList() {
@@ -260,14 +255,13 @@ darkModeToggle.addEventListener('click', () => {
 
 // --- EPIC 8: DYNAMIC DRILL-DOWN CHART RENDERING (FIXED) ---
 function renderChart(config) {
-    // 1. Bulletproof Canvas Selection (Finds the true canvas inside the div)
-    const container = document.getElementById('visualCanvas');
-    let canvas = container.tagName === 'CANVAS' ? container : container.querySelector('canvas');
+    // 1. Bulletproof Canvas Selection (Using global visualCanvas)
+    let canvas = visualCanvas.tagName === 'CANVAS' ? visualCanvas : visualCanvas.querySelector('canvas');
     
     // If there is no canvas inside the container yet, create one dynamically!
-    if (!canvas && container.tagName !== 'CANVAS') {
+    if (!canvas && visualCanvas.tagName !== 'CANVAS') {
         canvas = document.createElement('canvas');
-        container.appendChild(canvas);
+        visualCanvas.appendChild(canvas);
     }
 
     const ctx = canvas.getContext('2d');
@@ -295,9 +289,9 @@ function renderChart(config) {
             // 3. Construct a silent follow-up prompt for the AI
             const drillDownQuery = `Break down the data specifically for '${clickedLabel}'. Show me the details that make up this number.`;
             
-            // 4. Send this new query right back to the backend!
-            document.getElementById('statusText').innerText = `Drilling down into ${clickedLabel}...`;
-            document.getElementById('statusText').className = "status-recording";
+            // 4. Send this new query right back to the backend! Using global statusText!
+            statusText.innerText = `Drilling down into ${clickedLabel}...`;
+            statusText.className = "status-recording";
             
             sendDataToBackend(drillDownQuery);
         }
@@ -309,16 +303,13 @@ function renderChart(config) {
     
     // Render the new interactive chart!
     window.currentChart = new Chart(ctx, config);
-    container.style.display = 'block'; // Ensure the container is visible
+    visualCanvas.style.display = 'block'; // Ensure the container is visible
 
     // Hide skeleton and reveal the beautiful new chart!
     const skeleton = document.getElementById('skeletonLoader');
     if (skeleton) skeleton.style.display = 'none';
-
-    const canvasContainer = document.getElementById('visualCanvas');
-    if (canvasContainer) canvasContainer.style.display = 'block';
-
 }
+
 // Listen for file uploads and validate/display
 csvFileInput.addEventListener('change', function() {
     const file = this.files[0];
@@ -449,19 +440,17 @@ async function sendDataToBackend(transcript) {
     statusText.innerText = "Status: AI is analyzing...";
     statusText.className = "status-recording";
 
-    // EPIC 7: Check which mode we are in!
-    // (If the dropdown doesn't exist yet, it defaults to 'upload')
-    const dataSourceElement = document.getElementById('dataSource');
+    // EPIC 7: Check which mode we are in! Using global!
     const dataSource = dataSourceElement ? dataSourceElement.value : 'upload';
     
     // --- THE CONTEXT ENGINE UPGRADE ---
-            // Format the history array into a readable string for the AI
-            let historyString = conversationHistory.map(item => `User asked: "${item.user}"\nAI answered: "${item.ai}"`).join('\n\n');
-            if (historyString === "") historyString = "No previous history.";
+    // Format the history array into a readable string for the AI
+    let historyString = conversationHistory.map(item => `User asked: "${item.user}"\nAI answered: "${item.ai}"`).join('\n\n');
+    if (historyString === "") historyString = "No previous history.";
 
-            const formData = new FormData();
-            formData.append('transcript', transcript);
-            formData.append('history', historyString); // Sending memory to the Master Orchestrator!
+    const formData = new FormData();
+    formData.append('transcript', transcript);
+    formData.append('history', historyString); // Sending memory to the Master Orchestrator!
 
     let apiUrl = '/api/analyze'; // Default to the local file route
 
@@ -501,10 +490,8 @@ async function sendDataToBackend(transcript) {
         }
     }
 
-    // Inside sendDataToBackend(), right before the fetch() block:
-    // Hide existing canvas and show skeleton
-    const canvasContainer = document.getElementById('visualCanvas');
-    if (canvasContainer) canvasContainer.style.display = 'none';
+    // Hide existing canvas and show skeleton using globals!
+    if (visualCanvas) visualCanvas.style.display = 'none';
 
     const skeleton = document.getElementById('skeletonLoader');
     if (skeleton) skeleton.style.display = 'flex';
@@ -572,9 +559,7 @@ async function sendDataToBackend(transcript) {
 
             // --- TRACK B & ENTERPRISE: ZERO TO DASHBOARD LOGIC (CSV / SQL) ---
             if (data.chart_config) {
-                // If it's an enterprise query, we might want to wipe the placeholder image first
-                const visualCanvas = document.getElementById('visualCanvas');
-                const placeholderContent = document.querySelector('.placeholder-content');
+                // Using globals instead of requerying!
                 if (dataSource === 'enterprise') {
                     placeholderContent.style.display = 'none';
                     visualCanvas.style.display = 'block';
@@ -625,7 +610,6 @@ async function sendDataToBackend(transcript) {
 }
 
 // Initialize Web Speech API for Text-to-Speech
-// Text-to-Speech Function
 // Text-to-Speech Function (with iOS Safari Overrides)
 function speakResponse(text) {
     // 1. APPLE BUG FIX: Clear the stuck speech queue before talking
@@ -636,8 +620,8 @@ function speakResponse(text) {
     // 2. APPLE BUG FIX: Lock the utterance into global memory so iOS doesn't delete it
     globalUtterance = utterance;
 
-    // Apply the selected voice
-    const selectedVoiceName = document.getElementById('voiceSelect').value;
+    // Apply the selected voice utilizing our global variable!
+    const selectedVoiceName = voiceSelect.value; 
     const selectedVoice = availableVoices.find(voice => voice.name === selectedVoiceName);
     
     if (selectedVoice) {
@@ -664,7 +648,7 @@ function speakResponse(text) {
     // Force the browser to speak
     window.speechSynthesis.speak(utterance);
 }
-// --- New UI Reset Logic ---
+
 // --- UPGRADED UI RESET LOGIC (The "New Workspace" Button) ---
 const clearButton = document.getElementById('clearButton');
 
@@ -701,10 +685,7 @@ clearButton.addEventListener('click', () => {
     const oldHighlight = document.getElementById('highlight-box');
     if (oldHighlight) oldHighlight.remove();
 
-    // 6. Flip the UI back to the "Upload" state
-    const visualCanvas = document.getElementById('visualCanvas');
-    const placeholderContent = document.querySelector('.placeholder-content');
-    
+    // 6. Flip the UI back to the "Upload" state using globals!
     visualCanvas.style.display = 'none';
     visualCanvas.innerHTML = ''; // Wipe out old images or raw data text
     
@@ -713,7 +694,6 @@ clearButton.addEventListener('click', () => {
     
     // 7. Clear the actual file input so the browser knows it is completely empty
     csvFileInput.value = '';
-    const fileDisplay = document.getElementById('file-display');
     fileDisplay.innerText = "No file selected";
     fileDisplay.style.color = ""; // Reset the text color
     
@@ -721,7 +701,6 @@ clearButton.addEventListener('click', () => {
     currentQueryText = "";
     currentAiResponse = "";
     currentChartConfig = null;
-    const saveInsightBtn = document.getElementById('saveInsightBtn');
     saveInsightBtn.style.display = 'none';
 });
 
@@ -744,7 +723,7 @@ closeGalleryBtn.addEventListener('click', () => {
 saveInsightBtn.addEventListener('click', async () => {
     // NEW: Grab the email from the Google SSO Cookie instead of localStorage!
     // Decode the email so manan%40gmail.com perfectly matches manan@gmail.com!
-const userEmail = decodeURIComponent(getCookie("ai_va_email"));
+    const userEmail = decodeURIComponent(getCookie("ai_va_email"));
     
     if (!userEmail) {
         alert("Authentication error. Please log in again.");
@@ -898,9 +877,7 @@ async function loadGallery() {
                                 const parsedConfig = JSON.parse(singleData.chart_config);
                                 renderChart(parsedConfig);
                             } else {
-                                // If it was just a text answer without a chart, clear the canvas
-                                const visualCanvas = document.getElementById('visualCanvas');
-                                const placeholderContent = document.querySelector('.placeholder-content');
+                                // If it was just a text answer without a chart, clear the canvas using globals!
                                 if (currentChart) currentChart.destroy();
                                 visualCanvas.style.display = 'none';
                                 placeholderContent.style.display = 'flex';
@@ -955,8 +932,8 @@ document.getElementById('downloadPdfBtn').addEventListener('click', async functi
         const queryText = currentQueryText || "No query provided.";
         const insightText = currentAiResponse || "No insight generated.";
         
-        const chartContainer = document.getElementById('visualCanvas');
-        const canvas = chartContainer.tagName === 'CANVAS' ? chartContainer : chartContainer.querySelector('canvas');
+        // Utilizing global variable visualCanvas
+        const canvas = visualCanvas.tagName === 'CANVAS' ? visualCanvas : visualCanvas.querySelector('canvas');
         let chartImgData = null;
         
         // Force a white background on the chart before taking the snapshot,
