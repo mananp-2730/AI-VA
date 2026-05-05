@@ -284,7 +284,7 @@ function renderChart(config) {
             const clickedLabel = this.data.labels[clickedElementIndex];
             const clickedValue = this.data.datasets[datasetIndex].data[clickedElementIndex];
             
-            console.log(`🎯 User clicked on: ${clickedLabel} (Value: ${clickedValue})`);
+            console.log(`User clicked on: ${clickedLabel} (Value: ${clickedValue})`);
             
             // 3. Construct a silent follow-up prompt for the AI
             const drillDownQuery = `Break down the data specifically for '${clickedLabel}'. Show me the details that make up this number.`;
