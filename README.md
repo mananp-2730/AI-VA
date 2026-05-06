@@ -67,6 +67,7 @@ Building AI-VA required balancing technical complexity with a frictionless user 
   * **The PM Rationale:** Enterprise deliverables must look flawless. Rasterized screenshots result in blurry text when zoomed in on iPads or printed. Natively drawing vector text in browser memory ensures pristine quality, eliminates UI flashing, and guarantees the document meets McKinsey/Bain deliverable standards.
 
 * **Decision 10: WebSocket Streaming vs. Standard HTTP POST**
+  * **The Trade-off:** We increased backend architectural complexity (managing `ws://` connections and parsing stream chunks) instead of relying on a standard, simple HTTP `fetch()` request.
 
 ## **System Architecture & Tech Stack**
 * **Frontend:** HTML5, CSS3 (Flexbox/Grid), Vanilla JavaScript, Chart.js (Dynamic Data Visualization).
