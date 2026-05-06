@@ -49,8 +49,8 @@ As a startup, cash flow and runway are everything. We must watch out for these h
 | **Triple-Net Error Handling** | 🟩 100% | 1 Sprint | $0.00 | Eradicated 500 server crashes. |
 | **Native Vector PDF Engine** | 🟩 100% | 1 Sprint | $0.00 | Saved future server compute costs. |
 | **Enterprise Sandbox Initialization** | 🟩 100% | 0.5 Sprints | $0.00 | Enabled true SQL testing. |
-| **AWS S3 / Cloud Storage Migration** | ⬜ 0% | Est. 2 Days | ~$0.05/GB | Critical for server persistence. |
-| **OAuth Connectors (Salesforce/etc)** | ⬜ 0% | Est. 2 Weeks | $0.00 | The hardest engineering hurdle next. |
-| **The "Monday Morning" Engine** | ⬜ 0% | Est. 1 Week | API usage | Massive value-add for subscriptions. |
+| **AWS S3 Cloud Storage Migration** | 🟨 TABLED | 0 Days | $0.00 | Deferred to V3 to protect runway. |
+| **WebSocket Streaming Upgrade** | 🟩 100% | 1 Sprint | $0.00 | Reduced perceived latency to ~50ms. |
+| **Role-Based Access Control (RBAC)** | ⬜ 0% | Est. 1 Day | $0.00 | Next ticket on the sprint board. |
 
 **Current Global Progress:** MVP Foundation is **100%** locked. Enterprise Scale is **0%** started.
