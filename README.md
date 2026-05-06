@@ -73,7 +73,7 @@ Building AI-VA required balancing technical complexity with a frictionless user 
 ## **System Architecture & Tech Stack**
 * **Frontend:** HTML5, CSS3 (Flexbox/Grid), Vanilla JavaScript, Chart.js (Dynamic Data Visualization).
 * **Voice & UI:** Native Browser **Web Speech API** (STT/TTS), responsive split-pane architecture.
-* **Backend:** **Python 3.12** & **FastAPI** for high-performance API routing and cloud environment management. Includes custom regex/string-parsing pipelines to sanitize LLM markdown outputs before database execution.
+* **Backend:** **Python 3.12** & **FastAPI** for high-performance API routing, **WebSockets** for real-time data streaming, and cloud environment management. Includes custom regex/string-parsing pipelines to sanitize LLM markdown outputs before database execution.
 * **Security & Auth:** **OAuth 2.0 (Google SSO)**, HTTP-only Cookie Session Management, **bcrypt**, and **SQLAlchemy** for ORM.
 * **Database & Memory:** **SQLite** and **Pandas** for robust data manipulation and SQL query execution.
 * **AI Processing:** **Pillow** for image byte-stream handling, integrated with the **Google Gemini 2.5 Flash** model via the `google-genai` SDK.
