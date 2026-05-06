@@ -17,6 +17,7 @@ This is the chronological sequence of our engineering milestones.
 
 ### Phase 2: The Infrastructure Pivot (V2.0) -> *IN PROGRESS*
 * **Feature 1:** Cloud Storage Migration (Transitioning from local file saves to AWS S3 / Google Cloud Storage for permanent file retention).
+* **Feature 2:** Streaming Responses (Implementing WebSocket connections to stream the AI's text response in real-time while the chart renders, reducing perceived latency to near-zero) -> *[COMPLETED]*
 * **Feature 2:** Dockerization (Containerizing the FastAPI backend to ensure environment consistency and prepare for auto-scaling).
 * **Feature 3:** Role-Based Access Control (RBAC) (Engineering the backend to ensure a regional manager can only query data from their assigned region).
 
