@@ -570,7 +570,121 @@ async def enterprise_query(transcript: str = Form(...), history: str = Form(defa
             "chart_config": None,
             "sql_query": "Execution Failed."
         }
+# =====================================================================
+# AGENT 2.5: THE STREAMING FRONTEND ANALYST
+# Role: Streams text instantly, then yields chart JSON.
+# =====================================================================
+def stream_frontend_analyst(transcript: str, raw_sql: str, sql_results_text: str):
+    insight_prompt = (
+        "You are an expert Data Analyst and Frontend Developer. Analyze the provided SQL query results and the User Voice Command. "
+        "CRITICAL INSTRUCTION - FORMAT REQUIREMENTS:\n"
+        "You must respond in exactly TWO parts, separated by the strict delimiter '---CHART_CONFIG---'.\n\n"
+        "PART 1 (Text):\n"
+        "Your spoken answer to the user's query. Keep it conversational, no markdown. If there is an anomaly, call it out.\n\n"
+        "---CHART_CONFIG---\n\n"
+        "PART 2 (JSON):\n"
+        "A complete, valid JSON configuration object for Chart.js. If no chart is needed, output null.\n\n"
+        f"User Voice Command: {transcript}\n\nSQL Query Used:\n{raw_sql}\n\nQuery Results:\n{sql_results_text}"
+    )
+    
+    # We use generate_content_stream to get data chunk by chunk!
+    response_stream = client.models.generate_content_stream(
+        model='gemini-2.5-flash', 
+        contents=insight_prompt
+    )
+    
+    return response_stream
 
+# =====================================================================
+# THE WEBSOCKET ORCHESTRATOR (ZERO-LATENCY UPGRADE)
+# =====================================================================
+@app.websocket("/ws/enterprise_stream")
+async def enterprise_stream(websocket: WebSocket):
+    await websocket.accept()
+    try:
+        # 1. Receive the payload from JavaScript
+        payload = await websocket.receive_json()
+        transcript = payload.get("transcript")
+        history = payload.get("history", "No previous history.")
+
+        # 2. Status Update: Instantly tell the UI we are working!
+        await websocket.send_json({"type": "status", "data": "AI SQL Engineer is thinking..."})
+        
+        # 3. Generate SQL (Synchronous, but takes < 1 second)
+        raw_sql = agent_sql_engineer(transcript, history)
+        
+        if "IRRELEVANT_QUERY" in raw_sql:
+            await websocket.send_json({"type": "error", "data": "I'm sorry, I don't have access to that specific data."})
+            await websocket.close()
+            return
+            
+        await websocket.send_json({"type": "status", "data": "Executing database query..."})
+        
+        # 4. Execute DB Logic
+        with sqlite3.connect('enterprise_data.db') as conn:
+            df = pd.read_sql_query(raw_sql, conn)
+        sql_results_text = df.to_csv(index=False)
+
+        await websocket.send_json({"type": "status", "data": "Analyzing results..."})
+
+        # 5. THE MAGIC: Stream the response back to the frontend chunk by chunk!
+        response_stream = stream_frontend_analyst(transcript, raw_sql, sql_results_text)
+        
+        is_parsing_chart = False
+        chart_buffer = ""
+        full_text_response = ""
+
+        for chunk in response_stream:
+            text_chunk = chunk.text
+            
+            # Check if we hit the divider
+            if "---CHART_CONFIG---" in text_chunk:
+                is_parsing_chart = True
+                parts = text_chunk.split("---CHART_CONFIG---")
+                
+                # Send the last bit of spoken text
+                if parts[0].strip():
+                    full_text_response += parts[0]
+                    await websocket.send_json({"type": "chunk", "data": parts[0]})
+                
+                # Start buffering the JSON
+                chart_buffer += parts[1]
+                continue
+                
+            if not is_parsing_chart:
+                # Stream spoken text directly to the UI!
+                full_text_response += text_chunk
+                await websocket.send_json({"type": "chunk", "data": text_chunk})
+            else:
+                # Silently build the JSON in the background
+                chart_buffer += text_chunk
+
+        # 6. Pipeline Complete! Send the parsed JSON Chart and the final SQL query
+        chart_config = None
+        if chart_buffer.strip() and chart_buffer.strip() != "null":
+            try:
+                # Clean up any potential markdown the AI accidentally added
+                clean_json = chart_buffer.replace("```json", "").replace("```", "").strip()
+                chart_config = json.loads(clean_json)
+            except Exception as e:
+                print(f"Chart JSON parsing error: {e}")
+
+        await websocket.send_json({
+            "type": "complete",
+            "full_text": full_text_response,
+            "chart_config": chart_config,
+            "sql_query": raw_sql
+        })
+
+    except WebSocketDisconnect:
+        print("Client disconnected.")
+    except Exception as e:
+        print(f"WebSocket Error: {e}")
+        try:
+            await websocket.send_json({"type": "error", "data": "The analysis pipeline encountered an error."})
+        except:
+            pass
+        
 # =====================================================================
 # ENTERPRISE SECURITY: GOOGLE SSO (OAUTH 2.0)
 # =====================================================================
