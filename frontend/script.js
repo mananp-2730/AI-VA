@@ -438,7 +438,7 @@ recognition.onresult = async function(event) {
 // Send data to the FastAPI Backend
 async function sendDataToBackend(transcript) {
     // =========================================================
-    // ⚡ NEW: VOICE-ACTIVATED UI MANIPULATION (Option 2 Interceptor)
+    // NEW: VOICE-ACTIVATED UI MANIPULATION (Option 2 Interceptor)
     // =========================================================
     if (window.currentChart) {
         const lowerText = transcript.toLowerCase();
