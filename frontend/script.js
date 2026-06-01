@@ -437,6 +437,47 @@ recognition.onresult = async function(event) {
 
 // Send data to the FastAPI Backend
 async function sendDataToBackend(transcript) {
+    // =========================================================
+    // ⚡ NEW: VOICE-ACTIVATED UI MANIPULATION (Option 2 Interceptor)
+    // =========================================================
+    if (window.currentChart) {
+        const lowerText = transcript.toLowerCase();
+        let targetType = null;
+        
+        // Precise semantic keyword matching for chart mutation
+        if (lowerText.includes("pie chart") || lowerText.includes("change to pie") || lowerText.includes("show as pie") || lowerText.includes("convert to pie")) {
+            targetType = "pie";
+        } else if (lowerText.includes("bar chart") || lowerText.includes("change to bar") || lowerText.includes("show as bar") || lowerText.includes("convert to bar")) {
+            targetType = "bar";
+        } else if (lowerText.includes("line chart") || lowerText.includes("change to line") || lowerText.includes("show as line") || lowerText.includes("convert to line")) {
+            targetType = "line";
+        } else if (lowerText.includes("doughnut chart") || lowerText.includes("change to doughnut") || lowerText.includes("show as doughnut") || lowerText.includes("convert to doughnut")) {
+            targetType = "doughnut";
+        }
+        
+        if (targetType) {
+            console.log(`🎯 Local UI Mutation Triggered: Morphing active chart canvas to [${targetType}]`);
+            
+            // 1. Mutate the active Chart.js state container natively
+            window.currentChart.config.type = targetType;
+            window.currentChart.update();
+            
+            // 2. Synchronize UI status headers
+            statusText.innerText = "Status: Chart Mutated Automatically";
+            statusText.className = "status-done";
+            
+            // 3. Trigger local Text-to-Speech feedback instantly (~0ms latency)
+            speakResponse(`Switching the current visualization to a ${targetType} chart.`);
+            
+            // 4. Update memory track history for the visual configuration string
+            if (window.currentChart.config) {
+                currentChartConfig = JSON.stringify(window.currentChart.config);
+            }
+            
+            return; // 🚀 BYPASS RETURNING: Terminate pipeline loop, avoiding backend token costs completely!
+        }
+    }
+
     statusText.innerText = "Status: AI is analyzing...";
     statusText.className = "status-recording";
 
@@ -467,8 +508,8 @@ async function sendDataToBackend(transcript) {
         const mode = analysisMode.value; 
         formData.append("mode", mode); 
 
-        console.log("1. Is there a new file upload?", file ? "YES" : "NO");
-        console.log("2. Is there a Time Machine file path?", currentFilePath ? currentFilePath : "NO (null)");
+        print("1. Is there a new file upload?", file ? "YES" : "NO");
+        print("2. Is there a Time Machine file path?", currentFilePath ? currentFilePath : "NO (null)");
 
         if (file) {
             console.log("-> Routing as a BRAND NEW upload.");
