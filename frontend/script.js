@@ -474,7 +474,7 @@ async function sendDataToBackend(transcript) {
                 currentChartConfig = JSON.stringify(window.currentChart.config);
             }
             
-            return; // 🚀 BYPASS RETURNING: Terminate pipeline loop, avoiding backend token costs completely!
+            return; // BYPASS RETURNING: Terminate pipeline loop, avoiding backend token costs completely!
         }
     }
 
