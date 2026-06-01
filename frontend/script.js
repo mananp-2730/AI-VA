@@ -456,7 +456,7 @@ async function sendDataToBackend(transcript) {
         }
         
         if (targetType) {
-            console.log(`🎯 Local UI Mutation Triggered: Morphing active chart canvas to [${targetType}]`);
+            console.log(`Local UI Mutation Triggered: Morphing active chart canvas to [${targetType}]`);
             
             // 1. Mutate the active Chart.js state container natively
             window.currentChart.config.type = targetType;
