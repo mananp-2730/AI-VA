@@ -518,7 +518,7 @@ async function sendDataToBackend(transcript) {
             console.log("-> Routing as a TIME MACHINE follow-up.");
             formData.append("saved_file_path", currentFilePath);
         } else {
-            console.log("❌ ERROR: Both file slots are empty. Aborting!");
+            console.log("ERROR: Both file slots are empty. Aborting!");
             statusText.innerText = "Error: Please upload a file first.";
             statusText.className = "status-waiting";
             
