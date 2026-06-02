@@ -28,6 +28,7 @@
 6. **Drill-Down:** The user physically clicks a concerning data point on the rendered chart, automatically triggering a deeper, granular SQL query without needing to use the microphone again.
 7. **Instant UI Mutation:** With a chart active, the user says, "Change this to a pie chart." A lightweight client-side NLP interceptor catches the command, aborts the backend network request, and instantly morphs the Chart.js canvas locally, achieving absolute zero-latency UI manipulation.
 8. **Retain:** The user clicks "Save to My Insights" to permanently store the session in the Time Machine gallery (accessed via the Sidebar Menu). The session is permanently synced to their Google Identity.
+9. **Distribute:** The user clicks "Download Exec Summary" to instantly package the visual chart and AI text insight into a branded, boardroom-ready PDF document, or pushes the insight directly to corporate Slack channels.
 
 
 ## **4. Feature Prioritization (MoSCoW Framework)**
