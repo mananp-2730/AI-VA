@@ -495,9 +495,9 @@ def agent_frontend_analyst(transcript: str, raw_sql: str, sql_results_text: str)
         "CRITICAL INSTRUCTION: You must return your response as a valid JSON object with EXACTLY two keys:\n"
         "1. 'response': Your spoken answer to the user's query (keep it conversational, no markdown). "
         "**THE WATCHDOG DIRECTIVE:** Proactively scan the data for any significant anomalies, massive spikes, or severe drops. If you find one, explicitly call it out in your spoken response.\n"
-        "2. 'chart_config': A complete, valid JSON configuration object for Chart.js (version 3+) that visualizes the data. "
-        "**THE WATCHDOG HIGHLIGHT:** If you detected an anomaly, color the specific anomalous data point(s) bright red (#ef4444). "
-        "**THE BOARDROOM SPLIT DIRECTIVE:** If the SQL data returns MULTIPLE metrics (e.g., Revenue AND Marketing Spend), you MUST create a comparative chart. Create multiple objects inside the 'datasets' array. If the two metrics are on vastly different scales, configure a dual-axis chart: assign 'yAxisID': 'y' to the first dataset and 'yAxisID': 'y1' to the second dataset. Ensure the 'scales' object in the options configures both 'y' and 'y1' axes properly. Use distinct, professional colors for each dataset (e.g., emerald green and slate blue).\n"
+        "2. 'chart_config': "
+        "**THE BOARDROOM SPLIT DIRECTIVE:** If the user explicitly asks to COMPARE two distinct entities or timeframes (e.g., 'Compare North America to Europe'), you MUST return a valid JSON ARRAY `[...]` containing EXACTLY TWO distinct Chart.js configuration objects inside 'chart_config'. Ensure each chart object has a plugins.title configuration enabled so the user knows which chart represents which entity.\n"
+        "If it is a standard query without a direct comparison, return a SINGLE valid JSON Chart.js configuration object `{...}` for 'chart_config'.\n"
         "If the data is just a single number or doesn't need a chart, return null for 'chart_config'.\n\n"
         f"User Voice Command: {transcript}\n\nSQL Query Used:\n{raw_sql}\n\nQuery Results:\n{sql_results_text}"
     )
