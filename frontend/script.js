@@ -735,10 +735,10 @@ clearButton.addEventListener('click', () => {
     
     // --- NEW: PHASE 5.2 WORKSPACE RESET ---
     
-    // 4. Destroy the active Chart.js graph so it doesn't ghost over new data
-    if (currentChart) {
-        currentChart.destroy();
-        currentChart = null;
+    // 4. Destroy active Chart.js graphs so they don't ghost over new data
+    if (window.currentCharts && window.currentCharts.length > 0) {
+        window.currentCharts.forEach(chart => chart.destroy());
+        window.currentCharts = [];
     }
     
     // 5. Remove any spatial bounding boxes on images
