@@ -254,7 +254,7 @@ darkModeToggle.addEventListener('click', () => {
 });
 
 // --- EPIC 8: DYNAMIC DRILL-DOWN & COMPARATIVE CHART RENDERING ---
-// 🚀 NEW: Upgraded global array to track multiple charts!
+// NEW: Upgraded global array to track multiple charts!
 window.currentCharts = window.currentCharts || [];
 
 function renderChart(configData) {
