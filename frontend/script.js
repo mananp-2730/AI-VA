@@ -305,7 +305,7 @@ function renderChart(configData) {
                 const clickedLabel = this.data.labels[clickedElementIndex];
                 const clickedValue = this.data.datasets[datasetIndex].data[clickedElementIndex];
                 
-                console.log(`🎯 User clicked on: ${clickedLabel} (Value: ${clickedValue})`);
+                console.log(`User clicked on: ${clickedLabel} (Value: ${clickedValue})`);
                 
                 const drillDownQuery = `Break down the data specifically for '${clickedLabel}'. Show me the details that make up this number.`;
                 
