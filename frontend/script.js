@@ -253,59 +253,78 @@ darkModeToggle.addEventListener('click', () => {
     }
 });
 
-// --- EPIC 8: DYNAMIC DRILL-DOWN CHART RENDERING (FIXED) ---
-function renderChart(config) {
-    // 1. Bulletproof Canvas Selection (Using global visualCanvas)
-    let canvas = visualCanvas.tagName === 'CANVAS' ? visualCanvas : visualCanvas.querySelector('canvas');
+// --- EPIC 8: DYNAMIC DRILL-DOWN & COMPARATIVE CHART RENDERING ---
+// 🚀 NEW: Upgraded global array to track multiple charts!
+window.currentCharts = window.currentCharts || [];
+
+function renderChart(configData) {
+    // 1. Wipe the canvas container completely clean
+    visualCanvas.innerHTML = '';
     
-    // If there is no canvas inside the container yet, create one dynamically!
-    if (!canvas && visualCanvas.tagName !== 'CANVAS') {
-        canvas = document.createElement('canvas');
-        visualCanvas.appendChild(canvas);
+    // 2. Destroy ALL existing charts to prevent ghosting/memory leaks
+    if (window.currentCharts && window.currentCharts.length > 0) {
+        window.currentCharts.forEach(chart => chart.destroy());
+    }
+    window.currentCharts = []; // Reset the array
+
+    // 3. Determine if we are doing a "Boardroom Split" (Array) or Standard (Object)
+    const configs = Array.isArray(configData) ? configData : [configData];
+
+    // 4. Dynamically morph the layout!
+    if (configs.length > 1) {
+        console.log("📊 Boardroom Split Detected: Morphing UI to dual-pane grid.");
+        visualCanvas.style.display = 'grid';
+        visualCanvas.style.gridTemplateColumns = '1fr 1fr';
+        visualCanvas.style.gap = '30px';
+        visualCanvas.style.alignItems = 'center';
+    } else {
+        visualCanvas.style.display = 'block';
     }
 
-    const ctx = canvas.getContext('2d');
-    
-    // Destroy the old chart if it exists so we don't overlap
-    if (window.currentChart) {
-        window.currentChart.destroy();
-    }
+    // 5. Loop through however many configs the AI sent us and render them
+    configs.forEach((config) => {
+        // Create a secure wrapper for each chart so it scales perfectly
+        const canvasWrapper = document.createElement('div');
+        canvasWrapper.style.position = 'relative';
+        canvasWrapper.style.width = '100%';
+        canvasWrapper.style.height = configs.length > 1 ? '450px' : '100%';
+        
+        const canvas = document.createElement('canvas');
+        canvasWrapper.appendChild(canvas);
+        visualCanvas.appendChild(canvasWrapper);
+        
+        const ctx = canvas.getContext('2d');
 
-    // THE UPGRADE: Inject an onClick listener into the AI's config
-    if (!config.options) config.options = {};
-    
-    config.options.onClick = function(event, elements) {
-        if (elements.length > 0) {
-            // 1. Figure out EXACTLY what the user clicked on
-            const clickedElementIndex = elements[0].index;
-            const datasetIndex = elements[0].datasetIndex;
-            
-            // 2. Extract the label (e.g., "North America") and the value
-            const clickedLabel = this.data.labels[clickedElementIndex];
-            const clickedValue = this.data.datasets[datasetIndex].data[clickedElementIndex];
-            
-            console.log(`User clicked on: ${clickedLabel} (Value: ${clickedValue})`);
-            
-            // 3. Construct a silent follow-up prompt for the AI
-            const drillDownQuery = `Break down the data specifically for '${clickedLabel}'. Show me the details that make up this number.`;
-            
-            // 4. Send this new query right back to the backend! Using global statusText!
-            statusText.innerText = `Drilling down into ${clickedLabel}...`;
-            statusText.className = "status-recording";
-            
-            sendDataToBackend(drillDownQuery);
-        }
-    };
+        // THE UPGRADE: Inject the drill-down onClick listener
+        if (!config.options) config.options = {};
+        
+        config.options.onClick = function(event, elements) {
+            if (elements.length > 0) {
+                const clickedElementIndex = elements[0].index;
+                const datasetIndex = elements[0].datasetIndex;
+                const clickedLabel = this.data.labels[clickedElementIndex];
+                const clickedValue = this.data.datasets[datasetIndex].data[clickedElementIndex];
+                
+                console.log(`🎯 User clicked on: ${clickedLabel} (Value: ${clickedValue})`);
+                
+                const drillDownQuery = `Break down the data specifically for '${clickedLabel}'. Show me the details that make up this number.`;
+                
+                statusText.innerText = `Drilling down into ${clickedLabel}...`;
+                statusText.className = "status-recording";
+                
+                sendDataToBackend(drillDownQuery);
+            }
+        };
 
-    // Ensure it stays responsive and dark-mode friendly
-    config.options.responsive = true;
-    config.options.maintainAspectRatio = false;
-    
-    // Render the new interactive chart!
-    window.currentChart = new Chart(ctx, config);
-    visualCanvas.style.display = 'block'; // Ensure the container is visible
+        config.options.responsive = true;
+        config.options.maintainAspectRatio = false;
+        
+        // Render and track the new chart!
+        const newChart = new Chart(ctx, config);
+        window.currentCharts.push(newChart);
+    });
 
-    // Hide skeleton and reveal the beautiful new chart!
+    // Hide skeleton and reveal the beautiful new dashboard!
     const skeleton = document.getElementById('skeletonLoader');
     if (skeleton) skeleton.style.display = 'none';
 }
