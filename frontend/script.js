@@ -272,7 +272,7 @@ function renderChart(configData) {
 
     // 4. Dynamically morph the layout!
     if (configs.length > 1) {
-        console.log("📊 Boardroom Split Detected: Morphing UI to dual-pane grid.");
+        console.log("Boardroom Split Detected: Morphing UI to dual-pane grid.");
         visualCanvas.style.display = 'grid';
         visualCanvas.style.gridTemplateColumns = '1fr 1fr';
         visualCanvas.style.gap = '30px';
