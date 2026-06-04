@@ -73,6 +73,7 @@ Building AI-VA required balancing technical complexity with a frictionless user 
 
 * **Decision 11: Client-Side NLP Interception vs. Server-Side UI Routing**
   * **The Trade-off:** We increased the complexity of the frontend JavaScript by building a local keyword-matching engine, rather than letting the Python backend handle all voice commands.
+  * **The PM Rationale:** Server roundtrips and LLM token generation cost money and introduce latency. If a user simply wants to change a bar chart to a pie chart, sending that command to Gemini is a waste of resources. By intercepting these visual commands locally, we achieve absolute zero-latency UI morphing and significantly reduce our API operating costs.
 
 ## **System Architecture & Tech Stack**
 * **Frontend:** HTML5, CSS3 (Flexbox/Grid), Vanilla JavaScript, Chart.js (Dynamic Data Visualization).
