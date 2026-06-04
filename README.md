@@ -72,6 +72,7 @@ Building AI-VA required balancing technical complexity with a frictionless user 
   * **The PM Rationale:** For a voice-activated AI, a 4-second API wait time breaks the conversational illusion. By upgrading to WebSockets, we instantly stream the AI's spoken words token-by-token while silently buffering the Chart.js JSON configuration in the background. This drops our perceived Time-to-Insight (TTI) from seconds to literal milliseconds, creating a premium, ChatGPT-tier user experience.
 
 * **Decision 11: Client-Side NLP Interception vs. Server-Side UI Routing**
+  * **The Trade-off:** We increased the complexity of the frontend JavaScript by building a local keyword-matching engine, rather than letting the Python backend handle all voice commands.
 
 ## **System Architecture & Tech Stack**
 * **Frontend:** HTML5, CSS3 (Flexbox/Grid), Vanilla JavaScript, Chart.js (Dynamic Data Visualization).
