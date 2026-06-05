@@ -77,7 +77,8 @@ Building AI-VA required balancing technical complexity with a frictionless user 
   * **The PM Rationale:** Server roundtrips and LLM token generation cost money and introduce latency. If a user simply wants to change a bar chart to a pie chart, sending that command to Gemini is a waste of resources. By intercepting these visual commands locally, we achieve absolute zero-latency UI morphing and significantly reduce our API operating costs.
 
 * **Decision 12: Dual-Canvas CSS Grid vs. Single Cluttered Chart**
-
+  * **The Trade-off:** For comparative queries, we engineered the UI to dynamically split into two separate HTML canvases rather than forcing the AI to combine vastly different datasets into one overly complex, crowded chart.
+  
 ## **System Architecture & Tech Stack**
 * **Frontend:** HTML5, CSS3 (Flexbox/Grid), Vanilla JavaScript, Chart.js (Dynamic Data Visualization).
 * **Voice & UI:** Native Browser **Web Speech API** (STT/TTS), responsive split-pane architecture.
