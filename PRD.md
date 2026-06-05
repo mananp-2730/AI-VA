@@ -27,8 +27,9 @@
 5. **Contextual Follow-up:** The user asks a pronoun-driven follow-up question (e.g., "Break *that* down by region"). The Context Engine feeds the rolling memory back into the SQL Agent for seamless conversational continuity.
 6. **Drill-Down:** The user physically clicks a concerning data point on the rendered chart, automatically triggering a deeper, granular SQL query without needing to use the microphone again.
 7. **Instant UI Mutation:** With a chart active, the user says, "Change this to a pie chart." A lightweight client-side NLP interceptor catches the command, aborts the backend network request, and instantly morphs the Chart.js canvas locally, achieving absolute zero-latency UI manipulation.
-8. **Retain:** The user clicks "Save to My Insights" to permanently store the session in the Time Machine gallery (accessed via the Sidebar Menu). The session is permanently synced to their Google Identity.
-9. **Distribute:** The user clicks "Download Exec Summary" to instantly package the visual chart and AI text insight into a branded, boardroom-ready PDF document, or pushes the insight directly to corporate Slack channels.
+8. **Comparative BI (The Boardroom Split):** The user asks to compare two entities (e.g., "Compare North America to Europe"). The AI orchestrator dynamically generates an array of visual configurations, and the frontend UI morphs into a native dual-pane CSS grid, rendering side-by-side interactive charts instantly.
+9. **Retain:** The user clicks "Save to My Insights" to permanently store the session in the Time Machine gallery (accessed via the Sidebar Menu). The session is permanently synced to their Google Identity.
+10. **Distribute:** The user clicks "Download Exec Summary" to instantly package the visual chart and AI text insight into a branded, boardroom-ready PDF document, or pushes the insight directly to corporate Slack channels.
 
 
 ## **4. Feature Prioritization (MoSCoW Framework)**
