@@ -76,6 +76,8 @@ Building AI-VA required balancing technical complexity with a frictionless user 
   * **The Trade-off:** We increased the complexity of the frontend JavaScript by building a local keyword-matching engine, rather than letting the Python backend handle all voice commands.
   * **The PM Rationale:** Server roundtrips and LLM token generation cost money and introduce latency. If a user simply wants to change a bar chart to a pie chart, sending that command to Gemini is a waste of resources. By intercepting these visual commands locally, we achieve absolute zero-latency UI morphing and significantly reduce our API operating costs.
 
+* **Decision 12: Dual-Canvas CSS Grid vs. Single Cluttered Chart**
+
 ## **System Architecture & Tech Stack**
 * **Frontend:** HTML5, CSS3 (Flexbox/Grid), Vanilla JavaScript, Chart.js (Dynamic Data Visualization).
 * **Voice & UI:** Native Browser **Web Speech API** (STT/TTS), responsive split-pane architecture.
