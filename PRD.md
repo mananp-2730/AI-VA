@@ -54,6 +54,7 @@ To ensure rapid deployment of the MVP, features were strictly prioritized based 
   * Comparative BI capabilities handling complex datasets and dynamically rendering dual-axis charts for metrics on different scales.
   * The "Zero-Latency" UX Illusion: Skeleton loaders and active listening UI animations that manage user psychology and mask backend AI processing times.
   * Voice-Activated UI Manipulation: A zero-backend client-side NLP filter that intercepts chart modification commands (e.g., "Change to a bar chart") and mutates the canvas locally, saving LLM token costs and dropping latency to ~0ms.
+  * Comparative BI (The Boardroom Split): An advanced 1-to-Many visual pipeline that dynamically morphs the frontend into a dual-canvas CSS grid, rendering side-by-side interactive charts when executives request comparative metrics.
 * **Won't Have (Deferred to V2):**
   * Multi-player collaboration (sharing dashboards via URL).
   * Automated CRON scheduled reporting (The "Monday Morning" Engine).
