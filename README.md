@@ -78,7 +78,8 @@ Building AI-VA required balancing technical complexity with a frictionless user 
 
 * **Decision 12: Dual-Canvas CSS Grid vs. Single Cluttered Chart**
   * **The Trade-off:** For comparative queries, we engineered the UI to dynamically split into two separate HTML canvases rather than forcing the AI to combine vastly different datasets into one overly complex, crowded chart.
-  
+  * **The PM Rationale:** Executive dashboards must prioritize instant readability. Side-by-side comparisons mimic how business leaders natively consume data in slide decks. By passing an array of independent chart configurations to the frontend and utilizing native CSS Grid to divide the screen, we maintain visual isolation, ensure responsive mobile scaling, and keep the interactive click-to-query logic perfectly clean for each distinct chart.
+    
 ## **System Architecture & Tech Stack**
 * **Frontend:** HTML5, CSS3 (Flexbox/Grid), Vanilla JavaScript, Chart.js (Dynamic Data Visualization).
 * **Voice & UI:** Native Browser **Web Speech API** (STT/TTS), responsive split-pane architecture.
