@@ -1174,3 +1174,43 @@ if (slackPushBtn) {
         }
     });
 }
+
+// =====================================================================
+// EPIC 11: THE STORYTELLER PRESENTATION MODE
+// =====================================================================
+const presentBtn = document.getElementById('presentBtn');
+let isPresenting = false;
+
+if (presentBtn) {
+    presentBtn.addEventListener('click', () => {
+        // 1. Ensure an insight actually exists to present!
+        if (!currentAiResponse && !window.currentCharts.length) {
+            alert("Please ask AI-VA a question to generate a dashboard before presenting!");
+            return;
+        }
+
+        isPresenting = !isPresenting;
+
+        if (isPresenting) {
+            // Trigger Cinematic Blackout
+            document.body.classList.add('cinematic-mode');
+            presentBtn.innerText = "❌ Exit Presentation";
+            presentBtn.style.backgroundColor = "#ea4335"; // Red to exit
+            presentBtn.style.borderColor = "#c5221f";
+            presentBtn.style.color = "white";
+
+            // Automatically tell the AI to start reading the executive summary aloud
+            speakResponse(currentAiResponse);
+        } else {
+            // Revert back to Standard Workspace Mode
+            document.body.classList.remove('cinematic-mode');
+            presentBtn.innerText = "🎬 Present";
+            presentBtn.style.backgroundColor = "#fbbc04";
+            presentBtn.style.borderColor = "#e0a800";
+            presentBtn.style.color = "#202124";
+            
+            // Stop the AI from talking if the VP exits early
+            window.speechSynthesis.cancel(); 
+        }
+    });
+}
