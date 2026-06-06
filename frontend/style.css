@@ -676,3 +676,41 @@ body.dark-theme .gallery-response { color: #9aa0a6; }
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
 }
+
+/* =========================================
+   EPIC 11: CINEMATIC PRESENTATION MODE
+   ========================================= */
+
+/* When the body has this class, the entire UI morphs! */
+body.cinematic-mode .assistant-pane {
+    display: none !important; /* Hide the chat sidebar */
+}
+
+body.cinematic-mode .top-controls,
+body.cinematic-mode .theme-fab {
+    display: none !important; /* Hide floating buttons */
+}
+
+body.cinematic-mode .visual-pane {
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: #050505 !important; /* Pitch black boardroom */
+    padding: 60px !important;
+    justify-content: center !important;
+    align-items: center !important;
+    transition: background-color 0.8s ease-in-out;
+    z-index: 9999;
+}
+
+body.cinematic-mode #visualCanvas {
+    transform: scale(1.05); /* Slight dramatic zoom */
+    transition: transform 0.8s ease-in-out;
+}
+
+/* The pulse effect triggered by JavaScript when the AI speaks a key metric */
+.chart-glow-active {
+    box-shadow: 0 0 60px rgba(26, 115, 232, 0.6);
+    border-radius: 16px;
+    transform: scale(1.08) !important;
+    transition: all 0.3s ease-in-out;
+}
