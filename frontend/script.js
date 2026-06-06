@@ -670,7 +670,7 @@ async function sendDataToBackend(transcript) {
 }
 
 // Initialize Web Speech API for Text-to-Speech
-// Text-to-Speech Function (with iOS Safari Overrides)
+// Text-to-Speech Function (with iOS Safari Overrides & Cinematic Sync)
 function speakResponse(text) {
     // 1. APPLE BUG FIX: Clear the stuck speech queue before talking
     window.speechSynthesis.cancel(); 
@@ -692,6 +692,26 @@ function speakResponse(text) {
 
     // Ensure the mic stays OFF while the AI is talking
     recognition.stop(); 
+
+    // --- EPIC 11: THE CINEMATIC AUDIO SYNC ---
+    // This event fires every time the AI starts speaking a new word!
+    utterance.onboundary = function(event) {
+        if (event.name === 'word' && document.body.classList.contains('cinematic-mode')) {
+            // Extract the actual word being spoken right now
+            const spaceIndex = text.indexOf(' ', event.charIndex);
+            const spokenWord = text.substring(event.charIndex, spaceIndex === -1 ? text.length : spaceIndex);
+            
+            // If the word contains a number, a dollar sign, a percent, or a trend keyword, PULSE!
+            if (/\d|\$|%|increase|decrease|spike|drop|top|bottom/i.test(spokenWord)) {
+                visualCanvas.classList.add('chart-glow-active');
+                
+                // Remove the glow after 300ms for a sharp pulsing effect
+                setTimeout(() => {
+                    visualCanvas.classList.remove('chart-glow-active');
+                }, 300);
+            }
+        }
+    };
 
     // When the AI finishes talking, wake the mic back up automatically
     utterance.onend = function() {
