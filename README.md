@@ -82,7 +82,8 @@ Building AI-VA required balancing technical complexity with a frictionless user 
   * **The PM Rationale:** Executive dashboards must prioritize instant readability. Side-by-side comparisons mimic how business leaders natively consume data in slide decks. By passing an array of independent chart configurations to the frontend and utilizing native CSS Grid to divide the screen, we maintain visual isolation, ensure responsive mobile scaling, and keep the interactive click-to-query logic perfectly clean for each distinct chart.
 
 * **Decision 13: Native Audio-Visual Sync vs. Pre-rendered Animations**
-  
+  * **The Trade-off:** We built a custom real-time audio-listener in JavaScript to trigger CSS animations instead of attempting to generate and stream heavy video MP4s or pre-baked animations from the backend.
+  * 
 ## **System Architecture & Tech Stack**
 * **Frontend:** HTML5, CSS3 (Flexbox/Grid), Vanilla JavaScript, Chart.js (Dynamic Data Visualization).
 * **Voice & UI:** Native Browser **Web Speech API** (STT/TTS), responsive split-pane architecture.
