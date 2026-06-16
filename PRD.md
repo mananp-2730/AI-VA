@@ -35,7 +35,6 @@
 10. **Retain:** The user clicks "Save to My Insights" to permanently store the session in the Time Machine gallery (accessed via the Sidebar Menu). The session is permanently synced to their Google Identity.
 11. **Distribute:** The user clicks "Download Exec Summary" to instantly package the visual chart and AI text insight into a branded, boardroom-ready PDF document, or pushes the insight directly to corporate Slack channels.
 
-
 ## **4. Feature Prioritization (MoSCoW Framework)**
 To ensure rapid deployment of the MVP, features were strictly prioritized based on user value and engineering feasibility.
 * **Must Have (Core MVP):**
