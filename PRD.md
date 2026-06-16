@@ -2,6 +2,7 @@
 * **Product Name:** AI-VA (Spatial BI & Generative Voice Assistant)
 * **Document Status:** V1.8 (Enterprise Architecture & Native Reporting Launched)
 * **Product Owner & Manager:** Manan
+  
 
 ## **1. Executive Summary & Problem Space**
 * **The Problem:** Modern enterprises sit on mountains of data stored in complex SQL databases, dense CSV files, and static BI dashboards. However, the business leaders who need this data the most often lack the technical SQL skills or the time to manually build charts. They rely heavily on data teams, creating massive operational bottlenecks.
