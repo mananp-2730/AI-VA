@@ -15,6 +15,7 @@
 * **Pain Point:** Needs to know last quarter's revenue breakdown immediately before a board meeting, but the data team takes 2 days to generate a custom report.
 * **Goal:** Instant, frictionless access to high-level KPIs and predictive trends without writing a single line of code.
 
+
 **Persona 2: The Non-Technical Operator (Secondary)**
 * **Role:** Marketing Manager / Operations Lead.
 * **Pain Point:** Has a raw .csv export from a CRM tool but doesn't know how to use pivot tables or Tableau to visualize it.
