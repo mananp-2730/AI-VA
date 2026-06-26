@@ -63,6 +63,7 @@ To ensure rapid deployment of the MVP, features were strictly prioritized based 
   * Voice-Activated UI Manipulation: A zero-backend client-side NLP filter that intercepts chart modification commands (e.g., "Change to a bar chart") and mutates the canvas locally, saving LLM token costs and dropping latency to ~0ms.
   * Comparative BI (The Boardroom Split): An advanced 1-to-Many visual pipeline that dynamically morphs the frontend into a dual-canvas CSS grid, rendering side-by-side interactive charts when executives request comparative metrics.
   * Storyteller Presentation Mode: A cinematic, full-screen UI state that utilizes the Web Speech API's `onboundary` event to synchronize audio playback with dynamic CSS chart animations, creating an autonomous boardroom presentation.
+
 * **Won't Have (Deferred to V2):**
   * Multi-player collaboration (sharing dashboards via URL).
   * Automated CRON scheduled reporting (The "Monday Morning" Engine).
