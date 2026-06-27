@@ -44,7 +44,6 @@ To ensure rapid deployment of the MVP, features were strictly prioritized based 
   * Modular Multi-Agent architecture separating SQL generation and UI rendering to improve accuracy and allow for independent model scaling.
   * Persistent session memory (SQLite DB) to allow users to save and reload historical insights via an organized Sidebar Drawer navigation system.
   * Global Database Identity Sync: Migrate the frontend session storage of "My Insights" to the backend SQLite database, keyed to the user's Google SSO email, ensuring cross-device data continuity.
-
 * **Could Have (The "Wow" Factor):**
   * Slack Webhook Integrations: 1-click publishing module to push text and graphical insights directly into corporate communication channels.
   * Zero-shot predictive analytics ("The Oracle") to mathematically forecast future trends on graphs.
