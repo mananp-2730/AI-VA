@@ -45,6 +45,7 @@ Building AI-VA required balancing technical complexity with a frictionless user 
   * **The Trade-off:** We launched with a local SQLite database instead of a scalable, enterprise-grade cloud SQL server.
   * **The PM Rationale:** The core hypothesis to prove was "Can an LLM reliably translate voice to SQL and render UI components?" SQLite allowed for zero-configuration local testing and immediate validation of this "Text-to-SQL" agent without incurring cloud database costs or setting up complex VPCs for an MVP.
 
+
 * **Decision 3: Muting the Mic During TTS Playback**
   * **The Trade-off:** The user cannot interrupt the AI while it is speaking, creating a walkie-talkie-style interaction rather than true full-duplex conversation.
   * **The PM Rationale:** If the Web Speech API mic remained active while the AI's Text-to-Speech (TTS) engine spoke, the system would transcribe its own voice, creating an infinite hallucination loop. Ensuring data accuracy and system stability took priority over concurrent speaking capabilities.
