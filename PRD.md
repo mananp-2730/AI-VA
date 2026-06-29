@@ -18,7 +18,6 @@
 * **Pain Point:** Has a raw .csv export from a CRM tool but doesn't know how to use pivot tables or Tableau to visualize it.
 * **Goal:** Upload a file and have the system automatically build the charts and explain the insights.
 
-
 ## **3. Core Use Cases & User Journey**
 **The "Zero-to-Dashboard" Journey:**
 1. **Connect:** The user securely logs in via Google SSO (OAuth 2.0). They toggle to "Enterprise SQL" mode or upload a raw CSV file.
