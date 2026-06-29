@@ -40,6 +40,7 @@ Building AI-VA required balancing technical complexity with a frictionless user 
   * **The Trade-off:** We sacrificed the deeper, multi-step reasoning of heavier models (like Gemini Pro or GPT-4) in favor of the blazing speed of Gemini 2.5 Flash.
   * **The PM Rationale:** For a voice-activated assistant, latency is the ultimate metric. A user waiting 10 seconds for a response breaks the conversational illusion. Flash provides sub-second Text-to-SQL translation, keeping the voice loop natural and instantaneous.
 
+
 * **Decision 2: SQLite vs. Cloud PostgreSQL**
   * **The Trade-off:** We launched with a local SQLite database instead of a scalable, enterprise-grade cloud SQL server.
   * **The PM Rationale:** The core hypothesis to prove was "Can an LLM reliably translate voice to SQL and render UI components?" SQLite allowed for zero-configuration local testing and immediate validation of this "Text-to-SQL" agent without incurring cloud database costs or setting up complex VPCs for an MVP.
