@@ -7,7 +7,6 @@ AI-VA is a cloud-hosted, stateful, multimodal web application that bridges the e
 * **The Problem:** Enterprise data is locked behind complex SQL queries, static CSVs, or dense visual dashboards. Executives and non-technical stakeholders lack the time to write queries or decipher complex charts to extract actionable insights.
 * **The Solution:** AI-VA acts as an interactive, generative data translator. Users simply speak their questions. AI-VA dynamically queries the database, forecasts trends, generates interactive Chart.js dashboards in the browser, and speaks the strategic insights aloud.
 
-
 ## **Core Architecture & Enterprise Features**
 * **Multi-Agent Orchestration Pipeline:** Refactored the backend from a monolithic prompt into a modular AI pipeline. A 'Master Orchestrator' API route coordinates tasks between an Agentic SQL Engineer (specialized purely in text-to-SQL) and a Frontend Analyst Agent (specialized in data analysis and JSON UI generation).
 * **Enterprise Security & Google SSO:** Completely overhauled the authentication pipeline to support Google Single Sign-On (OAuth 2.0). Features secure, HTTP cookie-based session management and a seamless bypass of the frontend glass-morphic gatekeeper for verified enterprise users.
