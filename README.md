@@ -33,6 +33,7 @@ AI-VA is a cloud-hosted, stateful, multimodal web application that bridges the e
 * **Comparative BI (The Boardroom Split):** Engineered a 1-to-Many visual orchestration pipeline. When a user issues a comparative query (e.g., "Compare North America to Europe"), the LLM generates a JSON array of multiple configurations. The frontend intercepts this array, dynamically morphs the layout into a native CSS grid, and renders multiple isolated Chart.js canvases side-by-side for true boardroom-style visual analysis.
 * **Storyteller Presentation Mode (Audio-Visual Sync):** Engineered a cinematic, full-screen blackout mode for boardroom presentations. Utilizing the Web Speech API's `onboundary` event, the frontend dynamically tracks the AI's spoken words in real-time. When key financial or trend metrics (e.g., 'increase', 'spike', '$') are spoken, the system triggers targeted CSS animations, causing the active Chart.js canvas to pulse and glow in perfect sync with the audio.
 
+
 ## **PM Thinking & Strategic Trade-Offs**
 Building AI-VA required balancing technical complexity with a frictionless user experience. Here are the key product decisions made during the MVP development:
 
