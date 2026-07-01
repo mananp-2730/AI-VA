@@ -87,7 +87,8 @@ Building AI-VA required balancing technical complexity with a frictionless user 
 * **Decision 13: Native Audio-Visual Sync vs. Pre-rendered Animations**
   * **The Trade-off:** We built a custom real-time audio-listener in JavaScript to trigger CSS animations instead of attempting to generate and stream heavy video MP4s or pre-baked animations from the backend.
   * **The PM Rationale:** Video or complex animation generation is computationally expensive and introduces massive latency. By leveraging the native Web Speech API's `onboundary` event, we can track exactly which word the TTS engine is currently speaking and trigger lightweight CSS pulses on the existing Chart.js canvas. This delivers a highly polished, cinematic presentation experience with absolute zero additional backend compute and zero network latency.
-    
+
+
 ## **System Architecture & Tech Stack**
 * **Frontend:** HTML5, CSS3 (Flexbox/Grid), Vanilla JavaScript, Chart.js (Dynamic Data Visualization).
 * **Voice & UI:** Native Browser **Web Speech API** (STT/TTS), responsive split-pane architecture.
